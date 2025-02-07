@@ -1,0 +1,154 @@
+import { useFormik } from 'formik';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
+import { Button } from 'src/components/shadcn/ui/button';
+import FormInput from 'src/components/ui/FormInput';
+import { useAuth } from 'src/hooks/use-auth';
+import { paths } from 'src/paths';
+import type { Page as PageType } from 'src/types/page';
+import * as Yup from 'yup';
+import backgroundImage from 'public/ui/background-auth.png';
+import Link from 'next/link';
+import React from 'react';
+import { Box, Typography, Divider, Stack, useTheme, useMediaQuery } from '@mui/material';
+import { useMounted } from '@hooks';
+import PasswordInput from 'src/components/password-input';
+
+export const loginSchema = Yup.object({
+  email: Yup.string().required('Email không được để trống'),
+  password: Yup.string().required('Mật khẩu không được để trống')
+});
+
+const Page: PageType = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMounted = useMounted();
+  const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+  const { signIn, user } = useAuth();
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+      general: ''
+    },
+    validationSchema: loginSchema,
+    onSubmit: async (values, { setSubmitting, setFieldError }) => {
+   
+    }
+  });
+
+  const handleBack = useCallback(() => {
+    router.push(paths.auth.login);
+  }, [router]);
+
+  useEffect(() => {
+    if (formik.values.email || formik.values.password) {
+      formik.setFieldError('general', '');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formik.values.email, formik.values.password]);
+
+  return (
+    <Box className='h-screen flex bg-[#F6FDF5] items-center gap-10 px-6 text-black'>
+      {!isMobile && (
+        <Box width={'40%'}>
+          <Image
+            src={backgroundImage}
+            className='w-[100%] object-contain'
+            alt='Background images'
+          />
+        </Box>
+      )}
+      <Box width={isMobile ? '100%' : '60%'} className='flex justify-center'>
+        <Box width={isMobile ? '100%' : '70%'} className='flex flex-col gap-5'>
+          <Stack
+            direction={'row'}
+            spacing={1}
+            alignItems={'center'}
+            className='cursor-pointer'
+            onClick={handleBack}
+          >
+            <Typography>Trang chủ</Typography>
+          </Stack>
+          <Typography variant='h3'>Đăng nhập</Typography>
+          <Divider>Hoặc</Divider>
+          <form onSubmit={formik.handleSubmit} className='flex flex-col gap-3 w-full'>
+            <Box className='flex flex-col gap-1'>
+              <Typography
+                fontWeight={'bold'}
+                className='label color-label-input-caret label-text text-xs'
+              >
+                Email
+              </Typography>
+              <FormInput
+                type='text'
+                className='w-full px-3 rounded-lg bg-white'
+                {...formik.getFieldProps('email')}
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                error={formik.touched.email && !!formik.errors.email}
+                helperText={formik.touched.email && formik.errors.email}
+              />
+              <Typography variant='body2'>Nhập địa chỉ email của bạn</Typography>
+            </Box>
+            <Box className='flex flex-col gap-1'>
+              <Typography
+                fontWeight='bold'
+                className='label color-label-input-caret label-text text-xs font-semibold'
+              >
+                Mật khẩu
+              </Typography>
+              <PasswordInput
+                {...formik.getFieldProps('password')}
+                showPassword={showPassword}
+                togglePasswordVisibility={() => setShowPassword(!showPassword)}
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                error={formik.touched.password && !!formik.errors.password}
+                helperText={formik.touched.password && formik.errors.password}
+                className='bg-white'
+              />
+              <Stack direction={'row'} justifyContent={'space-between'}>
+                <Typography variant='body2'>Nhập mật khẩu</Typography>
+                <Button
+                  color='primary'
+                  variant='ghost'
+                  className='px-4 pt-1 pb-1 max-w-max h-[24px] text-xs text-primary hover:text-primary underline'
+                >
+                  Quên mật khẩu
+                </Button>
+              </Stack>
+            </Box>
+            {formik.errors.general && (
+              <Box>
+                <Typography className='text-sm font-semibold text-center flex items-center justify-center text-red-500 gap-6'>
+                  {formik.errors.general}
+                </Typography>
+                <Box className='mt-5'></Box>
+              </Box>
+            )}
+            <Button className='mt-2' type='submit' disabled={formik.isSubmitting}>
+              Đăng nhập
+            </Button>
+          </form>
+          <Box className='flex items-center'>
+            <Typography>Chưa có tài khoản?</Typography>
+            <Button
+              asChild
+              variant='ghost'
+              className='px-4 pt-1 pb-1 max-w-max h-[24px] text-primary hover:text-primary'
+            >
+              <Link href={paths.auth.register.index} className='underline italic'>
+                Đăng ký
+              </Link>
+            </Button>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+export default Page;
