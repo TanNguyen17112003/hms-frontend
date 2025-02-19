@@ -1,19 +1,17 @@
+import AppleIcon from '@mui/icons-material/Apple';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import GoogleIcon from '@mui/icons-material/Google';
+import { Box, Button, Divider, IconButton, Stack, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
-import { Button } from 'src/components/shadcn/ui/button';
+import Link from 'next/link';
+import { default as backgroundAuth } from 'public/ui/background-auth.png';
+import React, { useEffect, useState } from 'react';
+import PasswordInput from 'src/components/password-input';
 import FormInput from 'src/components/ui/FormInput';
-import { useAuth } from 'src/hooks/use-auth';
 import { paths } from 'src/paths';
 import type { Page as PageType } from 'src/types/page';
 import * as Yup from 'yup';
-import backgroundImage from 'public/ui/background-auth.png';
-import Link from 'next/link';
-import React from 'react';
-import { Box, Typography, Divider, Stack, useTheme, useMediaQuery } from '@mui/material';
-import { useMounted } from '@hooks';
-import PasswordInput from 'src/components/password-input';
 
 export const loginSchema = Yup.object({
   email: Yup.string().required('Email không được để trống'),
@@ -21,12 +19,7 @@ export const loginSchema = Yup.object({
 });
 
 const Page: PageType = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isMounted = useMounted();
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
-  const { signIn, user } = useAuth();
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -34,14 +27,16 @@ const Page: PageType = () => {
       general: ''
     },
     validationSchema: loginSchema,
-    onSubmit: async (values, { setSubmitting, setFieldError }) => {
-   
+    onSubmit: async (values, { setSubmitting }) => {
+      console.log('Email:', values.email);
+      console.log('Password:', values.password);
+      setSubmitting(true);
     }
   });
 
-  const handleBack = useCallback(() => {
-    router.push(paths.auth.login);
-  }, [router]);
+  // const handleBack = useCallback(() => {
+  //   router.push(paths.auth.login);
+  // }, [router]);
 
   useEffect(() => {
     if (formik.values.email || formik.values.password) {
@@ -51,100 +46,155 @@ const Page: PageType = () => {
   }, [formik.values.email, formik.values.password]);
 
   return (
-    <Box className='h-screen flex bg-[#F6FDF5] items-center gap-10 px-6 text-black'>
-      {!isMobile && (
-        <Box width={'40%'}>
-          <Image
-            src={backgroundImage}
-            className='w-[100%] object-contain'
-            alt='Background images'
-          />
-        </Box>
-      )}
-      <Box width={isMobile ? '100%' : '60%'} className='flex justify-center'>
-        <Box width={isMobile ? '100%' : '70%'} className='flex flex-col gap-5'>
-          <Stack
-            direction={'row'}
-            spacing={1}
-            alignItems={'center'}
-            className='cursor-pointer'
-            onClick={handleBack}
-          >
-            <Typography>Trang chủ</Typography>
-          </Stack>
-          <Typography variant='h3'>Đăng nhập</Typography>
-          <Divider>Hoặc</Divider>
-          <form onSubmit={formik.handleSubmit} className='flex flex-col gap-3 w-full'>
-            <Box className='flex flex-col gap-1'>
-              <Typography
-                fontWeight={'bold'}
-                className='label color-label-input-caret label-text text-xs'
-              >
-                Email
-              </Typography>
-              <FormInput
-                type='text'
-                className='w-full px-3 rounded-lg bg-white'
-                {...formik.getFieldProps('email')}
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                error={formik.touched.email && !!formik.errors.email}
-                helperText={formik.touched.email && formik.errors.email}
-              />
-              <Typography variant='body2'>Nhập địa chỉ email của bạn</Typography>
+    <Box className='min-h-screen flex bg-white'>
+      {/* Left side - Form */}
+      <Box className='w-full lg:w-1/2 flex items-center justify-center'>
+        <Box className='w-full max-w-md px-6'>
+          {/* Logo */}
+          <Stack direction='row' spacing={1} alignItems='center' className='mb-16'>
+            <Box className='w-[232px] h-8'>
+              <Image src='ui/icons/Logo.svg' alt='Health360 Logo' width={232} height={32} />
             </Box>
-            <Box className='flex flex-col gap-1'>
-              <Typography
-                fontWeight='bold'
-                className='label color-label-input-caret label-text text-xs font-semibold'
-              >
-                Mật khẩu
+          </Stack>
+
+          {/* Form Container */}
+          <Stack spacing={4}>
+            {/* Header */}
+            <Stack spacing={1}>
+              <Typography variant='h4' fontWeight='bold'>
+                Sign in to your account
               </Typography>
-              <PasswordInput
-                {...formik.getFieldProps('password')}
-                showPassword={showPassword}
-                togglePasswordVisibility={() => setShowPassword(!showPassword)}
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                error={formik.touched.password && !!formik.errors.password}
-                helperText={formik.touched.password && formik.errors.password}
-                className='bg-white'
-              />
-              <Stack direction={'row'} justifyContent={'space-between'}>
-                <Typography variant='body2'>Nhập mật khẩu</Typography>
+              <Typography color='text.secondary'>
+                Welcome back! Please enter your details.
+              </Typography>
+            </Stack>
+
+            {/* Form */}
+            <form onSubmit={formik.handleSubmit}>
+              <Stack spacing={3}>
+                <Stack spacing={1}>
+                  <Typography variant='subtitle2'>Email *</Typography>
+                  <FormInput
+                    type='text'
+                    className='w-full px-3 rounded-lg bg-white'
+                    {...formik.getFieldProps('email')}
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    error={formik.touched.email && !!formik.errors.email}
+                    helperText={formik.touched.email && formik.errors.email}
+                    placeholder='Enter your email'
+                  />
+                </Stack>
+
+                <Stack spacing={1}>
+                  <Typography variant='subtitle2'>Password *</Typography>
+                  <PasswordInput
+                    {...formik.getFieldProps('password')}
+                    showPassword={showPassword}
+                    togglePasswordVisibility={() => setShowPassword(!showPassword)}
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    error={formik.touched.password && !!formik.errors.password}
+                    helperText={formik.touched.password && formik.errors.password}
+                    className='bg-white'
+                  />
+                  <Typography variant='caption' color='text.secondary'>
+                    Must be at least 8 characters.
+                  </Typography>
+                </Stack>
+
+                {formik.errors.general && (
+                  <Typography color='error' align='center'>
+                    {formik.errors.general}
+                  </Typography>
+                )}
+
                 <Button
-                  color='primary'
-                  variant='ghost'
-                  className='px-4 pt-1 pb-1 max-w-max h-[24px] text-xs text-primary hover:text-primary underline'
+                  type='submit'
+                  disabled={formik.isSubmitting}
+                  fullWidth
+                  sx={{
+                    backgroundColor: '#0E1680',
+                    color: 'white',
+                    padding: '10px 18px',
+                    '&:hover': {
+                      backgroundColor: '#1e40af'
+                    },
+                    '&:disabled': {
+                      backgroundColor: '#94a3b8',
+                      color: 'white'
+                    },
+                    radius: '8px'
+                  }}
                 >
-                  Quên mật khẩu
+                  Log in
                 </Button>
               </Stack>
-            </Box>
-            {formik.errors.general && (
-              <Box>
-                <Typography className='text-sm font-semibold text-center flex items-center justify-center text-red-500 gap-6'>
-                  {formik.errors.general}
-                </Typography>
-                <Box className='mt-5'></Box>
-              </Box>
-            )}
-            <Button className='mt-2' type='submit' disabled={formik.isSubmitting}>
-              Đăng nhập
-            </Button>
-          </form>
-          <Box className='flex items-center'>
-            <Typography>Chưa có tài khoản?</Typography>
-            <Button
-              asChild
-              variant='ghost'
-              className='px-4 pt-1 pb-1 max-w-max h-[24px] text-primary hover:text-primary'
+            </form>
+
+            {/* Divider */}
+            <Divider className='my-6'>
+              <Typography color='text.secondary'>OR</Typography>
+            </Divider>
+
+            {/* Social Login */}
+            <Stack
+              direction='row'
+              spacing={1.5} // gap: 12px
+              justifyContent='center'
             >
-              <Link href={paths.auth.register.index} className='underline italic'>
-                Đăng ký
+              {['Facebook', 'Google', 'Apple'].map((provider) => (
+                <IconButton
+                  key={provider}
+                  sx={{
+                    width: 112,
+                    height: 44,
+                    padding: '10px',
+                    borderRadius: '8px',
+                    border: '1px solid #D0D5DD',
+                    '&:hover': {
+                      backgroundColor: '#F9FAFB',
+                      borderColor: '#D0D5DD'
+                    }
+                  }}
+                >
+                  {provider === 'Facebook' && (
+                    <FacebookIcon sx={{ width: 24, height: 24, color: '#1877F2' }} />
+                  )}
+                  {provider === 'Google' && (
+                    <GoogleIcon sx={{ width: 24, height: 24, color: '#DB4437' }} />
+                  )}
+                  {provider === 'Apple' && (
+                    <AppleIcon sx={{ width: 24, height: 24, color: '#000000' }} />
+                  )}
+                </IconButton>
+              ))}
+            </Stack>
+
+            {/* Sign Up Link */}
+            <Stack
+              direction='row'
+              spacing={1}
+              justifyContent='center'
+              alignItems='center'
+              className='mt-6'
+            >
+              <Typography color='text.secondary'>I&apos;m don&apos;t have an account?</Typography>
+              <Link
+                href={paths.auth.register.index}
+                className='text.tetiary underline font-medium hover:text-blue-800'
+              >
+                <Typography>Log in</Typography>
               </Link>
-            </Button>
-          </Box>
+            </Stack>
+          </Stack>
+        </Box>
+      </Box>
+
+      {/* Right side - Image */}
+      <Box className='hidden lg:block w-1/2 relative'>
+        <Box className='absolute right-6 top-6 w-[784px] h-[976px] rounded-3xl overflow-hidden transform scale-75 origin-top-right'>
+          <Image src={backgroundAuth} alt='Background' layout='fill' objectFit='cover' />
         </Box>
       </Box>
     </Box>
