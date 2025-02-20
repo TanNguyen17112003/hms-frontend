@@ -30,6 +30,7 @@ const Page: PageType = () => {
     onSubmit: async (values, { setSubmitting }) => {
       console.log('Email:', values.email);
       console.log('Password:', values.password);
+      console.log('General:', values.general);
       setSubmitting(true);
     }
   });
@@ -73,7 +74,10 @@ const Page: PageType = () => {
             <form onSubmit={formik.handleSubmit}>
               <Stack spacing={3}>
                 <Stack spacing={1}>
-                  <Typography variant='subtitle2'>Email *</Typography>
+                  <Stack direction='row' alignItems='center'>
+                    <Typography variant='subtitle2'>Email </Typography>
+                    <Typography color='red'> *</Typography>
+                  </Stack>
                   <FormInput
                     type='text'
                     className='w-full px-3 rounded-lg bg-white'
@@ -87,7 +91,10 @@ const Page: PageType = () => {
                 </Stack>
 
                 <Stack spacing={1}>
-                  <Typography variant='subtitle2'>Password *</Typography>
+                  <Stack direction='row' alignItems='center'>
+                    <Typography variant='subtitle2'>Password </Typography>
+                    <Typography color='red'> *</Typography>
+                  </Stack>
                   <PasswordInput
                     {...formik.getFieldProps('password')}
                     showPassword={showPassword}
@@ -113,18 +120,14 @@ const Page: PageType = () => {
                   type='submit'
                   disabled={formik.isSubmitting}
                   fullWidth
+                  className='rounded-xs'
                   sx={{
                     backgroundColor: '#0E1680',
                     color: 'white',
                     padding: '10px 18px',
                     '&:hover': {
                       backgroundColor: '#1e40af'
-                    },
-                    '&:disabled': {
-                      backgroundColor: '#94a3b8',
-                      color: 'white'
-                    },
-                    radius: '8px'
+                    }
                   }}
                 >
                   Log in
@@ -146,26 +149,20 @@ const Page: PageType = () => {
               {['Facebook', 'Google', 'Apple'].map((provider) => (
                 <IconButton
                   key={provider}
+                  className='w-[112px] h-[44px] p-[10px] hover:bg-[#F9FAFB] hover:border-[#D0D5DD]'
                   sx={{
-                    width: 112,
-                    height: 44,
-                    padding: '10px',
                     borderRadius: '8px',
-                    border: '1px solid #D0D5DD',
-                    '&:hover': {
-                      backgroundColor: '#F9FAFB',
-                      borderColor: '#D0D5DD'
-                    }
+                    border: '1px solid #D0D5DD'
                   }}
                 >
                   {provider === 'Facebook' && (
-                    <FacebookIcon sx={{ width: 24, height: 24, color: '#1877F2' }} />
+                    <FacebookIcon className='w-[24px] h-[24px]' sx={{ color: '#1877F2' }} />
                   )}
                   {provider === 'Google' && (
-                    <GoogleIcon sx={{ width: 24, height: 24, color: '#DB4437' }} />
+                    <GoogleIcon className='w-[24px] h-[24px]' sx={{ color: '#DB4437' }} />
                   )}
                   {provider === 'Apple' && (
-                    <AppleIcon sx={{ width: 24, height: 24, color: '#000000' }} />
+                    <AppleIcon className='w-[24px] h-[24px]' sx={{ color: '#000000' }} />
                   )}
                 </IconButton>
               ))}
