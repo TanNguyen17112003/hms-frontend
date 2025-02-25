@@ -14,7 +14,81 @@ const AppointmentSection = () => {
             </div>
           </div>
           <div className='w-full h-full py-16'>
-            <div className='bg-[#0E1680] h-full w-full text-white grid grid-cols-2'></div>
+            <div className='bg-[#0E1680] h-full w-full text-white grid grid-cols-2 rounded-md'>
+              <input
+                placeholder='Name'
+                className='bg-transparent border-r-2 border-b-2 border-white h-16 p-5'
+              ></input>
+              <select className='bg-transparent border-b-2 border-white h-16 p-5 outline-none'>
+                <option value='' disabled selected hidden>
+                  Gender
+                </option>
+                <option value='male' className='text-black'>
+                  Male
+                </option>
+                <option value='female' className='text-black'>
+                  Female
+                </option>
+              </select>
+              <input
+                placeholder='Email'
+                className='bg-transparent border-r-2 border-b-2 border-white h-16 p-5'
+              ></input>
+              <input
+                placeholder='Phone'
+                className='bg-transparent border-b-2 border-white h-16 p-5'
+              ></input>
+              <select className='bg-transparent border-r-2 border-b-2 border-white h-16 p-5 outline-none'>
+                <option value='' disabled selected hidden>
+                  Date
+                </option>
+                <option value='male' className='text-black'>
+                  Male
+                </option>
+                <option value='female' className='text-black'>
+                  Female
+                </option>
+              </select>
+              <select className='bg-transparent border-b-2 border-white h-16 p-5 outline-none'>
+                <option value='' disabled selected hidden>
+                  Time
+                </option>
+                <option value='male' className='text-black'>
+                  Male
+                </option>
+                <option value='female' className='text-black'>
+                  Female
+                </option>
+              </select>
+              <select className='bg-transparent border-r-2 border-b-2 border-white h-16 p-5 outline-none'>
+                <option value='' disabled selected hidden>
+                  Doctor
+                </option>
+                <option value='male' className='text-black'>
+                  Male
+                </option>
+                <option value='female' className='text-black'>
+                  Female
+                </option>
+              </select>
+              <select className='bg-transparent border-b-2 border-white h-16 p-5 outline-none'>
+                <option value='' disabled selected hidden>
+                  Department
+                </option>
+                <option value='male' className='text-black'>
+                  Male
+                </option>
+                <option value='female' className='text-black'>
+                  Female
+                </option>
+              </select>
+              <textarea
+                className='col-span-2 bg-transparent border-b-2 border-white p-6 outline-none'
+                rows={3}
+                placeholder='Message'
+              ></textarea>
+              <button className='col-span-2 bg-transparent p-5'>SUBMIT</button>
+            </div>
           </div>
         </div>
       </div>
