@@ -8,7 +8,7 @@ import { useAuth } from 'src/hooks/use-auth';
 import { paths } from 'src/paths';
 import type { Page as PageType } from 'src/types/page';
 import * as Yup from 'yup';
-import backgroundImage from 'public/ui/background-auth.png';
+// import backgroundImage from 'public/ui/background-auth.png';
 import Link from 'next/link';
 import React from 'react';
 import { Box, Typography, Divider, Stack, useTheme, useMediaQuery } from '@mui/material';
@@ -34,9 +34,7 @@ const Page: PageType = () => {
       general: ''
     },
     validationSchema: loginSchema,
-    onSubmit: async (values, { setSubmitting, setFieldError }) => {
-   
-    }
+    onSubmit: async (values, { setSubmitting, setFieldError }) => {}
   });
 
   const handleBack = useCallback(() => {
@@ -54,11 +52,11 @@ const Page: PageType = () => {
     <Box className='h-screen flex bg-[#F6FDF5] items-center gap-10 px-6 text-black'>
       {!isMobile && (
         <Box width={'40%'}>
-          <Image
+          {/* <Image
             src={backgroundImage}
             className='w-[100%] object-contain'
             alt='Background images'
-          />
+          /> */}
         </Box>
       )}
       <Box width={isMobile ? '100%' : '60%'} className='flex justify-center'>

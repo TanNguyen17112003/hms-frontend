@@ -16,6 +16,7 @@ import { createEmotionCache } from 'src/utils/create-emotion-cache';
 import { PagesProgressBar as ProgressBar } from 'next-nprogress-bar';
 import { createTheme } from 'src/theme';
 import { initialSettings } from 'src/contexts/settings-context';
+import LandingScreen from 'src/components/ui/LandingScreen';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -40,7 +41,8 @@ const App = (props: AppProps) => {
               const theme = createTheme(initialSettings);
               const showSplashScreen = !auth.isInitialized;
               if (showSplashScreen) {
-                return <SplashScreen />;
+                // return <SplashScreen />;
+                return <LandingScreen />;
               }
               return (
                 <ThemeProvider theme={theme}>

@@ -34,7 +34,8 @@
 
     --radius: 0.5rem;
 
-    --text-primary: 108 72% 56%;
+    /* --text-primary: 108 72% 56%; */
+    --text-primary: "#000000";
     --text-secondary: 217 19% 27%;
     --text-tetiary: 220 9% 46%;
   }
