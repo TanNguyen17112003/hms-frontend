@@ -5,7 +5,7 @@ import Doctor3 from 'public/ui/Landing/Doctor3.png';
 import { FaLinkedinIn, FaFacebookF, FaInstagram } from 'react-icons/fa';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 
-export type AwardType = {
+export type DoctorType = {
   avt: StaticImport;
   name: string;
   speciality: string;
@@ -14,7 +14,7 @@ export type AwardType = {
   instagram: string;
 };
 
-export const awards: AwardType[] = [
+export const doctors: DoctorType[] = [
   {
     avt: Doctor1,
     name: 'Justin Bieber',
@@ -90,7 +90,7 @@ export const awards: AwardType[] = [
 ];
 
 const DoctorSection = () => {
-  const AwardCard = ({ props }: { props: any }) => {
+  const DoctorCard = ({ props }: { props: any }) => {
     return (
       <div className='mx-3'>
         <div className='flex flex-col justify-center items-center w-full rounded-lg '>
@@ -117,15 +117,15 @@ const DoctorSection = () => {
   };
 
   return (
-    <div className='w-full bg-[#FCFEFE] flex justify-center'>
+    <div className='w-full flex justify-center bg-[#FCFEFE]'>
       <div className='w-full max-w-[1140px] p-20'>
         <div className='text-[#159EEC] text-lg font-semibold mb-5 w-full text-center'>
           TRUSTED CARE
         </div>
         <div className='text-[#0E1680] text-3xl w-full text-center mb-10'>Our Doctors</div>
         <NewSlider
-          list={awards}
-          component={AwardCard}
+          list={doctors}
+          component={DoctorCard}
           config={{
             arrows: false,
             dots: true,

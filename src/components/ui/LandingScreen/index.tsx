@@ -6,7 +6,7 @@ import NewsSection from './NewsSection';
 
 const LandingScreen = () => {
   return (
-    <div className='w-full h-screen bg-[#FCFEFE]'>
+    <div className='w-full h-screen '>
       <AppointmentSection />
       <DoctorSection />
       <NewsSection />
