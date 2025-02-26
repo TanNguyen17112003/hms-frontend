@@ -29,7 +29,7 @@ const App = (props: AppProps) => {
     <CacheProvider value={emotionCache}>
       <ProgressBar height='4px' color='#2970FF' options={{ showSpinner: true }} shallowRouting />
       <Head>
-        <title>TSA</title>
+        <title>HealthPro</title>
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
 
@@ -39,7 +39,7 @@ const App = (props: AppProps) => {
             {(auth) => {
               const theme = createTheme(initialSettings);
               const showSplashScreen = !auth.isInitialized;
-              if (showSplashScreen) {
+              if (!showSplashScreen) {
                 return <SplashScreen />;
               }
               return (

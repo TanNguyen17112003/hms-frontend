@@ -12,71 +12,78 @@ import FormInput from 'src/components/ui/FormInput';
 import { paths } from 'src/paths';
 import type { Page as PageType } from 'src/types/page';
 import * as Yup from 'yup';
-import { useRouter } from 'next/router';
-import { useResponsive } from 'src/utils/use-responsive';
 import { ArrowLeft } from 'iconsax-react';
+import { useRouter } from 'next/router';
 
-export const loginSchema = Yup.object({
+export const registerSchema = Yup.object({
+  name: Yup.string().required('Name không được để trống'),
   email: Yup.string().required('Email không được để trống'),
-  password: Yup.string().required('Mật khẩu không được để trống')
+  password: Yup.string().required('Mật khẩu không được để trống'),
+  cic: Yup.string().required('Số định danh không được để trống')
 });
 
 const Page: PageType = () => {
-  const { isTablet, isMobile } = useResponsive();
-  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
+      name: '',
       email: '',
       password: '',
-      general: ''
+      cic: ''
     },
-    validationSchema: loginSchema,
+    validationSchema: registerSchema,
     onSubmit: async (values, { setSubmitting }) => {
-      console.log('Email:', values.email);
-      console.log('Password:', values.password);
-      console.log('General:', values.general);
       setSubmitting(true);
     }
   });
 
 
-  useEffect(() => {
-    if (formik.values.email || formik.values.password) {
-      formik.setFieldError('general', '');
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formik.values.email, formik.values.password]);
-
   return (
     <Box className='flex bg-white relative'>
       <Stack direction={"row"} spacing={2} alignItems={"center"} justifyContent={"start"} justifySelf={"center"} marginBottom={3} className='absolute top-4 left-4'>
-        <IconButton onClick={() => router.push(paths.index)} className='bg-white p-2 rounded-md'>
+        <IconButton onClick={() => router.push(paths.auth.login)} className='bg-white p-2 rounded-md'>
           <ArrowLeft className='w-6 h-6' />
         </IconButton>
       </Stack>
-      <Box className='w-full lg:w-1/2 flex items-center justify-center'>
+      <Box className='w-full lg:w-1/2 flex items-center justify-center py-5 h-screen'>
         <Box className='w-full max-w-md px-6'>
           <Stack direction='row' spacing={2} alignItems='center' justifyContent={"start"} justifySelf={"center"} marginBottom={3}>
             <Box className=''>
-              <Image src='/logo.png' alt='Health360 Logo' width={50} height={50}/>
+              <Image src='/logo.png' alt='Health360 Logo' width={50} height={50} />
             </Box>
-            <Typography variant='h3'>HealthPro</Typography>
+            <Typography variant='h3' >HealthPro</Typography>
           </Stack>
 
-          <Stack spacing={4}>
+          <Stack spacing={2}>
             <Stack spacing={1} alignItems={"center"}>
               <Typography variant='h4' fontWeight='bold'>
-                Sign in to your account
+                Create an account
               </Typography>
               <Typography color='text.secondary'>
-                Welcome back! Please enter your details.
+                Start your 30-day free trial
               </Typography>
             </Stack>
 
             {/* Form */}
             <form onSubmit={formik.handleSubmit}>
-              <Stack spacing={3}>
+              <Stack spacing={2}>
+                <Stack spacing={1}>
+                  <Stack direction='row' alignItems='center'>
+                    <Typography variant='subtitle2'>Name </Typography>
+                    <Typography color='red'> *</Typography>
+                  </Stack>
+                  <FormInput
+                    type='text'
+                    className='w-full px-3 rounded-lg bg-white'
+                    {...formik.getFieldProps('email')}
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    error={formik.touched.name && !!formik.errors.name}
+                    helperText={formik.touched.name && formik.errors.name}
+                    placeholder='Enter your name'
+                  />
+                </Stack>
                 <Stack spacing={1}>
                   <Stack direction='row' alignItems='center'>
                     <Typography variant='subtitle2'>Email </Typography>
@@ -93,7 +100,6 @@ const Page: PageType = () => {
                     placeholder='Enter your email'
                   />
                 </Stack>
-
                 <Stack spacing={1}>
                   <Stack direction='row' alignItems='center'>
                     <Typography variant='subtitle2'>Password </Typography>
@@ -102,7 +108,6 @@ const Page: PageType = () => {
                   <PasswordInput
                     {...formik.getFieldProps('password')}
                     showPassword={showPassword}
-                    togglePasswordVisibility={() => setShowPassword(!showPassword)}
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     error={formik.touched.password && !!formik.errors.password}
@@ -114,12 +119,22 @@ const Page: PageType = () => {
                     Must be at least 8 characters.
                   </Typography>
                 </Stack>
-
-                {formik.errors.general && (
-                  <Typography color='error' align='center'>
-                    {formik.errors.general}
-                  </Typography>
-                )}
+                <Stack spacing={1}>
+                  <Stack direction='row' alignItems='center'>
+                    <Typography variant='subtitle2'>Citizen Identity Card </Typography>
+                    <Typography color='red'> *</Typography>
+                  </Stack>
+                  <FormInput
+                    type='text'
+                    className='w-full px-3 rounded-lg bg-white'
+                    {...formik.getFieldProps('email')}
+                    value={formik.values.cic}
+                    onChange={formik.handleChange}
+                    error={formik.touched.cic && !!formik.errors.cic}
+                    helperText={formik.touched.cic && formik.errors.cic}
+                    placeholder='Enter your CIC'
+                  />
+                </Stack>
 
                 <Button
                   type='submit'
@@ -135,7 +150,7 @@ const Page: PageType = () => {
                     }
                   }}
                 >
-                  Log in
+                  Get Started
                 </Button>
               </Stack>
             </form>
@@ -145,10 +160,9 @@ const Page: PageType = () => {
               <Typography color='text.secondary'>OR</Typography>
             </Divider>
 
-            {/* Social Login */}
             <Stack
               direction='row'
-              spacing={1.5} // gap: 12px
+              spacing={1.5}
               justifyContent='center'
             >
               {['Facebook', 'Google', 'Apple'].map((provider) => (
@@ -173,7 +187,6 @@ const Page: PageType = () => {
               ))}
             </Stack>
 
-            {/* Sign Up Link */}
             <Stack
               direction='row'
               spacing={1}
@@ -181,12 +194,12 @@ const Page: PageType = () => {
               alignItems='center'
               className='mt-6'
             >
-              <Typography color='text.secondary'>You don&apos;t have an account?</Typography>
+              <Typography color='text.secondary'>Already have an account?</Typography>
               <Link
-                href={paths.auth.register.index}
+                href={paths.auth.login}
                 className='text.tetiary font-medium'
               >
-                  <Typography color='primary' fontWeight={"bold"}>Register</Typography>
+                <Typography color='primary' fontWeight={"bold"}>Log in</Typography>
               </Link>
             </Stack>
           </Stack>
