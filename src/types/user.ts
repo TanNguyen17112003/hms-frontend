@@ -8,3 +8,15 @@ interface User {
   address: string;
   role: UserRole;
 }
+
+export interface UserDetail extends User {}
+
+export const initialUser: UserDetail = {
+  id: "",
+  name: "",
+  email: "",
+  phone: "",
+  dob: "",
+  address: "",
+  role: "PATIENT"
+}

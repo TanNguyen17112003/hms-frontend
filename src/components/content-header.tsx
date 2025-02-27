@@ -36,7 +36,7 @@ function ContentHeader({
         }}
       >
         <Stack display={'flex'} flexDirection={'column'} spacing={1} flex={1}>
-          <Typography variant='h4'>{title}</Typography>
+          <Typography variant='h5'>{title}</Typography>
           {description && (
             <Typography variant='body2' fontWeight={'semibold'} fontStyle={'italic'}>
               {description}

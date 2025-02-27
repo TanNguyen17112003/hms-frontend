@@ -11,8 +11,8 @@ const VerticalLayout: FC<VerticalLayoutProps> = (props) => {
     <div className="flex px-5 py-3">
       <SideNav color={navColor} sections={sections} />
       <div
-        className={`flex-1 flex flex-col`}
-        style={{ paddingLeft: 480 }}
+        className={`flex-1 flex flex-col max-w-full`}
+        style={{ paddingLeft: 250 }}
       >
         {children}
       </div>

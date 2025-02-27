@@ -4,11 +4,12 @@ import { Issuer } from 'src/utils/auth';
 import CookieHelper, { CookieKeys } from 'src/utils/cookie-helper';
 import { useRouter } from 'next/router';
 import { paths } from 'src/paths';
+import { initialUser, UserDetail } from 'src/types/user';
 
 interface State {
   isInitialized: boolean;
   isAuthenticated: boolean;
-  user: string | null;
+  user: UserDetail
 }
 
 enum ActionType {
@@ -23,21 +24,21 @@ type InitializeAction = {
   type: ActionType.INITIALIZE;
   payload: {
     isAuthenticated: boolean;
-    user: string | null;
+    user: UserDetail
   };
 };
 
 type SignInAction = {
   type: ActionType.SIGN_IN;
   payload: {
-    user: string;
+    user: UserDetail;
   };
 };
 
 type SignUpAction = {
   type: ActionType.SIGN_UP;
   payload: {
-    user: string;
+    user: UserDetail;
   };
 };
 
@@ -48,7 +49,7 @@ type SignOutAction = {
 type UpdateProfileAction = {
   type: ActionType.UPDATE_PROFILE;
   payload: {
-    user: string;
+    user: UserDetail;
   };
 };
 
@@ -59,7 +60,7 @@ type Handler = (state: State, action: any) => State;
 const initialState: State = {
   isAuthenticated: false,
   isInitialized: false,
-  user: null
+  user: initialUser
 };
 
 const handlers: Record<ActionType, Handler> = {
@@ -94,7 +95,7 @@ const handlers: Record<ActionType, Handler> = {
   SIGN_OUT: (state: State): State => ({
     ...state,
     isAuthenticated: false,
-    user: null
+    user: initialUser
   }),
   UPDATE_PROFILE: (state: State, action: UpdateProfileAction): State => ({
     ...state,
