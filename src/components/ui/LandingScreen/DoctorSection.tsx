@@ -133,26 +133,22 @@ const DoctorSection = () => {
             slidesToShow: 3,
             infinite: true,
             customPaging: (i: number) => (
-              <div className='bg-[#BFD2F8] w-3 h-3 rounded-full mx-1 mt-5 transition-all duration-300'></div>
+              <div className='bg-[#BFD2F8] w-3 h-3 rounded-full mx-1 mt-10 sm:mt-5 transition-all duration-300'></div>
             ),
             dotsClass: 'slick-dots custom-dots',
             responsive: [
               {
                 breakpoint: 640,
                 settings: {
-                  slidesToShow: 1
+                  slidesToShow: 1,
+                  slidesToScroll: 1
                 }
               },
               {
                 breakpoint: 768,
                 settings: {
-                  slidesToShow: 2
-                }
-              },
-              {
-                breakpoint: 1024,
-                settings: {
-                  slidesToShow: 3
+                  slidesToShow: 2,
+                  slidesToScroll: 2
                 }
               }
             ]
