@@ -2,13 +2,13 @@ import { FaClock, FaEnvelope, FaLocationDot, FaPhoneVolume } from 'react-icons/f
 
 const ContactSection = () => {
   return (
-    <div className='w-full flex justify-center bg-transparent bg-[#FAFDFE]'>
-      <div className='w-full max-w-[1140px] p-20'>
+    <div className='w-full flex justify-center bg-transparent !bg-[#FCFEFE]'>
+      <div className='w-full max-w-[1140px] py-20 p-5 sm:px-10 min-[1140px]:px-0'>
         <div className='text-[#159EEC] text-lg font-semibold mb-5 w-full text-center uppercase'>
           Get in touch
         </div>
         <div className='text-[#0E1680] text-3xl w-full text-center mb-10'>Contact</div>
-        <div className='w-full grid grid-cols-4 gap-5'>
+        <div className='w-full grid grid-cols-1 sm:grid-cols-2 min-[1140px]:grid-cols-4 gap-5'>
           <div className='bg-[#BFD2F8] px-8 py-12 rounded-md text-[#0E1680]'>
             <FaPhoneVolume className='text-3xl mb-3' />
             <div className='uppercase font-semibold mb-3'>Emergency</div>

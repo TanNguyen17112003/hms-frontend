@@ -29,7 +29,9 @@ export const newsGroups: NewsType[][] = [
       author: 'Author',
       view: 68,
       like: 86
-    },
+    }
+  ],
+  [
     {
       avt: NewsImg,
       title: "This Article's Title goes Here, but not too long.",
@@ -63,7 +65,9 @@ export const newsGroups: NewsType[][] = [
       author: 'Author',
       view: 68,
       like: 86
-    },
+    }
+  ],
+  [
     {
       avt: NewsImg,
       title: "This Article's Title goes Here, but not too long.",
@@ -86,11 +90,11 @@ export const newsGroups: NewsType[][] = [
 const NewsSection = () => {
   const NewsGroupCard = ({ props }: { props: any }) => {
     return (
-      <div className='mx-3'>
-        <div className='grid grid-cols-2 gap-3'>
+      <div className='sm:mx-3'>
+        <div className='flex flex-col gap-3'>
           {props.map((item: NewsType) => (
-            <div className='flex rounded-lg overflow-hidden' key={item.title}>
-              <img src={item.avt.src} alt='' className='h-40' />
+            <div className='flex flex-col sm:flex-row rounded-lg overflow-hidden' key={item.title}>
+              <img src={item.avt.src} alt='' className='sm:h-40' />
               <div className='p-5 bg-[#FCFEFE]'>
                 <div className='text-[#159EEC] text-sm mb-3'>
                   <span>{item.time}</span> | <span>{item.author}</span>
@@ -113,8 +117,8 @@ const NewsSection = () => {
   };
 
   return (
-    <div className='w-full flex justify-center bg-transparent bg-[#FAFDFE]'>
-      <div className='w-full max-w-[1140px] p-20'>
+    <div className='w-full flex justify-center bg-transparent !bg-[#FAFDFE]'>
+      <div className='w-full max-w-[1140px] py-20 p-5 sm:px-10 min-[1140px]:px-0'>
         <div className='text-[#159EEC] text-lg font-semibold mb-5 w-full text-center uppercase'>
           Better information, Better health
         </div>
@@ -126,29 +130,18 @@ const NewsSection = () => {
             arrows: false,
             dots: true,
             infinite: true,
-            slidesToScroll: 1,
-            slidesToShow: 1,
+            slidesToScroll: 2,
+            slidesToShow: 2,
             customPaging: (i: number) => (
               <div className='bg-[#BFD2F8] w-3 h-3 rounded-full mx-1 mt-5 transition-all duration-300'></div>
             ),
             dotsClass: 'slick-dots custom-dots',
             responsive: [
               {
-                breakpoint: 640,
-                settings: {
-                  slidesToShow: 1
-                }
-              },
-              {
-                breakpoint: 768,
-                settings: {
-                  slidesToShow: 2
-                }
-              },
-              {
                 breakpoint: 1024,
                 settings: {
-                  slidesToShow: 3
+                  slidesToScroll: 1,
+                  slidesToShow: 1
                 }
               }
             ]
