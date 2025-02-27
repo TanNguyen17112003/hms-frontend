@@ -94,6 +94,7 @@ interface SideNavSectionProps {
   items?: DashboardItem[];
   pathname?: string | null;
   subheader?: string;
+  isLast?: boolean;
 }
 
 export const SideNavSection: FC<SideNavSectionProps> = (props) => {
@@ -104,7 +105,7 @@ export const SideNavSection: FC<SideNavSectionProps> = (props) => {
       <ul className="list-none p-0 m-0">
         {renderItems({ items, pathname })}
       </ul>
-      <Divider />
+      {!props.isLast && <Divider />}
     </>
    
   );

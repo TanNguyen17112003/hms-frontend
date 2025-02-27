@@ -1,63 +1,50 @@
 import { paths } from 'src/paths';
-import {
-  LogoutCurve,
-  Category2,
-  Box1,
-  User,
-  UserTick,
-  NotificationStatus,
-  Setting2
-} from 'iconsax-react';
 import { PiMotorcycle } from 'react-icons/pi';
+import { BarChart2, CalendarPlus2, File, FileBarChart, FileBarChart2, FlaskConical, Home, Users, User, Settings, LogOut, Bed, Briefcase } from 'lucide-react';
 export const getDashboardStaffConfigs = () => {
   return [
     {
-      subheader: 'Quản lý',
+      subheader: '1',
       items: [
         {
-          title: 'Thống kê',
+          title: 'Dashboard',
           path: paths.auth.login,
-          icon: <Category2 className='h-6 w-6' />
+          icon: <BarChart2 className='h-6 w-6' />
         },
         {
-          title: 'Quản lý đơn hàng',
+          title: 'My Appointments',
           path: paths.auth.login,
-          icon: <Box1 className='h-6 w-6' />
+          icon: <CalendarPlus2 className='h-6 w-6' />
         },
         {
-          title: 'Quản lý chuyến đi',
+          title: 'Patient Management',
           path: paths.auth.login,
-          icon: <PiMotorcycle className='h-6 w-6' />
+          icon: <Bed className='h-6 w-6' />
         },
         {
-          title: 'Quản lý nhân viên',
+          title: 'My Portfolio',
           path: paths.auth.login,
-          icon: <UserTick className='h-6 w-6' />
+          icon: <Briefcase className='h-6 w-6' />
         },
         {
-          title: 'Quản lý sinh viên',
-          path: paths.auth.login,
+          title: 'My Account',
+          paht: paths.auth.login,
           icon: <User className='h-6 w-6' />
-        },
-        {
-          title: 'Quản lý Khiếu nại',
-          path: paths.auth.login,
-          icon: <NotificationStatus className='h-6 w-6' />
         }
       ]
     },
     {
-      subheader: 'Tài khoản',
+      subheader: '2',
       items: [
         {
-          title: 'Cài đặt',
+          title: 'Settings',
           path: paths.auth.login,
-          icon: <Setting2 className='h-6 w-6' />
+          icon: <Settings className='h-6 w-6' />
         },
         {
-          title: 'Đăng xuất',
+          title: 'Log Out',
           path: paths.auth.logout,
-          icon: <LogoutCurve size='20px' variant='Bold' />
+          icon: <LogOut className='h-6 w-6' />
         }
       ]
     }

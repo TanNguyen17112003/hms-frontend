@@ -50,6 +50,7 @@ export const SideNav: FC<SideNavProps> = (props) => {
                     key={index}
                     pathname={pathname}
                     subheader={section.subheader}
+                    isLast={index === sections.length - 1}
                   />
                 ))}
               </Box>

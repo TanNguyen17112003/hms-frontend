@@ -118,7 +118,8 @@ export const Header = () => {
               <Stack
                 direction={"row"}
                 gap={2}
-                className='flex items-center gap-2 text-white'
+                className='flex items-center gap-2 text-white cursor-pointer'
+                onClick={() => router.push(paths.index)}
               >
                 <Image src={logo} alt='logo' width={40} height={40} />
                 <Typography color='white' fontWeight={"bold"} variant='h4' >HealthPro</Typography>

@@ -25,6 +25,6 @@ export const useSections = () => {
   const { user } = useAuth();
 
   return useMemo(() => {
-      return getDashboardAdminConfigs();
+      return getDashboardPatientConfigs();
   }, [user]);
 };
