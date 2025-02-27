@@ -1,6 +1,8 @@
 import React from 'react';
-import { Box, Typography, Button, Container } from '@mui/material';
-import { CalendarToday, PeopleAlt, Payment } from '@mui/icons-material'; // MUI Icons
+import { Box, Typography, Button, Container, Grid } from '@mui/material';
+import CalendarIcon from 'src/components/icons/CalendarIcon';
+import TeamIcon from 'src/components/icons/TeamIcon';
+import CashIcon from 'src/components/icons/CashIcon';
 
 interface GreetingSectionProps {
   tagline?: string;
@@ -16,66 +18,111 @@ const GreetingSection: React.FC<GreetingSectionProps> = ({
   onServiceClick = () => {}
 }) => {
   return (
-    <Box className='relative bg-gradient-to-r from-[#f0f6ff] to-transparent pb-10 overflow-hidden'>
+    <Box className='relative overflow-hidden bg-white w-full' sx={{ paddingBottom: { xs: '30px', sm: '50px' }}}>
       <Box
-        className='relative bg-cover bg-center h-[900px] z-0'
-        style={{
-          backgroundImage: "url('/ui/Landing/GreetingLanding.jpg')" // Your image URL
+        className='absolute top-0 left-0 w-full z-0'
+        sx={{
+          height: { xs: '400px', sm: '450px', md: '500px', lg: '520px' } 
         }}
-      >
-        <Container maxWidth='lg' className='relative z-10'>
-          <Box className='flex h-full flex-col'>
-            <Box className='max-w-[600px]   mt-80'>
-              <Typography className='font-bold text-[#159EEC]' sx={{ fontSize: '18px' }}>
-                {tagline}
-              </Typography>
-              <Typography className='text-[#0E1680] font-semibold' sx={{ fontSize: '48px' }}>
-                {heading}
-              </Typography>
-              <Button
-                sx={{
-                  width: '165px',
-                  fontSize: '16px',
-                  backgroundColor: '#BFD2F8',
-                  paddingTop: '13px',
-                  paddingBottom: '13px',
-                  gap: '10px',
-                  borderRadius: '50px'
-                }}
-                onClick={onServiceClick}
-              >
-                {serviceButtonText}
-              </Button>
-            </Box>
-            <Box className='flex flex-row mt-80 gap-80'>
-              <Button
-                variant='contained'
-                className='bg-[#0E1680] text-white py-3 px-5 rounded-lg text-transform-none w-[550px] flex items-center justify-between'
-                startIcon={<CalendarToday />}
-                onClick={() => {}}
-              >
-                Book an Appointment
-              </Button>
-
-              <Button
-                variant='contained'
-                startIcon={<CalendarToday />}
-                className='bg-[#0E1680] text-white py-3 px-5 rounded-lg text-transform-none w-[550px] flex items-center justify-between'
-              >
-                Book an Appointment
-              </Button>
-
-              <Button
-                variant='contained'
-                startIcon={<CalendarToday />}
-                className='bg-[#0E1680] text-white py-3 px-5 rounded-lg text-transform-none w-[550px] flex items-center justify-between'
-              >
-                Book an Appointment
-              </Button>
-            </Box>
+        style={{
+          backgroundImage: "url('/ui/Landing/GreetingLanding.jpg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      />
+      
+      <Container maxWidth="lg" className="relative z-10">
+        <Box className='flex flex-col pt-0'>
+          <Box 
+            className='max-w-[350px] sm:max-w-[450px] md:max-w-[600px]'
+            sx={{ 
+              marginTop: { xs: '80px', sm: '120px', md: '150px', lg: '180px' } 
+            }}
+          >
+            <Typography className='font-bold text-[#159EEC] text-sm sm:text-base md:text-lg' sx={{ fontSize: { xs: '14px', sm: '16px', md: '18px' } }}>
+              {tagline}
+            </Typography>
+            <Typography 
+              className='text-[#0E1680] font-semibold leading-tight mb-4'
+              sx={{ 
+                fontSize: { xs: '28px', sm: '36px', md: '48px' },
+                lineHeight: { xs: '32px', sm: '40px', md: '52px' }
+              }}
+            >
+              {heading}
+            </Typography>
+            <Button
+              sx={{
+                width: { xs: '140px', sm: '165px' },
+                fontSize: { xs: '14px', sm: '16px' },
+                backgroundColor: '#BFD2F8',
+                paddingTop: '13px',
+                paddingBottom: '13px',
+                gap: '10px',
+                borderRadius: '50px'
+              }}
+              onClick={onServiceClick}
+            >
+              {serviceButtonText}
+            </Button>
           </Box>
-        </Container>
-      </Box>
+
+          <Box 
+            className='w-full'
+            sx={{ 
+              marginTop: { xs: '40px', sm: '60px', md: '80px', lg: '100px' }
+            }}
+          >
+            <Grid container spacing={{ xs: 2, sm: 3 }}>
+              <Grid item xs={12} sm={12} md={4}>
+                <Button
+                  variant="contained"
+                  style={{
+                    backgroundColor: '#0E1680',
+                    color: 'white',
+                    textTransform: 'none',
+                  }}
+                  className='rounded-lg p-3 h-20 sm:h-24 md:h-24 lg:h-[100px] w-full flex justify-between items-center'
+                  endIcon={<CalendarIcon />}
+                  onClick={() => {}}
+                >
+                  <span className='text-sm sm:text-base'>Book an Appointment</span>
+                </Button>
+              </Grid>
+
+              <Grid item xs={12} sm={12} md={4}>
+                <Button
+                  variant='contained'
+                  endIcon={<TeamIcon />}
+                  style={{
+                    backgroundColor: '#0E1680',
+                    color: 'white',
+                    textTransform: 'none',
+                  }}
+                  className='rounded-lg p-3 h-20 sm:h-24 md:h-24 lg:h-[100px] w-full flex justify-between items-center'
+                >
+                  <span className='text-sm sm:text-base'>Book an Appointment</span>
+                </Button>
+              </Grid>
+
+              <Grid item xs={12} sm={12} md={4}>
+                <Button
+                  variant='contained'
+                  endIcon={<CashIcon />}
+                  style={{
+                    backgroundColor: '#0E1680',
+                    color: 'white',
+                    textTransform: 'none',
+                  }}
+                  className='rounded-lg p-3 h-20 sm:h-24 md:h-24 lg:h-[100px] w-full flex justify-between items-center'
+                >
+                  <span className='text-sm sm:text-base'>Book an Appointment</span>
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Container>
     </Box>
   );
 };
