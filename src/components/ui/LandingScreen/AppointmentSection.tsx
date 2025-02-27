@@ -4,7 +4,7 @@ const AppointmentSection = () => {
       <img src='/ui/Landing/AppointmentLandingBg.png' className='w-full h-full object-cover' />
       <div className='bg-white absolute top-0 left-0 w-full h-full opacity-80'></div>
       <div className='absolute top-0 left-0 w-full h-full flex justify-center'>
-        <div className='grid grid-cols-1 sm:grid-cols-2 w-full max-w-[1140px] p-5 sm:px-10 min-[1140px]:px-0'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 w-full max-w-[1140px] py-10 px-4 sm:px-10 min-[1140px]:px-0'>
           <div className='flex flex-col justify-center mr-0 sm:mr-20'>
             <div className='text-2xl font-bold text-[#0E1680] mb-5 text-center sm:text-start'>
               Book an Appointment
@@ -86,7 +86,7 @@ const AppointmentSection = () => {
               </select>
               <textarea
                 className='col-span-2 bg-transparent border-b-2 border-white p-6 outline-none'
-                rows={7}
+                rows={5}
                 placeholder='Message'
               ></textarea>
               <button className='col-span-2 bg-transparent p-5 transition duration-300 hover:bg-white hover:bg-opacity-30'>

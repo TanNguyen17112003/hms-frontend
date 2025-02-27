@@ -41,30 +41,23 @@ const OurServicesSection: React.FC<OurServicesSectionProps> = ({
 }) => {
   const services: ServiceCardProps[] = [
     {
-      icon: <MedicalServices fontSize="large" className='text-3xl'/>,
+      icon: <MedicalServices fontSize='large' className='text-3xl' />,
       title: 'Free Checkup'
     },
-    { icon: <MonitorHeart fontSize="large" className='text-3xl' />, title: 'Cardiogram' },
-    { icon: <Science fontSize="large" className='text-3xl' />, title: 'DNA Testing' },
-    { icon: <Bloodtype fontSize="large" className='text-3xl' />, title: 'Blood Bank' }
+    { icon: <MonitorHeart fontSize='large' className='text-3xl' />, title: 'Cardiogram' },
+    { icon: <Science fontSize='large' className='text-3xl' />, title: 'DNA Testing' },
+    { icon: <Bloodtype fontSize='large' className='text-3xl' />, title: 'Blood Bank' }
   ];
 
   return (
     <Box className='py-16 bg-white'>
       <Container maxWidth='lg'>
-        <Typography
-          variant='subtitle1'
-          className='text-center text-[#159EEC] font-bold text-[18px] mb-4 uppercase'
-        >
+        <div className='text-[#159EEC] text-lg font-semibold mb-5 w-full text-center uppercase'>
           {tagline}
-        </Typography>
-
-        <Typography
-          variant='h2'
-          className='text-center text-[#0E1680] text-[32px] font-bold mb-12 text-indigo-900'
-        >
+        </div>
+        <div className='text-[#0E1680] text-3xl w-full text-center mb-10 font-semibold'>
           {heading}
-        </Typography>
+        </div>
 
         <Grid container spacing={4}>
           <Grid item xs={12} md={3}>
@@ -75,7 +68,7 @@ const OurServicesSection: React.FC<OurServicesSectionProps> = ({
                   ${index === 0 || index === 2 ? 'bg-[#0E1680]' : ''}`}
               >
                 <Box
-                  className={` w-16 h-16 flex items-center justify-center mb-4
+                  className={` w-16 h-16 flex items-center justify-center
                   ${index === 0 || index === 2 ? 'text-indigo-100' : 'text-indigo-900'}`}
                 >
                   {service.icon}
@@ -108,7 +101,7 @@ const OurServicesSection: React.FC<OurServicesSectionProps> = ({
           </Grid>
 
           <Grid item xs={12} md={5}>
-            <Typography variant='h5' className='font-bold mb-5 text-xl text-gray-800'>
+            <Typography variant='h5' className='font-bold mb-5 text-xl text-gray-800 pt-10'>
               {subHeading}
             </Typography>
 
@@ -125,10 +118,10 @@ const OurServicesSection: React.FC<OurServicesSectionProps> = ({
               </Grid>
             </Box>
 
-            <Typography variant='body2' className='text-gray-600 leading-relaxed mb-5'>
+            <Typography variant='body2' className='text-gray-600 leading-relaxed pb-5'>
               {description1}
             </Typography>
-            <Typography variant='body2' className='text-gray-600 leading-relaxed mb-5'>
+            <Typography variant='body2' className='text-gray-600 leading-relaxed text-md'>
               {description2}
             </Typography>
           </Grid>

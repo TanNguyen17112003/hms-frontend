@@ -6,7 +6,7 @@ import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa6';
 const LandingFooter = () => {
   return (
     <div className='w-full flex justify-center bg-[#02053D] text-[#FCFEFE]'>
-      <div className='w-full max-w-[1140px] py-16 p-5 sm:px-10 min-[1140px]:px-0'>
+      <div className='w-full max-w-[1140px] py-16 p-4 sm:px-10 min-[1140px]:px-0'>
         <div className='w-full grid grid-cols-12 gap-5 border-b-[1px] pb-10 border-[#BFD2F8]'>
           <div className='col-span-12 sm:col-span-3'>
             <img src={Logo.src} alt='' className='w-48 mb-5' />
@@ -42,7 +42,7 @@ const LandingFooter = () => {
           <div className='col-span-12 sm:col-span-3'>
             <div className='mb-5 font-semibold'>Contact Us</div>
             <div className='mb-2'>Call: (237) 681-812-255</div>
-            <div className='mb-2'>Email: health360@gmail.com</div>
+            <div className='mb-2'>Email: healthpro@gmail.com</div>
             <div className='mb-2'>Some country</div>
           </div>
           <div className='col-span-12 sm:col-span-4'>
@@ -64,7 +64,7 @@ const LandingFooter = () => {
         </div>
         <div className='pt-10 flex flex-col items-center sm:flex-row justify-between'>
           <div className='mb-5 sm:mb-0 text-center sm:text-start'>
-            {"© 2025 Hospital's name All Rights Reserved by Health360"}
+            {"© 2025 Hospital's name All Rights Reserved by HealthPro"}
           </div>
           <div className='flex justify-center gap-3'>
             <a

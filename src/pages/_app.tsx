@@ -30,7 +30,7 @@ const App = (props: AppProps) => {
     <CacheProvider value={emotionCache}>
       <ProgressBar height='4px' color='#2970FF' options={{ showSpinner: true }} shallowRouting />
       <Head>
-        <title>Health360</title>
+        <title>HealthPro</title>
         <link rel='icon' type='image/png' href='/ui/HEALTH360 LIGHT ONLY.png' />
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>

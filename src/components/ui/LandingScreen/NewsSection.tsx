@@ -121,7 +121,7 @@ const NewsSection = () => {
 
   return (
     <div className='w-full flex justify-center bg-transparent !bg-[#FAFDFE]'>
-      <div className='w-full max-w-[1140px] py-20 p-5 sm:px-10 min-[1140px]:px-0'>
+      <div className='w-full max-w-[1140px] py-20 p-4 sm:px-10 min-[1140px]:px-0'>
         <div className='text-[#159EEC] text-lg font-semibold mb-5 w-full text-center uppercase'>
           Better information, Better health
         </div>

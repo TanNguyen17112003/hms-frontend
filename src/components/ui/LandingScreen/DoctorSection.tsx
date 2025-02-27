@@ -95,7 +95,7 @@ const DoctorSection = () => {
       <div className='mx-3'>
         <div className='flex flex-col justify-center items-center w-full rounded-lg '>
           <img className='w-full object-contain' src={props.avt.src} alt='' />
-          <div className='bg-[#BFD2F8] p-5 w-full text-center text-[#0E1680]'>
+          <div className='bg-[#BFD2F8] p-4 w-full text-center text-[#0E1680]'>
             <div className='mb-3'>{props.name}</div>
             <div className='uppercase font-bold text-lg mb-3'>{props.speciality}</div>
             <div className='flex justify-center gap-3'>
@@ -129,7 +129,7 @@ const DoctorSection = () => {
 
   return (
     <div className='w-full flex justify-center bg-[#FCFEFE]'>
-      <div className='w-full max-w-[1140px] p-20'>
+      <div className='w-full max-w-[1140px] py-20 px-10 sm:p-20'>
         <div className='text-[#159EEC] text-lg font-semibold mb-5 w-full text-center'>
           TRUSTED CARE
         </div>
