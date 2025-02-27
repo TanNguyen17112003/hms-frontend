@@ -99,18 +99,29 @@ const DoctorSection = () => {
             <div className='mb-3'>{props.name}</div>
             <div className='uppercase font-bold text-lg mb-3'>{props.speciality}</div>
             <div className='flex justify-center gap-3'>
-              <a href={props.linkedin} className='bg-[#0E1680] text-[#BFD2F8] rounded-full p-2'>
+              <a
+                href={props.linkedin}
+                className='bg-[#0E1680] text-[#BFD2F8] rounded-full p-2 transition duration-300 ease-in-out hover:-translate-y-1'
+              >
                 <FaLinkedinIn />
               </a>
-              <a href={props.facebook} className='bg-[#0E1680] text-[#BFD2F8] rounded-full p-2'>
+              <a
+                href={props.facebook}
+                className='bg-[#0E1680] text-[#BFD2F8] rounded-full p-2 transition duration-300 ease-in-out hover:-translate-y-1'
+              >
                 <FaFacebookF />
               </a>
-              <a href={props.instagram} className='bg-[#0E1680] text-[#BFD2F8] rounded-full p-2'>
+              <a
+                href={props.instagram}
+                className='bg-[#0E1680] text-[#BFD2F8] rounded-full p-2 transition duration-300 ease-in-out hover:-translate-y-1'
+              >
                 <FaInstagram />
               </a>
             </div>
           </div>
-          <button className='w-full p-5 bg-[#0E1680] text-[#BFD2F8]'>View Profile</button>
+          <button className='w-full p-5 bg-[#0E1680] text-[#BFD2F8] hover:opacity-70'>
+            View Profile
+          </button>
         </div>
       </div>
     );

@@ -89,7 +89,9 @@ const AppointmentSection = () => {
                 rows={7}
                 placeholder='Message'
               ></textarea>
-              <button className='col-span-2 bg-transparent p-5'>SUBMIT</button>
+              <button className='col-span-2 bg-transparent p-5 transition duration-300 hover:bg-white hover:bg-opacity-30'>
+                SUBMIT
+              </button>
             </div>
           </div>
         </div>

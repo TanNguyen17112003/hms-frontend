@@ -90,12 +90,15 @@ export const newsGroups: NewsType[][] = [
 const NewsSection = () => {
   const NewsGroupCard = ({ props }: { props: any }) => {
     return (
-      <div className='sm:mx-3'>
+      <div className='sm:mx-3 mb-1'>
         <div className='flex flex-col gap-3'>
           {props.map((item: NewsType) => (
-            <div className='flex flex-col sm:flex-row rounded-lg overflow-hidden' key={item.title}>
+            <div
+              className='flex flex-col sm:flex-row rounded-lg overflow-hidden bg-[#FCFEFE] hover:bg-white hover:shadow-md cursor-pointer'
+              key={item.title}
+            >
               <img src={item.avt.src} alt='' className='sm:h-40' />
-              <div className='p-5 bg-[#FCFEFE]'>
+              <div className='p-5'>
                 <div className='text-[#159EEC] text-sm mb-3'>
                   <span>{item.time}</span> | <span>{item.author}</span>
                 </div>
