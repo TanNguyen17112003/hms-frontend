@@ -1,63 +1,65 @@
 import { paths } from 'src/paths';
-import {
-  LogoutCurve,
-  Category2,
-  Box1,
-  User,
-  UserTick,
-  NotificationStatus,
-  Setting2
-} from 'iconsax-react';
 import { PiMotorcycle } from 'react-icons/pi';
+import { BarChart2, CalendarPlus2, File, FileBarChart, FileBarChart2, FlaskConical, Home, Users, User, Settings, LogOut } from 'lucide-react';
 export const getDashboardAdminConfigs = () => {
   return [
     {
-      subheader: 'Quản lý',
+      subheader: '1',
       items: [
         {
-          title: 'Thống kê',
+          title: 'Dashboard',
           path: paths.auth.login,
-          icon: <Category2 className='h-6 w-6' />
+          icon: <BarChart2 className='h-6 w-6' />
         },
         {
-          title: 'Quản lý đơn hàng',
+          title: 'Doctor Appointment',
           path: paths.auth.login,
-          icon: <Box1 className='h-6 w-6' />
+          icon: <CalendarPlus2 className='h-6 w-6' />
         },
         {
-          title: 'Quản lý chuyến đi',
+          title: 'Lab Appointment',
           path: paths.auth.login,
-          icon: <PiMotorcycle className='h-6 w-6' />
+          icon: <FlaskConical className='h-6 w-6' />
         },
         {
-          title: 'Quản lý nhân viên',
+          title: 'Patient List',
           path: paths.auth.login,
-          icon: <UserTick className='h-6 w-6' />
+          icon: <Users className='h-6 w-6' />
         },
-        {
-          title: 'Quản lý sinh viên',
-          path: paths.auth.login,
-          icon: <User className='h-6 w-6' />
-        },
-        {
-          title: 'Quản lý Khiếu nại',
-          path: paths.auth.login,
-          icon: <NotificationStatus className='h-6 w-6' />
-        }
       ]
     },
     {
-      subheader: 'Tài khoản',
+      subheader: '2',
       items: [
         {
-          title: 'Cài đặt',
+          title: 'Clinic IP',
           path: paths.auth.login,
-          icon: <Setting2 className='h-6 w-6' />
+          icon: <Home className='h-6 w-6' />
         },
         {
-          title: 'Đăng xuất',
+          title: 'Billing',
           path: paths.auth.logout,
-          icon: <LogoutCurve size='20px' variant='Bold' />
+          icon: <FileBarChart2 className='h-6 w-6' />
+        },
+        {
+          title: 'Account',
+          path: paths.auth.login,
+          icon: <User className='h-6 w-6' />
+        },
+      ]
+    },
+    {
+      subheader: '3',
+      items: [
+        {
+          title: 'Settings',
+          path: paths.auth.login,
+          icon: <Settings className='h-6 w-6' />
+        },
+        {
+          title: 'Log Out',
+          path: paths.auth.logout,
+          icon: <LogOut className='h-6 w-6' />
         }
       ]
     }

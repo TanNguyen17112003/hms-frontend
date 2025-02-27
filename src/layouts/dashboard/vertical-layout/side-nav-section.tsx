@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Link from "next/link";
 import clsx from "clsx";
 import { SideNavItem } from "./side-nav-item";
+import { Divider } from "@mui/material";
 
 interface DashboardItem {
   disabled?: boolean;
@@ -99,16 +100,13 @@ export const SideNavSection: FC<SideNavSectionProps> = (props) => {
   const { items = [], pathname, subheader = "" } = props;
 
   return (
-    <ul className="list-none p-0 m-0">
-      {subheader && (
-        <li className="flex items-center pl-2 mb-1">
-          <span className="text-xs text-nav-section-title-color font-bold uppercase">
-            {subheader}
-          </span>
-        </li>
-      )}
-      {renderItems({ items, pathname })}
-    </ul>
+    <>
+      <ul className="list-none p-0 m-0">
+        {renderItems({ items, pathname })}
+      </ul>
+      <Divider />
+    </>
+   
   );
 };
 

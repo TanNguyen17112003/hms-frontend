@@ -49,7 +49,7 @@ const Page: PageType = () => {
   }, [formik.values.email, formik.values.password]);
 
   return (
-    <Box className='flex bg-white relative'>
+    <Box className='min-h-screen flex bg-white relative'>
       <Stack direction={"row"} spacing={2} alignItems={"center"} justifyContent={"start"} justifySelf={"center"} marginBottom={3} className='absolute top-4 left-4'>
         <IconButton onClick={() => router.push(paths.index)} className='bg-white p-2 rounded-md'>
           <ArrowLeft className='w-6 h-6' />

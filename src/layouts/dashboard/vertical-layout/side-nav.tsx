@@ -5,12 +5,11 @@ import { usePathname } from 'src/hooks/use-pathname';
 import { Section } from '../config/config';
 import { SideNavSection } from './side-nav-section';
 import { NavColor } from 'src/types/settings';
-import { Box, Stack, Typography, Button, Avatar, Tooltip, Badge } from '@mui/material';
-import { paths } from 'src/paths';
-import { Add } from 'iconsax-react';
-import { Bell } from 'lucide-react';
+import { Box, Stack, Typography, Button, Avatar, Tooltip, Badge, Divider } from '@mui/material';
 import useFunction from 'src/hooks/use-function';
 import { useRouter } from 'next/router';
+import logo from 'public/logo.png';
+import Image from 'next/image';
 
 interface SideNavProps {
   color?: NavColor;
@@ -24,17 +23,11 @@ export const SideNav: FC<SideNavProps> = (props) => {
   const pathname = usePathname();
 
 
-
-
-  
-
-
-
   return (
     <Box>
       <Box
-        className='fixed inset-0 z-50 h-screen text-white bg-[#34A853] overflow-hidden border-r border-solid border-background-other-Boxider shadow-lg'
-        style={{ width: 480 }}
+        className='fixed z-50 min-h-screen text-[#070B5C]  bg-white overflow-hidden border-r border-solid border-background-other-Boxider shadow-lg rounded-lg'
+        style={{ width: 250 }}
       >
         <Box
           className='flex flex-col w-full bg-gray-900  h-full'
@@ -46,14 +39,11 @@ export const SideNav: FC<SideNavProps> = (props) => {
           <Stack className='flex-1'>
             <nav className='flex flex-col justify-between space-y-5 px-5 py-3 h-full'>
               <Box className='flex flex-col space-y-5'>
-                <Box className='flex justify-between items-center relative'>
-                  <Stack>
-                    <Typography>TSA</Typography>
-                    <Typography className='text-[14px] opacity-60'>
-                      Hệ thống quản lý đơn hàng
-                    </Typography>
-                  </Stack>
-                </Box>
+                <Stack direction={"row"} spacing={2} alignItems={"center"} justifyContent={"space-between"} width={"100%"} paddingX={3} paddingY={2}>
+                    <Image src={logo.src} alt='logo' width={32} height={32} />
+                    <Typography color='black' fontWeight={"bold"} variant='h5'>HealthPro</Typography>
+                </Stack>
+                <Divider />
                 {sections.map((section, index) => (
                   <SideNavSection
                     items={section.items}

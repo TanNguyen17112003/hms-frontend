@@ -8,10 +8,10 @@ const VerticalLayout: FC<VerticalLayoutProps> = (props) => {
   const { children, sections, navColor } = props;
 
   return (
-    <div className="flex">
+    <div className="flex px-5 py-3">
       <SideNav color={navColor} sections={sections} />
       <div
-        className={`flex-1 flex flex-col max-w-full`}
+        className={`flex-1 flex flex-col`}
         style={{ paddingLeft: 480 }}
       >
         {children}
