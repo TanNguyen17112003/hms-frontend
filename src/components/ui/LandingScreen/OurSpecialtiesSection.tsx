@@ -30,18 +30,18 @@ const OurSpecialtiesSection: React.FC<OurSpecialtiesSectionProps> = ({
   onSpecialtyClick,
 }) => {
   const specialties: Specialty[] = [
-    { id: 'neurology', name: 'Neurology', icon: <PsychologyIcon /> },
-    { id: 'bones', name: 'Bones', icon: <FitnessCenterIcon /> },
-    { id: 'oncology', name: 'Oncology', icon: <BiotechIcon /> },
-    { id: 'otorhinolaryngology', name: 'Otorhinolaryngology', icon: <HearingIcon /> },
-    { id: 'ophthalmology', name: 'Ophthalmology', icon: <VisibilityIcon /> },
-    { id: 'cardiovascular', name: 'Cardiovascular', icon: <FavoriteIcon /> },
-    { id: 'pulmonology', name: 'Pulmonology', icon: <AirIcon /> },
-    { id: 'renal-medicine', name: 'Renal Medicine', icon: <WaterDropIcon /> },
-    { id: 'gastroenterology', name: 'Gastroenterology', icon: <RestaurantIcon /> },
-    { id: 'urology', name: 'Urology', icon: <WaterDropIcon /> },
-    { id: 'dermatology', name: 'Dermatology', icon: <FaceIcon /> },
-    { id: 'gynaecology', name: 'Gynaecology', icon: <WcIcon /> },
+    { id: 'neurology', name: 'Neurology', icon: <PsychologyIcon fontSize='large' /> },
+    { id: 'bones', name: 'Bones', icon: <FitnessCenterIcon fontSize='large'/> },
+    { id: 'oncology', name: 'Oncology', icon: <BiotechIcon fontSize='large'/> },
+    { id: 'otorhinolaryngology', name: 'Otorhinolaryngology', icon: <HearingIcon fontSize='large'/> },
+    { id: 'ophthalmology', name: 'Ophthalmology', icon: <VisibilityIcon fontSize='large'/> },
+    { id: 'cardiovascular', name: 'Cardiovascular', icon: <FavoriteIcon fontSize='large'/> },
+    { id: 'pulmonology', name: 'Pulmonology', icon: <AirIcon fontSize='large'/> },
+    { id: 'renal-medicine', name: 'Renal Medicine', icon: <WaterDropIcon fontSize='large'/> },
+    { id: 'gastroenterology', name: 'Gastroenterology', icon: <RestaurantIcon fontSize='large'/> },
+    { id: 'urology', name: 'Urology', icon: <WaterDropIcon fontSize='large'/> },
+    { id: 'dermatology', name: 'Dermatology', icon: <FaceIcon fontSize='large'/> },
+    { id: 'gynaecology', name: 'Gynaecology', icon: <WcIcon fontSize='large'/> },
   ];
 
   const [activeSpecialty, setActiveSpecialty] = useState<string>('');
@@ -56,19 +56,18 @@ const OurSpecialtiesSection: React.FC<OurSpecialtiesSectionProps> = ({
   return (
     <Box className="py-16 bg-white">
       <Container maxWidth="lg">
-        <Typography 
-          variant="subtitle1" 
-          className="text-blue-500 font-bold mb-4 text-center uppercase"
+        <h6
+          style={{ color: '#159EEC', fontSize: '18px', fontWeight: '400', marginBottom: '4px', textTransform: 'uppercase', textAlign: 'center' }}
+        
         >
           {tagline}
-        </Typography>
+        </h6>
         
-        <Typography 
-          variant="h2" 
-          className="text-[#0c1b7a] font-bold mb-12 text-2xl text-center"
+        <h2 
+          style={{ color: '#0E1680', fontSize: '32px', fontWeight: '600', textAlign: 'center' }}
         >
           {heading}
-        </Typography>
+        </h2>
 
         <Grid container spacing={3}>
           {specialties.map((specialty) => (
@@ -76,18 +75,19 @@ const OurSpecialtiesSection: React.FC<OurSpecialtiesSectionProps> = ({
               <Box 
                 className={`flex flex-col items-center justify-center p-8 rounded-lg transition-all duration-300 cursor-pointer h-32 bg-transparent
                   hover:bg-[#0c1b7a]
+                  hover:text-white
                   hover:transform hover:-translate-y-1`}
                 onClick={() => handleSpecialtyClick(specialty.id)}
               >
                 <Box 
                   className={`w-12 h-12 flex items-center justify-center mb-3
-                    ${activeSpecialty === specialty.id ? 'text-white' : 'text-blue-500'}`}
+                    hover:text-white text-[#159EEC]`}
                 >
                   {specialty.icon}
                 </Box>
                 <Typography 
                   className={`font-medium text-center
-                    ${activeSpecialty === specialty.id ? 'text-white' : 'text-gray-800'}`}
+                   hover:text-white`}
                 >
                   {specialty.name}
                 </Typography>
