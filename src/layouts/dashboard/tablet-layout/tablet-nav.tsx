@@ -24,18 +24,6 @@ export const TabletNav: FC<TabletNavProps> = (props) => {
   const pathname = usePathname();
   const [isNotificationListOpen, setIsNotificationListOpen] = useState(false);
 
-
-
-
-
-
-
-
-
-
-
-
-
   return (
     <Box>
       <Box
@@ -54,7 +42,7 @@ export const TabletNav: FC<TabletNavProps> = (props) => {
               <Box className='flex flex-col space-y-5'>
                 <Box className='flex justify-between items-center relative'>
                   <Stack>
-                    <Typography>TSA</Typography>
+                    <Typography>HealthPro</Typography>
                   </Stack>
                 </Box>
                 {sections.map((section, index) => (
@@ -66,12 +54,10 @@ export const TabletNav: FC<TabletNavProps> = (props) => {
                   />
                 ))}
               </Box>
-
             </nav>
           </Stack>
         </Box>
       </Box>
-
     </Box>
   );
 };

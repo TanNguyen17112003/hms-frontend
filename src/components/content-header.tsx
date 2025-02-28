@@ -16,7 +16,6 @@ function ContentHeader({
     <Paper
       elevation={5}
       sx={{
-        paddingTop: '24px',
         paddingLeft: '24px',
         paddingRight: '24px',
         borderRadius: 0,
