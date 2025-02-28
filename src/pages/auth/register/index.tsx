@@ -67,7 +67,7 @@ const Page: PageType = () => {
             marginBottom={3}
           >
             <Box className=''>
-              <Image src='/logo.png' alt='Health360 Logo' width={50} height={50} />
+              <Image src='/logo-black.png' alt='Health360 Logo' width={50} height={50} />
             </Box>
             <Typography variant='h3'>HealthPro</Typography>
           </Stack>

@@ -8,7 +8,7 @@ import { NavColor } from 'src/types/settings';
 import { Box, Stack, Typography, Button, Avatar, Tooltip, Badge, Divider } from '@mui/material';
 import useFunction from 'src/hooks/use-function';
 import { useRouter } from 'next/router';
-import logo from 'public/logo.png';
+import logo from 'public/logo-text-black.png';
 import Image from 'next/image';
 
 interface SideNavProps {
@@ -47,10 +47,10 @@ export const SideNav: FC<SideNavProps> = (props) => {
                   paddingX={3}
                   paddingY={2}
                 >
-                  <Image src={logo.src} alt='logo' width={32} height={32} />
-                  <Typography color='black' fontWeight={'bold'} variant='h5'>
+                  <Image src={logo.src} alt='logo' height={50} width={160} />
+                  {/* <Typography color='black' fontWeight={'bold'} variant='h5'>
                     HealthPro
-                  </Typography>
+                  </Typography> */}
                 </Stack>
                 <Divider />
                 {sections.map((section, index) => (

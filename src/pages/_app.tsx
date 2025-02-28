@@ -43,9 +43,9 @@ const App = (props: AppProps) => {
             {(auth) => {
               const theme = createTheme(initialSettings);
               const showSplashScreen = !auth.isInitialized;
-              if (showSplashScreen) {
-                // return <SplashScreen />;
-                return <LandingScreen />;
+              if (!showSplashScreen) {
+                return <SplashScreen />;
+                // return <LandingScreen />;
               }
               return (
                 <ThemeProvider theme={theme}>
