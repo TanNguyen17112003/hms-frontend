@@ -1,0 +1,7 @@
+.slick-list {
+    margin: 0px 16px 0px 16px;
+}
+
+.slick-prev::before, .slick-next::before {
+    content: none !important;
+}

@@ -4,20 +4,21 @@ import { useDialog, useAuth } from '@hooks';
 import React, { useCallback } from 'react';
 import ContentHeader from 'src/components/content-header';
 import { Box } from '@mui/material';
+import { StaffManagement } from 'src/sections/admin/staff-management';
 
 const Page: PageType = () => {
   const { user } = useAuth();
   return (
     <Box className='h-auto bg-white'>
-      <ContentHeader  title={user.role === "ADMIN" ? 'Staff Management' : 'Doctor List'} description='Showing: All Consultations of All Healthcare Providers' />
+      <ContentHeader
+        title={user?.role === 'ADMIN' ? 'Staff Management' : 'Doctor List'}
+        description='Showing: All Consultations of All Healthcare Providers'
+      />
+      <StaffManagement />
     </Box>
   );
 };
 
-Page.getLayout = (page) => (
-  <DashboardLayout>
-    {page}
-  </DashboardLayout>
-);
+Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
 export default Page;

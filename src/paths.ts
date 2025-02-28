@@ -17,16 +17,16 @@ export const paths = {
     },
     appointment: {
       index: '/appointment',
-      "appointment-detail": '/appointment/appointment-detail'
+      'appointment-detail': '/appointment/appointment-detail'
     },
     staff: {
       index: '/staff',
-      "staff-detail": '/staff/staff-detail'
+      'staff-detail': '/staff/staff-detail'
     },
     patient: {
       index: '/patient',
-      "patient-detail": '/patient/patient-detail'
-    },
+      'patient-detail': '/patient/patient-detail'
+    }
   },
   account: '/account',
   401: '/401',

@@ -24,6 +24,7 @@ const config = {
         'text-primary': 'hsl(var(--text-primary))',
         'text-secondary': 'hsl(var(--text-secondary))',
         'text-tetiary': 'hsl(var(--text-tetiary))',
+        'bg-primary': '#0E1680',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',

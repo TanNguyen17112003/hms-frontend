@@ -53,7 +53,7 @@ const AdvancedFilterDialog: React.FC<AdvancedFilterDialogProps> = ({ open, onClo
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth='sm' fullWidth>
-      <DialogTitle>Bộ lọc nâng cao</DialogTitle>
+      <DialogTitle>Advanced Filter</DialogTitle>
       <DialogContent>
         <Stack spacing={3}>
           {localFilters.map((filter, index) => (

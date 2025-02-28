@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Circle, CircleUserRound, UserPlus } from 'lucide-react';
-import logo from "public/logo.png";
+import logo from 'public/logo.png';
 import {
   AppBar,
   Toolbar,
@@ -59,81 +59,116 @@ export const Header = () => {
       role='presentation'
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
-    >
-
-    </Box>
+    ></Box>
   );
 
   return (
-    router.pathname !== paths.auth.login && router.pathname !== paths.auth.register.index && (
+    router.pathname !== paths.auth.login &&
+    router.pathname !== paths.auth.register.index && (
       <AppBar position='sticky' sx={{ backgroundColor: '#02053D', color: 'white', paddingY: 0.5 }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', paddingY: 1 }}>
           {isMobile ? (
             <>
-              <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"} width={"100%"} gap={4}>
-                <Stack
-                  direction={"row"}
-                  gap={2}
-                  className='flex items-center gap-2 text-white'
+              <Box
+                display={'flex'}
+                alignItems={'center'}
+                justifyContent={'space-between'}
+                width={'100%'}
+                gap={4}
+              >
+                <IconButton
+                  edge='end'
+                  color='inherit'
+                  aria-label='menu'
+                  onClick={toggleDrawer(true)}
                 >
-                  <Image src={logo} alt='logo' width={32} height={32} />
-                  <Typography color='white' fontWeight={"bold"} variant='h5' >HealthPro</Typography>
-                </Stack>
-                <IconButton edge='end' color='inherit' aria-label='menu' onClick={toggleDrawer(true)}>
                   <MenuIcon />
                 </IconButton>
+                <Stack
+                  direction={'row'}
+                  gap={1}
+                  className='flex items-center gap-2 text-white cursor-pointer'
+                  onClick={() => router.push(paths.index)}
+                >
+                  <Image src={logo} alt='logo' width={32} height={32} />
+                  <Typography color='white' fontWeight={'bold'} variant='h5'>
+                    HealthPro
+                  </Typography>
+                </Stack>
               </Box>
               <Drawer anchor='right' open={drawerOpen} onClose={toggleDrawer(false)}>
-                {/* {drawerList} */}
-                {user ? (<></>) : (
+                {!user ? (
+                  <></>
+                ) : (
                   <Box sx={{ width: 250 }}>
                     <Stack
-                      direction={"row"}
+                      direction={'row'}
                       className='px-4 py-3 cursor-pointer hover:bg-blue-600 hover:text-white gap-1'
                       onClick={() => {
                         router.push(paths.auth.login);
                       }}
                     >
-                      <CircleUserRound size={24}  className='hover:bg-white'/>
-                      <Typography fontWeight={'bold'} >
-                        Đăng nhập
-                      </Typography>
+                      <CircleUserRound size={24} className='hover:bg-white' />
+                      <Typography fontWeight={'bold'}>Đăng nhập</Typography>
+                      <CircleUserRound size={24} className='hover:bg-white' />
+                      <Typography fontWeight={'bold'}>Đăng nhập</Typography>
                     </Stack>
                     <Stack
-                      direction={"row"}
+                      direction={'row'}
                       className='px-4 py-3 cursor-pointer hover:bg-blue-600 hover:text-white gap-1'
                       onClick={() => {
                         router.push(paths.auth.register.index);
                       }}
                     >
-                      <UserPlus size={24} className='hover:text-white'/>
-                      <Typography fontWeight={'bold'} >Đăng ký</Typography>
+                      <UserPlus size={24} className='hover:text-white' />
+                      <Typography fontWeight={'bold'}>Đăng ký</Typography>
                     </Stack>
                   </Box>
                 )}
               </Drawer>
             </>
           ) : (
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between", gap: 4, width: "100%" }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 4,
+                width: '100%'
+              }}
+            >
               <Stack
-                direction={"row"}
+                direction={'row'}
                 gap={2}
                 className='flex items-center gap-2 text-white cursor-pointer'
                 onClick={() => router.push(paths.index)}
               >
                 <Image src={logo} alt='logo' width={40} height={40} />
-                <Typography color='white' fontWeight={"bold"} variant='h4' >HealthPro</Typography>
+                <Typography color='white' fontWeight={'bold'} variant='h4'>
+                  HealthPro
+                </Typography>
               </Stack>
-              <Stack direction={"row"} gap={2}>
-                <Button onClick={() => router.push(paths.auth.login)} variant='outlined' className='flex items-center gap-2 text-white'>
-                  <CircleUserRound size={24} color='white' fontVariant={"bold"} />
-                  <Typography color='white' fontWeight={"bold"}>Login</Typography>
+              <Stack direction={'row'} gap={2}>
+                <Button
+                  onClick={() => router.push(paths.auth.login)}
+                  variant='outlined'
+                  className='flex items-center gap-2 text-white'
+                >
+                  <CircleUserRound size={24} color='white' fontVariant={'bold'} />
+                  <Typography color='white' fontWeight={'bold'}>
+                    Login
+                  </Typography>
                 </Button>
-                <Button onClick={() => router.push(paths.auth.register.index)} variant='outlined' className='flex items-center gap-2 text-white'>
-                  <UserPlus size={24} color='white' fontVariant={"bold"} />
-                  <Typography color='white' fontWeight={"bold"}>Register</Typography>
+                <Button
+                  onClick={() => router.push(paths.auth.register.index)}
+                  variant='outlined'
+                  className='flex items-center gap-2 text-white'
+                >
+                  <UserPlus size={24} color='white' fontVariant={'bold'} />
+                  <Typography color='white' fontWeight={'bold'}>
+                    Register
+                  </Typography>
                 </Button>
-
               </Stack>
             </Box>
           )}
