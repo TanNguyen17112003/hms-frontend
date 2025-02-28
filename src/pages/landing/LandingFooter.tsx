@@ -47,7 +47,17 @@ const LandingFooter = () => {
           </div>
           <div className='col-span-12 sm:col-span-4'>
             <div className='mb-7 font-semibold'>Newsletter</div>
-            <OutlinedInput
+            <div className='relative'>
+              <input
+                type='email'
+                className='bg-[#BFD2F8] w-full text-[#0E1680] !rounded-xl h-14 p-5'
+                placeholder='Enter your email address'
+              ></input>
+              <button className='absolute right-5 top-5'>
+                <BsFillSendFill className='text-[#0E1680] hover:opacity-70 text-xl' />
+              </button>
+            </div>
+            {/* <OutlinedInput
               id='outlined-adornment-password'
               type='text'
               endAdornment={
@@ -59,7 +69,7 @@ const LandingFooter = () => {
               }
               placeholder='Enter your email address'
               className='bg-[#BFD2F8] w-full text-[#0E1680] !rounded-xl'
-            />
+            /> */}
           </div>
         </div>
         <div className='pt-10 flex flex-col items-center sm:flex-row justify-between'>
