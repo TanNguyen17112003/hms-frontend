@@ -1,9 +1,10 @@
-import { Badge, Stack, Typography } from '@mui/material';
-import { Trash, Edit } from 'iconsax-react';
+import { Avatar, Badge, Box, Chip, Stack, Tooltip, Typography } from '@mui/material';
+import { Trash, Edit, CloseCircle, Edit2 } from 'iconsax-react';
 
 import { CustomTableConfig } from 'src/components/custom-table';
 import { PatientData } from 'src/pages/admin/patient-management';
-import { formatDate } from 'src/utils/format-time-currency';
+import { formatDate, formatTagName } from 'src/utils/format-time-currency';
+
 const getPatientManangementTableConfig = ({
   onClickRemove,
   onClickEdit
@@ -15,7 +16,17 @@ const getPatientManangementTableConfig = ({
     key: 'name',
     headerLabel: 'Patient Name',
     type: 'string',
-    renderCell: (data) => <Typography variant='body1'>{data.name}</Typography>
+    renderCell: (data) => (
+      <Stack direction='row' alignItems={'center'} spacing={1}>
+        <Avatar src={data.avatar} />
+        <Box>
+          <Typography variant='body1'>{data.name}</Typography>
+          <Typography variant='body2' color='textSecondary'>
+            {formatTagName(data.name)}
+          </Typography>
+        </Box>
+      </Stack>
+    )
   },
   {
     key: 'id',
@@ -52,13 +63,13 @@ const getPatientManangementTableConfig = ({
     key: 'status',
     headerLabel: 'Status',
     type: 'string',
-    renderCell: (data) => (
-      <Badge
-        badgeContent={data.status}
-        variant='standard'
-        color={data.status === 'Complicated' ? 'success' : 'warning'}
-      />
-    )
+    renderCell: (data) => {
+      return data.status === 'Complicated' ? (
+        <Chip label='Complicated' color='success' size='small' />
+      ) : (
+        <Chip label='In-Treatment' color='warning' size='small' />
+      );
+    }
   },
   {
     key: 'doctorName',
@@ -71,26 +82,29 @@ const getPatientManangementTableConfig = ({
     headerLabel: '',
     type: 'string',
     renderCell: (data) => (
-      <Stack direction='row' spacing={1}>
-        <Trash
-          variant='Outline'
-          className='h-5 w-5 cursor-pointer'
-          onClick={() => onClickRemove(data)}
-        />
-      </Stack>
-    )
-  },
-  {
-    key: 'edit',
-    headerLabel: '',
-    type: 'string',
-    renderCell: (data) => (
-      <Stack direction='row' spacing={1}>
-        <Edit
-          variant='Outline'
-          className='h-5 w-5 cursor-pointer'
-          onClick={() => onClickEdit(data)}
-        />
+      <Stack direction='row' spacing={2}>
+        <Tooltip title='Edit Patient'>
+          <Edit2
+            variant='Outline'
+            size={24}
+            className='cursor-pointer'
+            onClick={(event) => {
+              event.stopPropagation();
+              onClickEdit(data);
+            }}
+          />
+        </Tooltip>
+        <Tooltip title='Delete Patient'>
+          <Trash
+            variant='Outline'
+            size={24}
+            className='cursor-pointer'
+            onClick={(event) => {
+              event.stopPropagation();
+              onClickRemove(data);
+            }}
+          />
+        </Tooltip>
       </Stack>
     )
   }

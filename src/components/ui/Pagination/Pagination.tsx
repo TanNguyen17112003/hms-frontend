@@ -4,6 +4,8 @@ import _ from 'lodash';
 import { Typography } from '@mui/material';
 import clsx from 'clsx';
 import { useResponsive } from 'src/utils/use-responsive';
+import { ArrowLeft, ArrowRight, ChevronRight } from 'lucide-react';
+import { Stack } from '@mui/system';
 
 interface PaginationProps {
   page: number;
@@ -41,35 +43,64 @@ const Pagination: FC<PaginationProps> = ({ page, count, onChange, rowsPerPage, l
   }, [length, page, totalPages]);
 
   return (
-    <div className='flex items-center gap-2 self-center'>
-      <Typography
+    <div className='flex items-center gap-2 self-center w-full justify-between'>
+      <Button
+        className='rounded-lg z-40 bg-white text-black  '
+        variant='outline'
+        onClick={(e) => onChange(e, page > 0 ? page - 1 : page)}
+        disabled={page === 0}
+      >
+        <ArrowLeft
+          style={{
+            marginRight: '0.5rem'
+          }}
+        />
+        Previous
+      </Button>
+
+      {/* <Typography
         className='text-xs opacity-60 hover:opacity-100 cursor-pointer text-black'
         onClick={(e) => onChange(e, page > 0 ? page - 1 : page)}
       >
         Previous
-      </Typography>
+      </Typography> */}
 
-      {buttonIndexes.map((index) => (
-        <Button
-          className={clsx(
-            'rounded-lg z-40',
-            page == index ? 'bg-[#624DE3] text-white' : 'bg-[#E0E0E0] text-black'
-          )}
-          variant={page == index ? undefined : 'outline'}
-          key={index}
-          onClick={index >= 0 ? (e) => onChange(e, index) : undefined}
-          disabled={index == -1}
-        >
-          {index >= 0 ? index + 1 : '...'}
-        </Button>
-      ))}
+      <Stack direction='row' spacing={1}>
+        {buttonIndexes.map((index) => (
+          <Button
+            className={clsx(
+              'rounded-lg z-40',
+              page == index ? 'bg-[#624DE3] text-white' : 'bg-[#E0E0E0] text-black'
+            )}
+            variant={page == index ? undefined : 'outline'}
+            key={index}
+            onClick={index >= 0 ? (e) => onChange(e, index) : undefined}
+            disabled={index == -1}
+          >
+            {index >= 0 ? index + 1 : '...'}
+          </Button>
+        ))}
+      </Stack>
 
-      <Typography
+      {/* <Typography
         className='text-xs opacity-60 hover:opacity-100 cursor-pointer text-black'
         onClick={(e) => onChange(e, page < totalPages - 1 ? page + 1 : page)}
       >
         Next
-      </Typography>
+      </Typography> */}
+      <Button
+        className='rounded-lg z-40 bg-white text-black '
+        variant='outline'
+        onClick={(e) => onChange(e, page < totalPages - 1 ? page + 1 : page)}
+        disabled={page === totalPages - 1}
+      >
+        Next
+        <ArrowRight
+          style={{
+            marginLeft: '0.5rem'
+          }}
+        />
+      </Button>
     </div>
   );
 };

@@ -42,3 +42,7 @@ export function formatVNDcurrency(value: number): string {
 export function getCurentUnixTimestamp(): string {
   return String(Math.floor(Date.now() / 1000));
 }
+
+export function formatTagName(name: string): string {
+  return `@${name.split(' ')[0]}`;
+}

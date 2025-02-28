@@ -16,6 +16,8 @@ export type PatientData = {
   status: 'Complicated' | 'In-Treatment';
   sex: 'Male' | 'Female';
   doctorName?: string;
+  avatar?: string;
+  role: 'PATIENT' | 'STAFF' | 'ADMIN';
 };
 const PATIENTS: PatientData[] = [
   {
@@ -27,7 +29,8 @@ const PATIENTS: PatientData[] = [
     age: 25,
     diseases: 'Hypertension',
     status: 'Complicated',
-    doctorName: 'Dr. Strange'
+    doctorName: 'Dr. Strange',
+    role: 'PATIENT'
   },
   {
     id: '#1234568',
@@ -38,7 +41,8 @@ const PATIENTS: PatientData[] = [
     age: 30,
     diseases: 'Diabetes',
     status: 'In-Treatment',
-    doctorName: 'Dr. Strange'
+    doctorName: 'Dr. Strange',
+    role: 'PATIENT'
   },
   {
     id: '#1234569',
@@ -49,7 +53,8 @@ const PATIENTS: PatientData[] = [
     age: 45,
     diseases: 'Asthma',
     status: 'In-Treatment',
-    doctorName: 'Dr. Strange'
+    doctorName: 'Dr. Strange',
+    role: 'PATIENT'
   },
   {
     id: '#1234570',
@@ -60,7 +65,8 @@ const PATIENTS: PatientData[] = [
     age: 50,
     diseases: 'Chronic Kidney Disease',
     status: 'Complicated',
-    doctorName: 'Dr. Strange'
+    doctorName: 'Dr. Strange',
+    role: 'PATIENT'
   },
   {
     id: '#1234571',
@@ -71,7 +77,8 @@ const PATIENTS: PatientData[] = [
     age: 60,
     diseases: 'Heart Failure',
     status: 'Complicated',
-    doctorName: 'Dr. Strange'
+    doctorName: 'Dr. Strange',
+    role: 'PATIENT'
   },
   {
     id: '#1234572',
@@ -82,7 +89,8 @@ const PATIENTS: PatientData[] = [
     age: 35,
     diseases: 'Rheumatoid Arthritis',
     status: 'In-Treatment',
-    doctorName: 'Dr. Strange'
+    doctorName: 'Dr. Strange',
+    role: 'PATIENT'
   },
   {
     id: '#1234573',
@@ -92,7 +100,8 @@ const PATIENTS: PatientData[] = [
     sex: 'Male',
     age: 40,
     diseases: 'Chronic Obstructive Pulmonary Disease',
-    status: 'Complicated'
+    status: 'Complicated',
+    role: 'PATIENT'
   },
   {
     id: '#1234574',
@@ -103,7 +112,8 @@ const PATIENTS: PatientData[] = [
     age: 55,
     diseases: 'Osteoporosis',
     status: 'In-Treatment',
-    doctorName: 'Dr. Strange'
+    doctorName: 'Dr. Strange',
+    role: 'PATIENT'
   },
   {
     id: '#1234575',
@@ -113,7 +123,8 @@ const PATIENTS: PatientData[] = [
     sex: 'Male',
     age: 65,
     diseases: "Alzheimer's Disease",
-    status: 'Complicated'
+    status: 'Complicated',
+    role: 'PATIENT'
   },
   {
     id: '#1234576',
@@ -124,7 +135,8 @@ const PATIENTS: PatientData[] = [
     age: 28,
     diseases: 'Multiple Sclerosis',
     status: 'In-Treatment',
-    doctorName: 'Dr. Strange'
+    doctorName: 'Dr. Strange',
+    role: 'PATIENT'
   }
 ];
 
@@ -134,23 +146,21 @@ const Page: PageType = () => {
     console.log(searchInput);
   };
   return (
-    <Stack
+    <Box
       sx={{
         maxHeight: '100vh',
-        overflow: 'auto',
-        bgcolor: 'white'
+        overflow: 'auto'
       }}
-      className='min-h-screen'
     >
       <ContentHeader
         title='Patient Management'
         description='Showing: All Consultations of All Healthcare Providers'
         rightSection={
-          <Stack direction={'row'} alignItems={'center'} gap={3} className='mt-4'>
+          <Stack direction={'row'} alignItems={'center'} gap={3} className='mt-4' flexWrap={'wrap'}>
             <TextField
               variant='outlined'
               placeholder='t1faker@gmail.com'
-              className='w-full'
+              className='max-sm:w-full w-[300px]'
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               InputProps={{
@@ -161,29 +171,31 @@ const Page: PageType = () => {
                 )
               }}
             />
-            <Button
-              variant='outlined'
-              color='inherit'
-              endIcon={<Filter />}
-              // onClick={() => router.push('/admin/patient-management/create')}
-            >
-              Filter
-            </Button>
+            <Stack className='max-sm:ml-auto' direction={'row'} gap={1} alignItems={'center'}>
+              <Button
+                variant='outlined'
+                color='inherit'
+                endIcon={<Filter />}
+                // onClick={() => router.push('/admin/patient-management/create')}
+              >
+                Filter
+              </Button>
 
-            <Button
-              variant='contained'
-              className='w-60'
-              startIcon={<PlusIcon />}
-              sx={{ backgroundColor: 'rgba(14, 22, 128, 1)' }}
-              // onClick={() => router.push('/admin/patient-management/create')}
-            >
-              Add Patient
-            </Button>
+              <Button
+                variant='contained'
+                className='w-40'
+                startIcon={<PlusIcon />}
+                sx={{ backgroundColor: 'rgba(14, 22, 128, 1)' }}
+                // onClick={() => router.push('/admin/patient-management/create')}
+              >
+                Add Patient
+              </Button>
+            </Stack>
           </Stack>
         }
       />
       <PatientManagementList patients={PATIENTS} searchInput={searchInput} />
-    </Stack>
+    </Box>
   );
 };
 Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;

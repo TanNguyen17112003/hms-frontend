@@ -30,7 +30,9 @@ export function CustomTableHeader<P, T extends { id: P; [key: string]: any }>(
   const hasGroupedHeaderLabel = useMemo(() => configs.some((c) => c.groupedHeaderLabel), [configs]);
 
   return (
-    <thead className={clsx('rounded-md border', stickyHeader ? 'sticky -top-1 z-10' : '')}>
+    <thead
+      className={clsx('rounded-md border bg-[#F9FAFB]', stickyHeader ? 'sticky -top-1 z-10' : '')}
+    >
       <tr className='rounded-md border'>
         {(indexColumn || select) && (
           <CustomTableResizableCell
