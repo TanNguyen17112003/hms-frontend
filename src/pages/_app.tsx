@@ -17,6 +17,8 @@ import { PagesProgressBar as ProgressBar } from 'next-nprogress-bar';
 import { createTheme } from 'src/theme';
 import { initialSettings } from 'src/contexts/settings-context';
 import LandingScreen from 'src/components/ui/LandingScreen';
+import { Header } from 'src/sections/header';
+import { Stack } from '@mui/material';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -52,7 +54,10 @@ const App = (props: AppProps) => {
                     <meta name='theme-color' content={theme.palette.primary.main} />
                   </Head>
                   <CssBaseline />
-                  {getLayout(<Component {...pageProps} />)}
+                  <Stack direction={'column'}>
+                    <Header />
+                    {getLayout(<Component {...pageProps} />)}
+                  </Stack>
                 </ThemeProvider>
               );
             }}

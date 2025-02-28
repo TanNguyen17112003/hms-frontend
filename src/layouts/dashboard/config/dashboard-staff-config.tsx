@@ -12,9 +12,10 @@ import {
   User,
   Settings,
   LogOut,
-  Bed
+  Bed,
+  Briefcase
 } from 'lucide-react';
-export const getDashboardAdminConfigs = () => {
+export const getDashboardStaffConfigs = () => {
   return [
     {
       subheader: '1',
@@ -25,14 +26,9 @@ export const getDashboardAdminConfigs = () => {
           icon: <BarChart2 className='h-6 w-6' />
         },
         {
-          title: 'Appointment',
+          title: 'My Appointments',
           path: paths.auth.login,
           icon: <CalendarPlus2 className='h-6 w-6' />
-        },
-        {
-          title: 'Staff Management',
-          path: paths.auth.login,
-          icon: <Users className='h-6 w-6' />
         },
         {
           title: 'Patient Management',
@@ -40,8 +36,13 @@ export const getDashboardAdminConfigs = () => {
           icon: <Bed className='h-6 w-6' />
         },
         {
-          title: 'My Account',
+          title: 'My Portfolio',
           path: paths.auth.login,
+          icon: <Briefcase className='h-6 w-6' />
+        },
+        {
+          title: 'My Account',
+          paht: paths.auth.login,
           icon: <User className='h-6 w-6' />
         }
       ]

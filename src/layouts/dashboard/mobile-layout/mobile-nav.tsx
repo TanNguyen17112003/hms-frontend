@@ -23,7 +23,6 @@ import { paths } from 'src/paths';
 import type { NavColor } from 'src/types/settings';
 import { Section } from '../config/config';
 import { MobileNavSection } from './mobile-nav-section';
-import mobileLogo from 'public/bold-mobile-logo.png';
 import Image from 'next/image';
 
 const useCssVars = (color: NavColor): Record<string, string> => {
@@ -160,16 +159,6 @@ export const MobileNav: FC<MobileNavProps> = (props) => {
             spacing={2}
             sx={{ p: 2, justifyContent: 'space-between', alignItems: 'center' }}
           >
-            <Box
-              component={RouterLink}
-              href={paths.index}
-              sx={{
-                display: 'flex'
-              }}
-              onClick={onClose}
-            >
-              <Image alt='Logo' height={80} src={mobileLogo} width={60} />
-            </Box>
             <IconButton onClick={onClose} color='inherit'>
               <CloseIcon color='success' />
             </IconButton>

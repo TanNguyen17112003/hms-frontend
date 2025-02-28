@@ -1,5 +1,6 @@
 export const paths = {
-  index: '/',auth: {
+  index: '/',
+  auth: {
     login: '/auth',
     register: {
       index: '/auth/register',
@@ -7,8 +8,27 @@ export const paths = {
     },
     'forgot-password': '/auth/forgot-password',
     'reset-password': '/auth/reset-password',
-    logout: '/auth/logout'
+    logout: '/auth/logout',
+    landing: {
+      index: '/landing'
+    },
+    dashboard: {
+      index: '/dashboard'
+    },
+    appointment: {
+      index: '/appointment',
+      'appointment-detail': '/appointment/appointment-detail'
+    },
+    staff: {
+      index: '/staff',
+      'staff-detail': '/staff/staff-detail'
+    },
+    patient: {
+      index: '/patient',
+      'patient-detail': '/patient/patient-detail'
+    }
   },
+  account: '/account',
   401: '/401',
   404: '/404',
   500: '/500'
