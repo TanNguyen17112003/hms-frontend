@@ -34,7 +34,7 @@ function ContentHeader({
           flexWrap: 'wrap'
         }}
       >
-        <Stack display={'flex'} flexDirection={'column'} spacing={1} flex={1}>
+        <Stack display={'flex'} flexDirection={'column'} spacing={1} flex={1} paddingTop={2}>
           <Typography variant='h5'>{title}</Typography>
           {description && (
             <Typography variant='body2' fontWeight={'semibold'} fontStyle={'italic'}>
