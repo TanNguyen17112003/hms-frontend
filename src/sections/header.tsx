@@ -110,6 +110,8 @@ export const Header = () => {
                     >
                       <CircleUserRound size={24} className='hover:bg-white' />
                       <Typography fontWeight={'bold'}>Đăng nhập</Typography>
+                      <CircleUserRound size={24} className='hover:bg-white' />
+                      <Typography fontWeight={'bold'}>Đăng nhập</Typography>
                     </Stack>
                     <Stack
                       direction={'row'}

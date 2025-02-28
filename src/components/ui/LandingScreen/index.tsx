@@ -1,7 +1,3 @@
-import React from 'react';
-import { Box, Typography } from '@mui/material';
-import { Layout as DashboardLayout } from 'src/layouts/dashboard';
-import { Page } from 'src/types/page';
 import AppBarSection from './AppBarSection';
 import AppointmentSection from './AppointmentSection';
 import ContactSection from './ContactSection';
@@ -15,8 +11,8 @@ import OurSpecialtiesSection from './OurSpecialtiesSection';
 
 const LandingScreen = () => {
   return (
-    <div className='w-full'>
-      {/* <AppBarSection /> */}
+    <div className='w-full h-screen '>
+      <AppBarSection />
       <GreetingSection />
       <WelcomeSection />
       <OurServicesSection />
@@ -30,14 +26,4 @@ const LandingScreen = () => {
   );
 };
 
-const LandingPage: Page = () => {
-  return (
-    <Box className='landing'>
-      <Typography>Chovy</Typography>
-    </Box>
-  );
-};
-
-LandingPage.getLayout = (page) => <LandingScreen />;
-
-export default LandingPage;
+export default LandingScreen;

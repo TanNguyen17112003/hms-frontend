@@ -11,7 +11,7 @@ const Page: PageType = () => {
   return (
     <Box className='h-auto bg-white'>
       <ContentHeader
-        title={user.role === 'ADMIN' ? 'Staff Management' : 'Doctor List'}
+        title={user?.role === 'ADMIN' ? 'Staff Management' : 'Doctor List'}
         description='Showing: All Consultations of All Healthcare Providers'
       />
       <StaffManagement />

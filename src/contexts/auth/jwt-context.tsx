@@ -9,7 +9,7 @@ import { initialUser, UserDetail } from 'src/types/user';
 interface State {
   isInitialized: boolean;
   isAuthenticated: boolean;
-  user: UserDetail
+  user: UserDetail | null;
 }
 
 enum ActionType {
@@ -24,7 +24,7 @@ type InitializeAction = {
   type: ActionType.INITIALIZE;
   payload: {
     isAuthenticated: boolean;
-    user: UserDetail
+    user: UserDetail;
   };
 };
 
@@ -60,7 +60,7 @@ type Handler = (state: State, action: any) => State;
 const initialState: State = {
   isAuthenticated: false,
   isInitialized: false,
-  user: initialUser
+  user: null
 };
 
 const handlers: Record<ActionType, Handler> = {
@@ -118,7 +118,7 @@ export const AuthContext = createContext<AuthContextType>({
   issuer: Issuer.JWT,
   signIn: () => Promise.resolve(undefined),
   signOut: () => Promise.resolve(),
-  refreshToken: () => Promise.resolve(),
+  refreshToken: () => Promise.resolve()
 });
 
 interface AuthProviderProps {
@@ -130,9 +130,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const router = useRouter();
 
-  const initialize = useCallback(async (): Promise<void> => {
-   
-  }, [dispatch]);
+  const initialize = useCallback(async (): Promise<void> => {}, [dispatch]);
 
   useEffect(
     () => {
@@ -142,24 +140,17 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     []
   );
 
-  const signIn = useCallback(async (email: string, password: string): Promise<string | undefined> => {
-    // Implement your sign-in logic here
-    return undefined;
-  }, [dispatch, CookieHelper]);
+  const signIn = useCallback(
+    async (email: string, password: string): Promise<string | undefined> => {
+      // Implement your sign-in logic here
+      return undefined;
+    },
+    [dispatch, CookieHelper]
+  );
 
+  const signOut = useCallback(async (): Promise<void> => {}, [router, dispatch]);
 
-
-
-
-  const signOut = useCallback(async (): Promise<void> => {
-    
-  }, [router, dispatch]);
-
-  const refreshToken = useCallback(async (): Promise<void> => {
-  
-  }, [signOut, CookieHelper]);
-
-
+  const refreshToken = useCallback(async (): Promise<void> => {}, [signOut, CookieHelper]);
 
   return (
     <AuthContext.Provider
@@ -168,7 +159,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         issuer: Issuer.JWT,
         signIn,
         signOut,
-        refreshToken,
+        refreshToken
       }}
     >
       {children}

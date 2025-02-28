@@ -8,7 +8,12 @@ const Page: PageType = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    router.replace('/staff');
+    if (user) {
+      router.replace('/landing');
+      console.log(user);
+    } else {
+      router.replace('/landing');
+    }
   }, [router, user]);
 
   return <></>;
