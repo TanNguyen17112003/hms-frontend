@@ -15,6 +15,7 @@ import * as Yup from 'yup';
 import { useRouter } from 'next/router';
 import { useResponsive } from 'src/utils/use-responsive';
 import { ArrowLeft } from 'iconsax-react';
+import logo from 'public/logo-black.png';
 
 export const loginSchema = Yup.object({
   email: Yup.string().required('Email không được để trống'),
@@ -73,7 +74,7 @@ const Page: PageType = () => {
             marginBottom={3}
           >
             <Box className=''>
-              <Image src='/ui/HEALTH360 ONLY.png' alt='Health360 Logo' width={50} height={50} />
+              <Image src={logo} alt='Health360 Logo' width={50} height={50} />
             </Box>
             <Typography variant='h3'>HealthPro</Typography>
           </Stack>
