@@ -86,7 +86,7 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
         </LearnMoreButton>
 
         {/* Grid Layout for Image & Text */}
-        <Grid container spacing={3} sx={{ mt: 4 }}>
+        <Grid container>
           <ImageContainer className='max-h-[250px] flex items-center justify-center'>
             <Box
               component='img'
