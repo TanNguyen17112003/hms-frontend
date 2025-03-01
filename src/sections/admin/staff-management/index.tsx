@@ -6,6 +6,7 @@ import { StaffDetail } from 'src/types/user';
 import { Stethoscope, Clock, Calendar, FileText, ChevronRight } from 'lucide-react';
 import { FaEllipsisVertical } from 'react-icons/fa6';
 import { useResponsive } from 'src/utils/use-responsive';
+import Pagination from 'src/components/ui/Pagination';
 
 interface DoctorCardProps {
   doctor: StaffDetail;
@@ -111,13 +112,30 @@ const InfoItem: React.FC<InfoItemProps> = ({ icon, text }) => (
 );
 
 export const StaffManagement: React.FC = () => {
+  const [page, setPage] = useState(0);
+  const rowsPerPage = 5; // Number of doctors per page
+
+  const handlePageChange = (event: any, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const paginatedDoctors = doctors.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
   return (
     <Box className='px-6 py-4'>
       <StaffFilter />
       <Box display={'flex'} flexDirection={'column'} gap={2}>
-        {doctors.map((doctor) => (
+        {paginatedDoctors.map((doctor) => (
           <DoctorCard key={doctor.id} doctor={doctor} />
         ))}
+      </Box>
+      <Box className='pt-5'>
+        <Pagination
+          page={page}
+          count={doctors.length}
+          rowsPerPage={rowsPerPage}
+          onChange={handlePageChange}
+        />
       </Box>
     </Box>
   );
