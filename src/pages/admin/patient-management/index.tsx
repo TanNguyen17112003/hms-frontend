@@ -1,8 +1,10 @@
+import { useDialog } from '@hooks';
 import { Box, Button, InputAdornment, Stack, TextField } from '@mui/material';
 import { Filter, PlusIcon, SearchIcon } from 'lucide-react';
 import { useState } from 'react';
 import ContentHeader from 'src/components/content-header';
 import { DashboardLayout } from 'src/layouts';
+import AddPatientDialog from 'src/sections/admin/patient-management/add-patient-dialog';
 import PatientManagementList from 'src/sections/admin/patient-management/patient-management-list';
 import type { Page as PageType } from 'src/types/page';
 
@@ -141,6 +143,7 @@ const PATIENTS: PatientData[] = [
 ];
 
 const Page: PageType = () => {
+  const addDialog = useDialog();
   const [searchInput, setSearchInput] = useState<string>('');
   const handleSearch = () => {
     console.log(searchInput);
@@ -186,7 +189,7 @@ const Page: PageType = () => {
                 className='w-40'
                 startIcon={<PlusIcon />}
                 sx={{ backgroundColor: 'rgba(14, 22, 128, 1)' }}
-                // onClick={() => router.push('/admin/patient-management/create')}
+                onClick={() => addDialog.handleOpen()}
               >
                 Add Patient
               </Button>
@@ -195,6 +198,7 @@ const Page: PageType = () => {
         }
       />
       <PatientManagementList patients={PATIENTS} searchInput={searchInput} />
+      <AddPatientDialog open={addDialog.open} onClose={addDialog.handleClose} />
     </Box>
   );
 };
