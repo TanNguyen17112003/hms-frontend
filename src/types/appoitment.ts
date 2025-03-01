@@ -20,3 +20,5 @@ export interface Schedule {
   date: string;
   timeSlots: TimeSlot[];
 }
+
+export interface AppointmentDetail extends Appointment {}

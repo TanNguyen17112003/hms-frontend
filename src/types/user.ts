@@ -4,7 +4,7 @@ type UserRole = 'ADMIN' | 'STAFF' | 'PATIENT';
 type UserGender = 'MALE' | 'FEMAIL';
 type WorkStatus = 'FULL_TIME' | 'PART_TIME';
 
-interface User {
+export interface User {
   id: string;
   photoUrl: string;
   name: string;

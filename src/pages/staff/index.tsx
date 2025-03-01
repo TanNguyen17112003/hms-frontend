@@ -5,6 +5,8 @@ import React, { useCallback } from 'react';
 import ContentHeader from 'src/components/content-header';
 import { Box } from '@mui/material';
 import { StaffManagement } from 'src/sections/admin/staff-management';
+import UserProvider from 'src/contexts/user/user-context';
+import AppointmentProvider from 'src/contexts/appointment/appointment-context';
 
 const Page: PageType = () => {
   const { user } = useAuth();
@@ -19,6 +21,12 @@ const Page: PageType = () => {
   );
 };
 
-Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+Page.getLayout = (page) => (
+  <DashboardLayout>
+    <UserProvider>
+      <AppointmentProvider>{page}</AppointmentProvider>
+    </UserProvider>
+  </DashboardLayout>
+);
 
 export default Page;
