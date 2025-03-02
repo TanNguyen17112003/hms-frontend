@@ -29,6 +29,7 @@ const generatePatients = (): PatientDetail[] => {
       phone: `123456789${i}`,
       dob: generateRandomDate(new Date(1970, 0, 1), new Date(2000, 0, 1)).toISOString(),
       address: `Address ${i + 1}`,
+      email: `patient${i + 1}@gmail.com`,
       role: 'PATIENT',
       SSN: `SSN${i + 1}`,
       gender: i % 2 === 0 ? 'MALE' : 'FEMAIL',

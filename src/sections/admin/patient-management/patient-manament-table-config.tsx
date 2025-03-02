@@ -2,23 +2,23 @@ import { Avatar, Badge, Box, Chip, Stack, Tooltip, Typography } from '@mui/mater
 import { Trash, Edit, CloseCircle, Edit2 } from 'iconsax-react';
 
 import { CustomTableConfig } from 'src/components/custom-table';
-import { PatientData } from 'src/pages/admin/patient-management';
 import { formatDate, formatTagName } from 'src/utils/format-time-currency';
+import { PatientDetail } from 'src/types/user';
 
 const getPatientManangementTableConfig = ({
   onClickRemove,
   onClickEdit
 }: {
-  onClickRemove: (data: PatientData) => void;
-  onClickEdit: (data: PatientData) => void;
-}): CustomTableConfig<PatientData['id'], PatientData>[] => [
+  onClickRemove: (data: PatientDetail) => void;
+  onClickEdit: (data: PatientDetail) => void;
+}): CustomTableConfig<PatientDetail['id'], PatientDetail>[] => [
   {
     key: 'name',
     headerLabel: 'Patient Name',
     type: 'string',
     renderCell: (data) => (
       <Stack direction='row' alignItems={'center'} spacing={1}>
-        <Avatar src={data.avatar} />
+        <Avatar src={data.photoUrl} />
         <Box>
           <Typography variant='body1'>{data.name}</Typography>
           <Typography variant='body2' color='textSecondary'>
@@ -29,53 +29,42 @@ const getPatientManangementTableConfig = ({
     )
   },
   {
-    key: 'id',
-    headerLabel: 'Patient ID',
+    key: 'email',
+    headerLabel: 'Email',
     type: 'string',
-    renderCell: (data) => <Typography variant='body1'>{data.id}</Typography>
+    renderCell: (data) => <Typography variant='body1'>{data.email}</Typography>
+  },
+  {
+    key: 'SSN',
+    headerLabel: 'SSN',
+    type: 'string',
+    renderCell: (data) => <Typography variant='body1'>#{data.SSN}</Typography>
   },
   {
     key: 'date',
-    headerLabel: 'Date',
-    type: 'date',
-    renderCell: (data) => <Typography variant='body1'>{formatDate(data.date)}</Typography>
-  },
-  {
-    key: 'age',
-    headerLabel: 'Age',
-    type: 'number',
-    renderCell: (data) => <Typography variant='body1'>{data.age}</Typography>
-  },
-  {
-    key: 'sex',
-    headerLabel: 'Sex',
+    headerLabel: 'Date of Birth',
     type: 'string',
-    renderCell: (data) => <Typography variant='body1'>{data.sex}</Typography>
+    renderCell: (data) => <Typography variant='body1'>{data.dob}</Typography>
   },
   {
-    key: 'diseases',
-    headerLabel: 'Diseases',
+    key: 'gender',
+    headerLabel: 'Gender',
     type: 'string',
-    renderCell: (data) => <Typography variant='body1'>{data.diseases}</Typography>
-  },
-
-  {
-    key: 'status',
-    headerLabel: 'Status',
-    type: 'string',
-    renderCell: (data) => {
-      return data.status === 'Complicated' ? (
-        <Chip label='Complicated' color='success' size='small' />
-      ) : (
-        <Chip label='In-Treatment' color='warning' size='small' />
-      );
-    }
+    renderCell: (data) => (
+      <Chip label={data.gender} color={data.gender === 'MALE' ? 'primary' : 'secondary'} />
+    )
   },
   {
-    key: 'doctorName',
-    headerLabel: 'Doctor Name',
+    key: 'phone',
+    headerLabel: 'Phone',
     type: 'string',
-    renderCell: (data) => <Typography variant='body1'>{data.doctorName}</Typography>
+    renderCell: (data) => <Typography variant='body1'>{data.phone}</Typography>
+  },
+  {
+    key: 'address',
+    headerLabel: 'Address',
+    type: 'string',
+    renderCell: (data) => <Typography variant='body1'>{data.address}</Typography>
   },
   {
     key: 'action',
@@ -83,17 +72,6 @@ const getPatientManangementTableConfig = ({
     type: 'string',
     renderCell: (data) => (
       <Stack direction='row' spacing={2}>
-        <Tooltip title='Edit Patient'>
-          <Edit2
-            variant='Outline'
-            size={24}
-            className='cursor-pointer'
-            onClick={(event) => {
-              event.stopPropagation();
-              onClickEdit(data);
-            }}
-          />
-        </Tooltip>
         <Tooltip title='Delete Patient'>
           <Trash
             variant='Outline'
@@ -102,6 +80,17 @@ const getPatientManangementTableConfig = ({
             onClick={(event) => {
               event.stopPropagation();
               onClickRemove(data);
+            }}
+          />
+        </Tooltip>
+        <Tooltip title='Edit Patient'>
+          <Edit2
+            variant='Outline'
+            size={24}
+            className='cursor-pointer'
+            onClick={(event) => {
+              event.stopPropagation();
+              onClickEdit(data);
             }}
           />
         </Tooltip>

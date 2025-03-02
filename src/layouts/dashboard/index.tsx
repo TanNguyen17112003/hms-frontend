@@ -12,7 +12,7 @@ interface LayoutProps {
   pagePermission?: string;
 }
 
-export const Layout: FC<LayoutProps> = withAuthGuard((props) => {
+export const Layout: FC<LayoutProps> = (props) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const sections = useSections();
@@ -21,7 +21,7 @@ export const Layout: FC<LayoutProps> = withAuthGuard((props) => {
   ) : (
     <VerticalLayout sections={sections} {...props} />
   );
-});
+};
 
 Layout.propTypes = {
   children: PropTypes.any

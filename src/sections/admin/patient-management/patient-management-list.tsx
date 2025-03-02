@@ -1,22 +1,22 @@
 import { Box, Chip, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import usePagination from 'src/hooks/use-pagination';
-import { PatientData } from 'src/pages/admin/patient-management';
 import getPatientManangementTableConfig from './patient-manament-table-config';
 import { useDialog, useDrawer, useSelection } from '@hooks';
 import { CustomTable } from '@components';
 import { Stack } from '@mui/system';
+import { PatientDetail } from 'src/types/user';
 import DeleteUserDialog from 'src/sections/delete-user-dialog';
 import PatientEditDrawer from './patient-edit-drawer';
 
 interface PatientManagementListProps {
-  patients: PatientData[];
+  patients: PatientDetail[];
   searchInput: string;
 }
 const PatientManagementList: React.FC<PatientManagementListProps> = ({ patients, searchInput }) => {
-  const select = useSelection<PatientData>(patients);
-  const deleteDialog = useDialog<PatientData>();
-  const editDrawer = useDrawer<PatientData>();
+  const select = useSelection<PatientDetail>(patients);
+  const deleteDialog = useDialog<PatientDetail>();
+  const editDrawer = useDrawer<PatientDetail>();
   const pagination = usePagination({
     count: patients.length
   });
@@ -34,7 +34,7 @@ const PatientManagementList: React.FC<PatientManagementListProps> = ({ patients,
 
   return (
     <Box
-      className='px-6 mt-8 py-5 border-2 rounded-xl bg-white'
+      className='px-6 mt-8 py-4 border-2 rounded-xl bg-white'
       boxShadow={'0px 1px 2px 0px rgba(16, 24, 40, 0.06)'}
     >
       <Stack direction='row' justifyContent='space-between' alignItems='center'>
@@ -57,13 +57,13 @@ const PatientManagementList: React.FC<PatientManagementListProps> = ({ patients,
       <PatientEditDrawer
         open={editDrawer.open}
         onClose={editDrawer.handleClose}
-        patient={editDrawer.data as PatientData}
+        patient={editDrawer.data as PatientDetail}
         onSubmit={(data) => new Promise<void>((resolve) => setTimeout(resolve, 1000))}
       />
       <DeleteUserDialog
         open={deleteDialog.open}
         onClose={deleteDialog.handleClose}
-        user={deleteDialog.data as PatientData}
+        user={deleteDialog.data as PatientDetail}
         onConfirm={() => new Promise<void>((resolve) => setTimeout(resolve, 1000))}
       />
     </Box>
