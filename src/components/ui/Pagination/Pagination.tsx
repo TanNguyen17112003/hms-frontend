@@ -3,8 +3,8 @@ import clsx from 'clsx';
 import _ from 'lodash';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useMemo, type FC } from 'react';
-import { useResponsive } from 'src/utils/use-responsive';
 import { Button } from '../../shadcn/ui/button';
+import { useResponsive } from 'src/utils/use-responsive';
 
 interface PaginationProps {
   page: number;
