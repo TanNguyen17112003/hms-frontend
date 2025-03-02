@@ -1,10 +1,10 @@
+import { Button as MUIButton, Stack, Typography } from '@mui/material';
+import clsx from 'clsx';
+import _ from 'lodash';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useMemo, type FC } from 'react';
 import { Button } from '../../shadcn/ui/button';
-import _ from 'lodash';
-import { Typography, Button as MUIButton, Stack } from '@mui/material';
-import clsx from 'clsx';
 import { useResponsive } from 'src/utils/use-responsive';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 interface PaginationProps {
   page: number;

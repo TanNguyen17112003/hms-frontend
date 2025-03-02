@@ -26,6 +26,10 @@ export const paths = {
     patient: {
       index: '/patient',
       'patient-detail': '/patient/patient-detail'
+    },
+    admin: {
+      index: '/admin',
+      'patient-management': '/admin/patient-management'
     }
   },
   account: '/account',

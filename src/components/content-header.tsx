@@ -20,7 +20,8 @@ function ContentHeader({
         paddingRight: '24px',
         borderRadius: 0,
         boxShadow: 'none',
-        zIndex: 100
+        zIndex: 100,
+        backgroundColor: 'transparent'
       }}
     >
       <Box
