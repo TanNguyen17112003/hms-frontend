@@ -16,7 +16,6 @@ function ContentHeader({
     <Paper
       elevation={5}
       sx={{
-        paddingTop: '24px',
         paddingLeft: '24px',
         paddingRight: '24px',
         borderRadius: 0,
@@ -36,8 +35,8 @@ function ContentHeader({
           flexWrap: 'wrap'
         }}
       >
-        <Stack display={'flex'} flexDirection={'column'} spacing={1} flex={1}>
-          <Typography variant='h4'>{title}</Typography>
+        <Stack display={'flex'} flexDirection={'column'} spacing={1} flex={1} paddingTop={2}>
+          <Typography variant='h5'>{title}</Typography>
           {description && (
             <Typography variant='body2' fontWeight={'semibold'} fontStyle={'italic'}>
               {description}

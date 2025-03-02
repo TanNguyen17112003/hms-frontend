@@ -15,6 +15,7 @@ import * as Yup from 'yup';
 import { useRouter } from 'next/router';
 import { useResponsive } from 'src/utils/use-responsive';
 import { ArrowLeft } from 'iconsax-react';
+import logo from 'public/logo-black.png';
 
 export const loginSchema = Yup.object({
   email: Yup.string().required('Email không được để trống'),
@@ -40,7 +41,6 @@ const Page: PageType = () => {
     }
   });
 
-
   useEffect(() => {
     if (formik.values.email || formik.values.password) {
       formik.setFieldError('general', '');
@@ -50,22 +50,37 @@ const Page: PageType = () => {
 
   return (
     <Box className='min-h-screen flex bg-white relative'>
-      <Stack direction={"row"} spacing={2} alignItems={"center"} justifyContent={"start"} justifySelf={"center"} marginBottom={3} className='absolute top-4 left-4'>
+      <Stack
+        direction={'row'}
+        spacing={2}
+        alignItems={'center'}
+        justifyContent={'start'}
+        justifySelf={'center'}
+        marginBottom={3}
+        className='absolute top-4 left-4'
+      >
         <IconButton onClick={() => router.push(paths.index)} className='bg-white p-2 rounded-md'>
           <ArrowLeft className='w-6 h-6' />
         </IconButton>
       </Stack>
       <Box className='w-full lg:w-1/2 flex items-center justify-center'>
         <Box className='w-full max-w-md px-6'>
-          <Stack direction='row' spacing={2} alignItems='center' justifyContent={"start"} justifySelf={"center"} marginBottom={3}>
+          <Stack
+            direction='row'
+            spacing={2}
+            alignItems='center'
+            justifyContent={'start'}
+            justifySelf={'center'}
+            marginBottom={3}
+          >
             <Box className=''>
-              <Image src='/logo.png' alt='Health360 Logo' width={50} height={50}/>
+              <Image src={logo} alt='Health360 Logo' width={50} height={50} />
             </Box>
             <Typography variant='h3'>HealthPro</Typography>
           </Stack>
 
           <Stack spacing={4}>
-            <Stack spacing={1} alignItems={"center"}>
+            <Stack spacing={1} alignItems={'center'}>
               <Typography variant='h4' fontWeight='bold'>
                 Sign in to your account
               </Typography>
@@ -182,11 +197,10 @@ const Page: PageType = () => {
               className='mt-6'
             >
               <Typography color='text.secondary'>You don&apos;t have an account?</Typography>
-              <Link
-                href={paths.auth.register.index}
-                className='text.tetiary font-medium'
-              >
-                  <Typography color='primary' fontWeight={"bold"}>Register</Typography>
+              <Link href={paths.auth.register.index} className='text.tetiary font-medium'>
+                <Typography color='primary' fontWeight={'bold'}>
+                  Register
+                </Typography>
               </Link>
             </Stack>
           </Stack>
@@ -195,7 +209,11 @@ const Page: PageType = () => {
 
       <Box className='hidden lg:block w-1/2 '>
         <Box className='w-full'>
-          <Image src={backgroundAuth} alt='Background Image' className='w-[100%] h-screen object-cover' />
+          <Image
+            src={backgroundAuth}
+            alt='Background Image'
+            className='w-[100%] h-screen object-cover'
+          />
         </Box>
       </Box>
     </Box>

@@ -24,6 +24,7 @@ import type { NavColor } from 'src/types/settings';
 import { Section } from '../config/config';
 import { MobileNavSection } from './mobile-nav-section';
 import Image from 'next/image';
+import logo from 'public/logo.png';
 
 const useCssVars = (color: NavColor): Record<string, string> => {
   const theme = useTheme();
@@ -160,10 +161,13 @@ export const MobileNav: FC<MobileNavProps> = (props) => {
             sx={{ p: 2, justifyContent: 'space-between', alignItems: 'center' }}
           >
             <IconButton onClick={onClose} color='inherit'>
-              <CloseIcon color='success' />
+              <CloseIcon color='inherit' />
             </IconButton>
+            <Stack direction={'row'} alignContent={'center'} alignItems={'center'} gap={1}>
+              <Image src={logo} alt='logo' width={20} height={20} />
+              <Typography>HealthPro</Typography>
+            </Stack>
           </Stack>
-
           <Stack
             component='nav'
             spacing={2}
@@ -179,6 +183,7 @@ export const MobileNav: FC<MobileNavProps> = (props) => {
                 pathname={router.pathname}
                 subheader={section.subheader}
                 onClose={onClose}
+                isLast={index === sections.length - 1}
               />
             ))}
           </Stack>

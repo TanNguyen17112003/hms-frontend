@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Stack } from '@mui/material';
+import { Box, Divider, Stack } from '@mui/material';
 import { MobileNavItem } from './mobile-nav-item';
 
 interface DashboardItem {
@@ -109,6 +109,7 @@ interface MobileNavSectionProps {
   items?: DashboardItem[];
   pathname?: string | null;
   subheader?: string;
+  isLast?: boolean;
   onClose?: () => void;
 }
 
@@ -127,23 +128,8 @@ export const MobileNavSection: FC<MobileNavSectionProps> = (props) => {
       }}
       {...other}
     >
-      {subheader && (
-        <Box
-          component='li'
-          sx={{
-            color: 'black',
-            fontSize: 14,
-            fontWeight: 700,
-            lineHeight: 1.66,
-            mb: 1,
-            ml: 1,
-            textTransform: 'uppercase'
-          }}
-        >
-          {subheader}
-        </Box>
-      )}
       {renderItems({ items, pathname, onClose })}
+      {!props.isLast && <Divider />}
     </Stack>
   );
 };

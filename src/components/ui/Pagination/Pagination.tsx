@@ -1,11 +1,10 @@
-import { useMemo, type FC } from 'react';
-import { Button } from '../../shadcn/ui/button';
-import _ from 'lodash';
-import { Typography } from '@mui/material';
+import { Button as MUIButton, Stack, Typography } from '@mui/material';
 import clsx from 'clsx';
+import _ from 'lodash';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { useMemo, type FC } from 'react';
 import { useResponsive } from 'src/utils/use-responsive';
-import { ArrowLeft, ArrowRight, ChevronRight } from 'lucide-react';
-import { Stack } from '@mui/system';
+import { Button } from '../../shadcn/ui/button';
 
 interface PaginationProps {
   page: number;
@@ -43,29 +42,17 @@ const Pagination: FC<PaginationProps> = ({ page, count, onChange, rowsPerPage, l
   }, [length, page, totalPages]);
 
   return (
-    <div className='flex items-center gap-2 self-center w-full justify-between'>
-      <Button
-        className='rounded-lg z-40 bg-white text-black  '
-        variant='outline'
+    <div className='flex justify-between items-center gap-2 self-center w-full border px-6 py-3 rounded-lg shadow-lg'>
+      <MUIButton
+        startIcon={<ArrowLeft color='black' />}
+        variant='outlined'
         onClick={(e) => onChange(e, page > 0 ? page - 1 : page)}
-        disabled={page === 0}
+        color='secondary'
       >
-        <ArrowLeft
-          style={{
-            marginRight: '0.5rem'
-          }}
-        />
-        Previous
-      </Button>
+        {!isMobile && <Typography>Previous</Typography>}
+      </MUIButton>
 
-      {/* <Typography
-        className='text-xs opacity-60 hover:opacity-100 cursor-pointer text-black'
-        onClick={(e) => onChange(e, page > 0 ? page - 1 : page)}
-      >
-        Previous
-      </Typography> */}
-
-      <Stack direction='row' spacing={1}>
+      <Stack direction={'row'} gap={1} alignItems={'center'}>
         {buttonIndexes.map((index) => (
           <Button
             className={clsx(
@@ -82,25 +69,14 @@ const Pagination: FC<PaginationProps> = ({ page, count, onChange, rowsPerPage, l
         ))}
       </Stack>
 
-      {/* <Typography
-        className='text-xs opacity-60 hover:opacity-100 cursor-pointer text-black'
+      <MUIButton
+        endIcon={<ArrowRight color='black' />}
+        variant='outlined'
         onClick={(e) => onChange(e, page < totalPages - 1 ? page + 1 : page)}
+        color='secondary'
       >
-        Next
-      </Typography> */}
-      <Button
-        className='rounded-lg z-40 bg-white text-black '
-        variant='outline'
-        onClick={(e) => onChange(e, page < totalPages - 1 ? page + 1 : page)}
-        disabled={page === totalPages - 1}
-      >
-        Next
-        <ArrowRight
-          style={{
-            marginLeft: '0.5rem'
-          }}
-        />
-      </Button>
+        {!isMobile && <Typography>Next</Typography>}
+      </MUIButton>
     </div>
   );
 };

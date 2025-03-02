@@ -20,6 +20,11 @@ export type PatientData = {
   doctorName?: string;
   avatar?: string;
   role: 'PATIENT' | 'STAFF' | 'ADMIN';
+  phoneNumber?: string;
+  address?: string;
+  dob?: string;
+  governmentId?: string;
+  hospitalId?: string;
 };
 const PATIENTS: PatientData[] = [
   {

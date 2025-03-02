@@ -1,10 +1,10 @@
 // src/components/advanced-filter.tsx
 import React from 'react';
 import { Button } from '@mui/material';
-import { Setting4 } from 'iconsax-react';
 import { useDialog } from '@hooks';
 import AdvancedFilterDialog from './advanced-filter-dialog';
 import { Filter } from 'src/types/filter';
+import { Filter as FilterIcon } from 'lucide-react';
 
 interface AdvancedFilterProps {
   filters: Filter[];
@@ -17,11 +17,10 @@ const AdvancedFilter: React.FC<AdvancedFilterProps> = ({ filters }) => {
     <>
       <Button
         variant='outlined'
-        startIcon={<Setting4 size={24} />}
-        sx={{ width: '250px' }}
         onClick={advancedFilterDialog.handleOpen}
+        endIcon={<FilterIcon size={16} />}
       >
-        Bộ lọc nâng cao
+        Filter
       </Button>
       <AdvancedFilterDialog
         open={advancedFilterDialog.open}

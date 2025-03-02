@@ -115,4 +115,10 @@
   animation: fadeIn 5s ease-in-out;
 }
 
+.custom-dots li.slick-active div {
+  background-color: #0E1680 !important; 
+}
+
+
+
 

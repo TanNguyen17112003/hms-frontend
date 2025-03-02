@@ -3,10 +3,11 @@ import { useMemo } from 'react';
 import usePagination from 'src/hooks/use-pagination';
 import { PatientData } from 'src/pages/admin/patient-management';
 import getPatientManangementTableConfig from './patient-manament-table-config';
-import { useDialog, useSelection } from '@hooks';
+import { useDialog, useDrawer, useSelection } from '@hooks';
 import { CustomTable } from '@components';
 import { Stack } from '@mui/system';
 import DeleteUserDialog from 'src/sections/delete-user-dialog';
+import PatientEditDrawer from './patient-edit-drawer';
 
 interface PatientManagementListProps {
   patients: PatientData[];
@@ -15,7 +16,7 @@ interface PatientManagementListProps {
 const PatientManagementList: React.FC<PatientManagementListProps> = ({ patients, searchInput }) => {
   const select = useSelection<PatientData>(patients);
   const deleteDialog = useDialog<PatientData>();
-  const editDialog = useDialog<PatientData>();
+  const editDrawer = useDrawer<PatientData>();
   const pagination = usePagination({
     count: patients.length
   });
@@ -27,7 +28,7 @@ const PatientManagementList: React.FC<PatientManagementListProps> = ({ patients,
   const PatientManagementListConfig = useMemo(() => {
     return getPatientManangementTableConfig({
       onClickRemove: (data) => deleteDialog.handleOpen(data),
-      onClickEdit: (data) => editDialog.handleOpen(data)
+      onClickEdit: (data) => editDrawer.handleOpen(data)
     });
   }, [getPatientManangementTableConfig]);
 
@@ -52,6 +53,12 @@ const PatientManagementList: React.FC<PatientManagementListProps> = ({ patients,
         pagination={pagination}
         cellClassName='bg-white'
         select={select}
+      />
+      <PatientEditDrawer
+        open={editDrawer.open}
+        onClose={editDrawer.handleClose}
+        patient={editDrawer.data as PatientData}
+        onSubmit={(data) => new Promise<void>((resolve) => setTimeout(resolve, 1000))}
       />
       <DeleteUserDialog
         open={deleteDialog.open}

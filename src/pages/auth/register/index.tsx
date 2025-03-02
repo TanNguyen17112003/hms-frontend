@@ -38,31 +38,46 @@ const Page: PageType = () => {
     }
   });
 
-
   return (
     <Box className='flex bg-white relative'>
-      <Stack direction={"row"} spacing={2} alignItems={"center"} justifyContent={"start"} justifySelf={"center"} marginBottom={3} className='absolute top-4 left-4'>
-        <IconButton onClick={() => router.push(paths.auth.login)} className='bg-white p-2 rounded-md'>
+      <Stack
+        direction={'row'}
+        spacing={2}
+        alignItems={'center'}
+        justifyContent={'start'}
+        justifySelf={'center'}
+        marginBottom={3}
+        className='absolute top-4 left-4'
+      >
+        <IconButton
+          onClick={() => router.push(paths.auth.login)}
+          className='bg-white p-2 rounded-md'
+        >
           <ArrowLeft className='w-6 h-6' />
         </IconButton>
       </Stack>
       <Box className='w-full lg:w-1/2 flex items-center justify-center py-5 h-screen'>
         <Box className='w-full max-w-md px-6'>
-          <Stack direction='row' spacing={2} alignItems='center' justifyContent={"start"} justifySelf={"center"} marginBottom={3}>
+          <Stack
+            direction='row'
+            spacing={2}
+            alignItems='center'
+            justifyContent={'start'}
+            justifySelf={'center'}
+            marginBottom={3}
+          >
             <Box className=''>
-              <Image src='/logo.png' alt='Health360 Logo' width={50} height={50} />
+              <Image src='/logo-black.png' alt='Health360 Logo' width={50} height={50} />
             </Box>
-            <Typography variant='h3' >HealthPro</Typography>
+            <Typography variant='h3'>HealthPro</Typography>
           </Stack>
 
           <Stack spacing={2}>
-            <Stack spacing={1} alignItems={"center"}>
+            <Stack spacing={1} alignItems={'center'}>
               <Typography variant='h4' fontWeight='bold'>
                 Create an account
               </Typography>
-              <Typography color='text.secondary'>
-                Start your 30-day free trial
-              </Typography>
+              <Typography color='text.secondary'>Start your 30-day free trial</Typography>
             </Stack>
 
             {/* Form */}
@@ -160,11 +175,7 @@ const Page: PageType = () => {
               <Typography color='text.secondary'>OR</Typography>
             </Divider>
 
-            <Stack
-              direction='row'
-              spacing={1.5}
-              justifyContent='center'
-            >
+            <Stack direction='row' spacing={1.5} justifyContent='center'>
               {['Facebook', 'Google', 'Apple'].map((provider) => (
                 <IconButton
                   key={provider}
@@ -195,11 +206,10 @@ const Page: PageType = () => {
               className='mt-6'
             >
               <Typography color='text.secondary'>Already have an account?</Typography>
-              <Link
-                href={paths.auth.login}
-                className='text.tetiary font-medium'
-              >
-                <Typography color='primary' fontWeight={"bold"}>Log in</Typography>
+              <Link href={paths.auth.login} className='text.tetiary font-medium'>
+                <Typography color='primary' fontWeight={'bold'}>
+                  Log in
+                </Typography>
               </Link>
             </Stack>
           </Stack>
@@ -208,7 +218,11 @@ const Page: PageType = () => {
 
       <Box className='hidden lg:block w-1/2 '>
         <Box className='w-full'>
-          <Image src={backgroundAuth} alt='Background Image' className='w-[100%] h-screen object-cover' />
+          <Image
+            src={backgroundAuth}
+            alt='Background Image'
+            className='w-[100%] h-screen object-cover'
+          />
         </Box>
       </Box>
     </Box>

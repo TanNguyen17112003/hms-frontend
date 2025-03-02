@@ -1,6 +1,20 @@
 import { paths } from 'src/paths';
 import { PiMotorcycle } from 'react-icons/pi';
-import { BarChart2, CalendarPlus2, File, FileBarChart, FileBarChart2, FlaskConical, Home, Users, User, Settings, LogOut, Bed, Briefcase } from 'lucide-react';
+import {
+  BarChart2,
+  CalendarPlus2,
+  File,
+  FileBarChart,
+  FileBarChart2,
+  FlaskConical,
+  Home,
+  Users,
+  User,
+  Settings,
+  LogOut,
+  Bed,
+  Briefcase
+} from 'lucide-react';
 export const getDashboardStaffConfigs = () => {
   return [
     {

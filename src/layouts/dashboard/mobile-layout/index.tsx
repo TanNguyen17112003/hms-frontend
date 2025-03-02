@@ -9,7 +9,6 @@ const MobileLayout: FC<MobileLayoutProps> = (props) => {
 
   return (
     <div className='flex flex-col'>
-      <MobileTopNav sections={sections as Section[]} />
       <div className='flex-1 flex flex-col max-w-full'>{children}</div>
     </div>
   );

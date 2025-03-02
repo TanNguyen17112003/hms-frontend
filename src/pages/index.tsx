@@ -9,15 +9,14 @@ const Page: PageType = () => {
 
   useEffect(() => {
     if (user) {
-      router.replace('/dashboard')
-    }
-    else {
+      router.replace('/landing');
+      console.log(user);
+    } else {
       router.replace('/landing');
     }
   }, [router, user]);
 
   return <></>;
 };
-
 
 export default Page;

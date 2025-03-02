@@ -19,7 +19,7 @@ import { useFormik } from 'formik';
 import useFunction from 'src/hooks/use-function';
 import { useCallback } from 'react';
 
-const COMMON_DISEASES = [
+export const COMMON_DISEASES = [
   { value: 'Hypertension', label: 'Hypertension' },
   { value: 'Diabetes', label: 'Diabetes' },
   { value: 'Asthma', label: 'Asthma' },
