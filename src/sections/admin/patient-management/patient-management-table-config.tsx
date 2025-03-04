@@ -2,7 +2,7 @@ import { Avatar, Badge, Box, Chip, Stack, Tooltip, Typography } from '@mui/mater
 import { Trash, Edit, CloseCircle, Edit2 } from 'iconsax-react';
 
 import { CustomTableConfig } from 'src/components/custom-table';
-import { formatDate, formatTagName } from 'src/utils/format-time-currency';
+import { formatTagName } from 'src/utils/format-time-currency';
 import { PatientDetail } from 'src/types/user';
 
 const getPatientManangementTableConfig = ({
@@ -74,23 +74,13 @@ const getPatientManangementTableConfig = ({
       <Stack direction='row' spacing={2}>
         <Tooltip title='Delete Patient'>
           <Trash
-            variant='Outline'
-            size={24}
+            variant='Bold'
+            color='red'
+            size={28}
             className='cursor-pointer'
             onClick={(event) => {
               event.stopPropagation();
               onClickRemove(data);
-            }}
-          />
-        </Tooltip>
-        <Tooltip title='Edit Patient'>
-          <Edit2
-            variant='Outline'
-            size={24}
-            className='cursor-pointer'
-            onClick={(event) => {
-              event.stopPropagation();
-              onClickEdit(data);
             }}
           />
         </Tooltip>

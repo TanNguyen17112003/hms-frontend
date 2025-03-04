@@ -1,13 +1,12 @@
 import { Box, Chip, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import usePagination from 'src/hooks/use-pagination';
-import getPatientManangementTableConfig from './patient-management/patient-manament-table-config';
+import getPatientManangementTableConfig from './patient-management/patient-management-table-config';
 import { useDialog, useDrawer, useSelection } from '@hooks';
 import { CustomTable } from '@components';
 import { Stack } from '@mui/system';
 import { PatientDetail } from 'src/types/user';
 import DeleteUserDialog from 'src/sections/delete-user-dialog';
-import PatientEditDrawer from './patient-management/patient-edit-drawer';
 
 interface DashboardPatientProps {
   patients: PatientDetail[];
@@ -50,12 +49,6 @@ const DashboardPatient: React.FC<DashboardPatientProps> = ({ patients }) => {
         pagination={pagination}
         cellClassName='bg-white'
         select={select}
-      />
-      <PatientEditDrawer
-        open={editDrawer.open}
-        onClose={editDrawer.handleClose}
-        patient={editDrawer.data as PatientDetail}
-        onSubmit={(data) => new Promise<void>((resolve) => setTimeout(resolve, 1000))}
       />
       <DeleteUserDialog
         open={deleteDialog.open}

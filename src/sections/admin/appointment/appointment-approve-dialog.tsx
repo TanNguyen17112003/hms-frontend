@@ -2,19 +2,18 @@ import { Dialog, DialogTitle, DialogActions, Button, DialogProps, Typography } f
 import { Box } from '@mui/system';
 import React from 'react';
 import useFunction from 'src/hooks/use-function';
-import { PatientDetail } from 'src/types/user';
+import { AppointmentDetailConfig } from './appointment-management-table-config';
 
-type UserDetail = PatientDetail;
-function DeleteUserDialog({
-  user,
+function ApproveAppointmentDialog({
+  appointment,
   onConfirm,
   ...dialogProps
 }: DialogProps & {
-  user: UserDetail;
+  appointment: AppointmentDetailConfig;
   onConfirm?: () => Promise<void>;
 }) {
   const onConfirmHelper = useFunction(onConfirm!, {
-    successMessage: `Xóa ${user?.role === 'PATIENT' ? 'bệnh nhân' : 'nhân viên'} thành công!`
+    successMessage: `Đã chấp nhận lịch hẹn từ bệnh nhân ${appointment?.patient?.name}!`
   });
 
   return (
@@ -29,7 +28,7 @@ function DeleteUserDialog({
           }}
         >
           <Typography variant='h6'>
-            Xóa {user?.role === 'PATIENT' ? 'bệnh nhân' : 'nhân viên'} {user?.name}
+            Chấp nhận lịch hẹn từ bệnh nhân {appointment?.patient?.name}?
           </Typography>
         </Box>
       </DialogTitle>
@@ -46,17 +45,17 @@ function DeleteUserDialog({
         </Button>
         <Button
           variant='contained'
-          color='error'
+          color='success'
           onClick={async (e) => {
             dialogProps.onClose?.(e, 'escapeKeyDown');
             await onConfirmHelper.call({});
           }}
         >
-          Xoá
+          Chấp nhận
         </Button>
       </DialogActions>
     </Dialog>
   );
 }
 
-export default DeleteUserDialog;
+export default ApproveAppointmentDialog;
