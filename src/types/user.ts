@@ -43,3 +43,20 @@ export interface StaffDetail extends UserDetail {
   patients: PatientDetail[];
   schedule: Schedule[];
 }
+
+export interface PatientData {
+  id: string;
+  name: string;
+  email: string;
+  date: Date;
+  age: number;
+  diseases: string;
+  status: string;
+  role: UserRole;
+  sex: UserGender;
+  phoneNumber: string;
+  address: string;
+  dob: string;
+  governmentId: string;
+  hospitalId: string;
+}
