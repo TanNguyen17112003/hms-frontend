@@ -7,9 +7,10 @@ import ContentHeader from 'src/components/content-header';
 import { useState } from 'react';
 import { patients } from 'src/utils/generate-mock';
 import { Box, Button, InputAdornment, Stack, TextField } from '@mui/material';
-import { PlusIcon, SearchIcon, Filter } from 'lucide-react';
+import { PlusIcon, SearchIcon } from 'lucide-react';
 import PatientManagementList from 'src/sections/admin/patient-management/patient-management-list';
 import AddPatientDialog from 'src/sections/admin/patient-management/add-patient-dialog';
+import AdvancedFilter from 'src/components/advanced-filter/advanced-filter';
 
 const Page: PageType = () => {
   const { user } = useAuth();
@@ -45,14 +46,7 @@ const Page: PageType = () => {
               }}
             />
             <Stack className='max-sm:ml-auto' direction={'row'} gap={1} alignItems={'center'}>
-              <Button
-                variant='outlined'
-                color='inherit'
-                endIcon={<Filter />}
-                // onClick={() => router.push('/admin/patient-management/create')}
-              >
-                Filter
-              </Button>
+              <AdvancedFilter filters={[]} />
 
               <Button
                 variant='contained'

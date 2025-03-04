@@ -12,7 +12,7 @@ const Page: PageType = () => {
       router.replace('/landing');
       console.log(user);
     } else {
-      router.replace('/landing');
+      router.replace('/dashboard');
     }
   }, [router, user]);
 
