@@ -1,23 +1,29 @@
-type AppointmentStatus = 'AVAILABLE' | 'BOOKED' | 'BLOCKED';
+export type AppointmentStatus = 'DECLINED' | 'PENDING' | 'COMPLETED';
+export type TimeSlotStatus = 'AVAILABLE' | 'BOOKED';
+export type AppointmentType = 'INITIAL' | 'FOLLOW_UP';
 export interface Appointment {
   id: string;
-  staffId: string;
+  staffId?: string;
   userId: string;
   timeSlot: TimeSlot;
   notes?: string;
+  status: AppointmentStatus;
+  type: AppointmentType;
+  createdAt: string;
+  reason?: string;
 }
 
 export interface TimeSlot {
   id: string;
   startTime: string;
   endTime: string;
-  status: AppointmentStatus;
+  status?: TimeSlotStatus;
+  date: string;
 }
 
 export interface Schedule {
   id: string;
   staffId: string;
-  date: string;
   timeSlots: TimeSlot[];
 }
 

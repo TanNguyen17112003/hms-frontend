@@ -18,7 +18,7 @@ export interface UsePaginationResult {
 
 function usePagination({ count, initialRowsPerPage }: UsePaginationProps): UsePaginationResult {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage || 10);
+  const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage || 5);
 
   const totalPages = Math.ceil(count / rowsPerPage);
 

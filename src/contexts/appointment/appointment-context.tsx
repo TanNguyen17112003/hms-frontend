@@ -4,7 +4,7 @@ import useFunction, {
   DEFAULT_FUNCTION_RETURN,
   UseFunctionReturnType
 } from 'src/hooks/use-function';
-import { AppointmentDetail } from 'src/types/appoitment';
+import { AppointmentDetail } from 'src/types/appointment';
 import { useAuth } from '@hooks';
 
 interface ContextValue {

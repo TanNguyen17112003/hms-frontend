@@ -1,7 +1,7 @@
-import { Schedule } from './appoitment';
+import { Schedule } from './appointment';
 
 type UserRole = 'ADMIN' | 'STAFF' | 'PATIENT';
-type UserGender = 'MALE' | 'FEMAIL';
+type UserGender = 'MALE' | 'FEMALE';
 type WorkStatus = 'FULL_TIME' | 'PART_TIME';
 
 export interface User {

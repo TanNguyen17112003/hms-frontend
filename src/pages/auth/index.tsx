@@ -212,7 +212,7 @@ const Page: PageType = () => {
           <Image
             src={backgroundAuth}
             alt='Background Image'
-            className='w-[100%] h-screen object-cover'
+            className='w-[100%] h-screen object-contain'
           />
         </Box>
       </Box>
