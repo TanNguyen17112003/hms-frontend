@@ -6,6 +6,7 @@ import viLocale from 'date-fns/locale/vi';
 import { DateRangePicker } from 'mui-daterange-picker';
 import { DateRangePickerWrapperProps } from 'mui-daterange-picker/dist/components/DateRangePickerWrapper';
 import { useState } from 'react';
+import { Calendar } from 'lucide-react';
 
 interface DateRangePickerSubProps {
   labelHolder?: string;
@@ -28,7 +29,7 @@ function DateRangePickerTextField(
         InputProps={{
           startAdornment: (
             <InputAdornment position='start' sx={{ display: 'flex', justifyContent: 'center' }}>
-              <CalendarToday />
+              <Calendar />
             </InputAdornment>
           ),
           endAdornment: !props.hideCloseIcon && (

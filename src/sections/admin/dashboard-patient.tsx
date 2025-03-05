@@ -1,30 +1,27 @@
 import { Box, Chip, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import usePagination from 'src/hooks/use-pagination';
-import getPatientManangementTableConfig from './patient-management-table-config';
+import getPatientManangementTableConfig from './patient-management/patient-management-table-config';
 import { useDialog, useDrawer, useSelection } from '@hooks';
 import { CustomTable } from '@components';
 import { Stack } from '@mui/system';
 import { PatientDetail } from 'src/types/user';
 import DeleteUserDialog from 'src/sections/delete-user-dialog';
 
-interface PatientManagementListProps {
+interface DashboardPatientProps {
   patients: PatientDetail[];
-  searchInput: string;
 }
-const PatientManagementList: React.FC<PatientManagementListProps> = ({ patients, searchInput }) => {
+const DashboardPatient: React.FC<DashboardPatientProps> = ({ patients }) => {
   const select = useSelection<PatientDetail>(patients);
   const deleteDialog = useDialog<PatientDetail>();
   const editDrawer = useDrawer<PatientDetail>();
   const pagination = usePagination({
     count: patients.length
   });
-  const filteredUsers = patients.filter((user) => {
-    return user.name.toLowerCase().includes(searchInput.toLowerCase());
-  });
-  const results = filteredUsers.map((patient, index) => ({ ...patient, index: index + 1 }));
 
-  const PatientManagementListConfig = useMemo(() => {
+  const results = patients.map((patient, index) => ({ ...patient, index: index + 1 }));
+
+  const DashboardPatientConfig = useMemo(() => {
     return getPatientManangementTableConfig({
       onClickRemove: (data) => deleteDialog.handleOpen(data),
       onClickEdit: (data) => editDrawer.handleOpen(data)
@@ -48,7 +45,7 @@ const PatientManagementList: React.FC<PatientManagementListProps> = ({ patients,
       <CustomTable
         className='mt-5'
         rows={results}
-        configs={PatientManagementListConfig}
+        configs={DashboardPatientConfig}
         pagination={pagination}
         cellClassName='bg-white'
         select={select}
@@ -63,4 +60,4 @@ const PatientManagementList: React.FC<PatientManagementListProps> = ({ patients,
   );
 };
 
-export default PatientManagementList;
+export default DashboardPatient;

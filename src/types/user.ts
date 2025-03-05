@@ -1,7 +1,7 @@
-import { Schedule } from './appoitment';
+import { Schedule } from './appointment';
 
 type UserRole = 'ADMIN' | 'STAFF' | 'PATIENT';
-type UserGender = 'MALE' | 'FEMAIL';
+type UserGender = 'MALE' | 'FEMALE';
 type WorkStatus = 'FULL_TIME' | 'PART_TIME';
 
 export interface User {
@@ -42,4 +42,21 @@ export interface StaffDetail extends UserDetail {
   licenseNumber: string;
   patients: PatientDetail[];
   schedule: Schedule[];
+}
+
+export interface PatientData {
+  id: string;
+  name: string;
+  email: string;
+  date: Date;
+  age: number;
+  diseases: string;
+  status: string;
+  role: UserRole;
+  sex: UserGender;
+  phoneNumber: string;
+  address: string;
+  dob: string;
+  governmentId: string;
+  hospitalId: string;
 }
