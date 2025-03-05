@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, CardContent, Typography, Box, Divider } from '@mui/material';
+import { normalize } from 'path';
 
 interface PatientProfileCardProps {
   patientName: string;
@@ -31,10 +32,10 @@ const PatientProfileCard: React.FC<PatientProfileCardProps> = (props) => {
   } = props;
 
   return (
-    <Card className='w-full max-w-md mx-auto'>
-      <CardContent className='p-4 md:p-6'>
+    <Card className='w-[500px] lg:p-4 '>
+      <CardContent className='p-4 lg:flex lg:flex-col lg:justify-center md:flex md:flex-row md:justify-center' style = {{ justifyContent: 'normal', padding: 0, margin: 0}}>
         {/* Profile Section */}
-        <Box className='flex flex-col items-center mb-4'>
+        <Box className='flex flex-col items-center mb-4 md:mr-4 lg:mr-0'>
           {/* Profile Image with Blue Tick */}
           <Box className='relative mb-4'>
             <Box
