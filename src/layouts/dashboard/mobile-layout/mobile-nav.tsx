@@ -47,7 +47,7 @@ const useCssVars = (color: NavColor): Record<string, string> => {
             '--nav-item-active-color': 'primary.main',
             '--nav-item-disabled-color': theme.palette.neutral[600],
             '--nav-item-icon-color': theme.palette.neutral[900],
-            '--nav-item-icon-active-color': 'primary.main',
+            '--nav-item-icon-active-color': '#EEEFFC',
             '--nav-item-icon-disabled-color': theme.palette.neutral[700],
             '--nav-item-chevron-color': theme.palette.neutral[700],
             '--nav-scrollbar-color': theme.palette.neutral[400]

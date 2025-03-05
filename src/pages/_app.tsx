@@ -43,10 +43,6 @@ const App = (props: AppProps) => {
             {(auth) => {
               const theme = createTheme(initialSettings);
               const showSplashScreen = !auth.isInitialized;
-              if (!showSplashScreen) {
-                return <SplashScreen />;
-                // return <LandingScreen />;
-              }
               return (
                 <ThemeProvider theme={theme}>
                   <Head>
@@ -54,10 +50,14 @@ const App = (props: AppProps) => {
                     <meta name='theme-color' content={theme.palette.primary.main} />
                   </Head>
                   <CssBaseline />
-                  <Stack direction={'column'}>
-                    <Header />
-                    {getLayout(<Component {...pageProps} />)}
-                  </Stack>
+                  {showSplashScreen ? (
+                    <SplashScreen />
+                  ) : (
+                    <Stack direction={'column'}>
+                      <Header />
+                      {getLayout(<Component {...pageProps} />)}
+                    </Stack>
+                  )}
                 </ThemeProvider>
               );
             }}

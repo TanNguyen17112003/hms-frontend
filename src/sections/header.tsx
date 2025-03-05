@@ -67,7 +67,10 @@ export const Header = () => {
           {sections?.map((section, index) => (
             <MobileNavSection
               key={index}
-              items={section.items}
+              items={section.items.map((item) => ({
+                ...item,
+                path: typeof item.path === 'object' ? undefined : item.path
+              }))}
               pathname={router.pathname}
               subheader={section.subheader}
               onClose={() => toggleDrawer(false)}

@@ -42,19 +42,20 @@ const getAppointmentManangementTableConfig = ({
   },
   {
     key: 'doctor',
-    headerLabel: 'doctor',
+    headerLabel: 'Doctor',
     type: 'string',
-    renderCell: (data) => (
-      <Stack direction='row' alignItems={'center'} spacing={1}>
-        <Avatar src={data.doctor?.photoUrl} />
-        <Box>
-          <Typography variant='body1'>{data.doctor?.name}</Typography>
-          <Typography variant='body2' color='textSecondary'>
-            {data.doctor?.email as string}
-          </Typography>
-        </Box>
-      </Stack>
-    )
+    renderCell: (data) =>
+      data.status === 'COMPLETED' && (
+        <Stack direction='row' alignItems={'center'} spacing={1}>
+          <Avatar src={data.doctor?.photoUrl} />
+          <Box>
+            <Typography variant='body1'>{data.doctor?.name}</Typography>
+            <Typography variant='body2' color='textSecondary'>
+              {data.doctor?.email as string}
+            </Typography>
+          </Box>
+        </Stack>
+      )
   },
   {
     key: 'Date',

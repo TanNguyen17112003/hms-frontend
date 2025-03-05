@@ -1,5 +1,5 @@
 import { Box, Chip, Typography } from '@mui/material';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import usePagination from 'src/hooks/use-pagination';
 import { useDialog, useDrawer, useSelection } from '@hooks';
 import { CustomTable } from '@components';
@@ -10,6 +10,7 @@ import getAppointmentManangementTableConfig from './appointment-management-table
 import { AppointmentDetail } from 'src/types/appointment';
 import ApproveAppointmentDialog from './appointment-approve-dialog';
 import DeclineAppointmentDialog from './appointment-decline-dialog';
+import { useRouter } from 'next/router';
 
 interface AppointmentManagementListProps {
   appointments: AppointmentDetail[];
@@ -33,6 +34,7 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
   const pagination = usePagination({
     count: appointments.length
   });
+  const router = useRouter();
 
   const filteredAppointments = configAppointments.filter((appointment) => {
     return appointment?.staffId?.toLowerCase().includes(searchInput.toLowerCase());
@@ -48,6 +50,13 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
       onClickApprove: (data) => approveDialog.handleOpen(data)
     });
   }, [getAppointmentManangementTableConfig]);
+
+  const handleGoAppointment = useCallback((id: string) => {
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, appointmentId: id }
+    });
+  }, []);
 
   return (
     <Box
@@ -67,6 +76,7 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
         className='mt-5'
         rows={results}
         configs={AppointmentManagementListConfig}
+        onClickRow={(data) => handleGoAppointment(data.id)}
         pagination={pagination}
         cellClassName='bg-white'
         select={select}
