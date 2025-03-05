@@ -1,28 +1,5 @@
 import React from 'react';
-import { Card, CardContent, Typography, Box, Chip } from '@mui/material';
-import { styled } from '@mui/system';
-
-// Styled Card with Tailwind classes for responsiveness
-const StyledCard = styled(Card)(({ theme }) => ({
-  maxWidth: '100%',
-  margin: '0 auto',
-  backgroundColor: '#1A202C',
-  color: '#FFFFFF',
-  borderRadius: '12px',
-  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  [theme.breakpoints.down('sm')]: {
-    padding: '1rem',
-  },
-}));
-
-// Styled Box for the profile image
-const ProfileImage = styled('img')({
-  width: '100px',
-  height: '100px',
-  borderRadius: '50%',
-  objectFit: 'cover',
-  marginBottom: '1rem',
-});
+import { Card, CardContent, Typography, Box, Divider } from '@mui/material';
 
 interface PatientProfileCardProps {
   patientName: string;
@@ -50,132 +27,229 @@ const PatientProfileCard: React.FC<PatientProfileCardProps> = (props) => {
     patientBloodPressure,
     patientHeight,
     patientWeight,
-    patientHeartRate,
+    patientHeartRate
   } = props;
+
   return (
-    <StyledCard className="w-full max-w-md mx-auto bg-gray-900 text-white p-4 md:p-6 lg:p-8">
-      <CardContent className="flex flex-col items-center text-center">
-        {/* Profile Image */}
-        <ProfileImage
-          src="https://via.placeholder.com/100" // Replace with actual image URL or dynamic prop if available
-          alt={`${patientName}'s profile`}
-          className="mb-4"
-        />
+    <Card className='w-full max-w-md mx-auto'>
+      <CardContent className='p-4 md:p-6'>
+        {/* Profile Section */}
+        <Box className='flex flex-col items-center mb-4'>
+          {/* Profile Image with Blue Tick */}
+          <Box className='relative mb-4'>
+            <Box
+              component='img'
+              src='/ui/PatientDetail/avt-photo-blue-tick.png'
+              alt={`${patientName}'s profile`}
+              className='w-24 h-24 rounded-full object-cover'
+            />
+          </Box>
 
-        {/* Patient Name and Basic Info */}
-        <Typography variant="h5" component="div" className="font-bold mb-2">
-          {patientName}
-        </Typography>
-        <Typography variant="subtitle1" color="text.secondary" className="mb-4">
-          {`${patientOld} Years, ${patientSexual}`}
-        </Typography>
-
-        {/* Current Status Section */}
-        <Box className="w-full mb-4 bg-gray-800 p-3 rounded-lg">
-          <Typography variant="subtitle2" className="font-semibold mb-2">
-            Current Status
-          </Typography>
-          <div className="flex flex-col gap-2">
-            <Chip
-              label="Room Number: 28B"
-              color="primary"
-              variant="outlined"
-              className="bg-gray-700 text-white"
-            />
-            <Chip
-              label="Risky"
-              color="warning"
-              className="bg-yellow-600 text-white"
-            />
-            <Chip
-              label="Under Treatment"
-              color="secondary"
-              className="bg-blue-600 text-white"
-            />
-          </div>
+          {/* Patient Name and Basic Info */}
+          <Box className='text-center'>
+            <Typography variant='h5' className='font-bold' sx={{ color: '#101828', mb: 1 }}>
+              {patientName}
+            </Typography>
+            <Typography variant='subtitle1' sx={{ color: '#475467' }}>
+              {`${patientOld} Years, ${patientSexual}`}
+            </Typography>
+          </Box>
         </Box>
-
+        <Divider style={{marginBottom: 10}} color='gray' />
         {/* Contact and Medical Info */}
-        <Box className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+        <Box className='grid grid-cols-2 gap-4 mb-4'>
           <Box>
-            <Typography variant="body2" className="font-medium mb-1">
+            <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
               Email
             </Typography>
-            <Typography variant="body1">{patientEmail}</Typography>
+            <Typography variant='body1' sx={{ color: '#101828' }}>
+              {patientEmail}
+            </Typography>
           </Box>
           <Box>
-            <Typography variant="body2" className="font-medium mb-1">
+            <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
               Phone
             </Typography>
-            <Typography variant="body1">{patientPhone}</Typography>
+            <Typography variant='body1' sx={{ color: '#101828' }}>
+              {patientPhone}
+            </Typography>
           </Box>
           <Box>
-            <Typography variant="body2" className="font-medium mb-1">
+            <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
               Date of Birth
             </Typography>
-            <Typography variant="body1">{patientDateOfBirth}</Typography>
+            <Typography variant='body1' sx={{ color: '#101828' }}>
+              {patientDateOfBirth}
+            </Typography>
           </Box>
           <Box>
-            <Typography variant="body2" className="font-medium mb-1">
+            <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
               Diseases
             </Typography>
-            <Typography variant="body1">{patientDiseases}</Typography>
+            <Typography variant='body1' sx={{ color: '#101828' }}>
+              {patientDiseases}
+            </Typography>
           </Box>
         </Box>
 
+        <Divider style={{marginBottom: 10}} color='gray' />
+
         {/* Vital Stats */}
-        <Box className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mt-4">
-          <Box className="bg-gray-800 p-3 rounded-lg">
-            <Typography variant="body2" className="font-medium mb-1">
+        <Box className='grid grid-cols-2 gap-4'>
+          {/* Blood Pressure */}
+          <Box className='bg-blue-50 p-3 rounded-lg'>
+            <Typography
+              variant='body2'
+              sx={{
+                color: '#475467',
+                mb: 1
+              }}
+            >
               Blood Pressure
             </Typography>
-            <Typography variant="body1">{patientBloodPressure}</Typography>
-            <div className="w-full bg-gray-700 rounded-full h-2.5 mt-2">
-              <div
-                className="bg-blue-500 h-2.5 rounded-full"
-                style={{ width: '30%' }}
-              ></div>
-            </div>
+            <Box className='flex items-center justify-between mb-1'>
+              <Typography
+                variant='body2'
+                sx={{
+                  color: '#101828',
+                  fontWeight: 'bold'
+                }}
+              >
+                30%
+              </Typography>
+              <Box className='w-full bg-blue-100 rounded-full h-2 ml-2'>
+                <Box className='bg-blue-500 h-2 rounded-full' style={{ width: '30%' }}></Box>
+              </Box>
+            </Box>
+            <Box className='flex justify-end items-center'>
+              <Typography
+                variant='body1'
+                sx={{
+                  color: '#101828',
+                  fontWeight: 'bold'
+                }}
+              >
+                {patientBloodPressure}
+              </Typography>
+            </Box>
           </Box>
-          <Box className="bg-gray-800 p-3 rounded-lg">
-            <Typography variant="body2" className="font-medium mb-1">
+
+          {/* Heart Rate Unit */}
+          <Box className='bg-blue-50 p-3 rounded-lg'>
+            <Typography
+              variant='body2'
+              sx={{
+                color: '#475467',
+                mb: 1
+              }}
+            >
               Heart Rate
             </Typography>
-            <Typography variant="body1">{patientHeartRate}</Typography>
-            <div className="w-full bg-gray-700 rounded-full h-2.5 mt-2">
-              <div
-                className="bg-blue-500 h-2.5 rounded-full"
-                style={{ width: '30%' }}
-              ></div>
-            </div>
+            <Box className='flex items-center justify-between mb-1'>
+              <Typography
+                variant='body2'
+                sx={{
+                  color: '#101828',
+                  fontWeight: 'bold'
+                }}
+              >
+                30%
+              </Typography>
+              <Box className='w-full bg-blue-100 rounded-full h-2 ml-2'>
+                <Box className='bg-blue-500 h-2 rounded-full' style={{ width: '30%' }}></Box>
+              </Box>
+            </Box>
+            <Box className='flex justify-end items-center'>
+              <Typography
+                variant='body1'
+                sx={{
+                  color: '#101828',
+                  fontWeight: 'bold'
+                }}
+              >
+                {patientHeartRate}
+              </Typography>
+            </Box>
           </Box>
-          <Box className="bg-gray-800 p-3 rounded-lg">
-            <Typography variant="body2" className="font-medium mb-1">
+
+          {/* Body Height */}
+          <Box className='bg-blue-50 p-3 rounded-lg'>
+            <Typography
+              variant='body2'
+              sx={{
+                color: '#475467',
+                mb: 1
+              }}
+            >
               Body Height
             </Typography>
-            <Typography variant="body1">{patientHeight}</Typography>
-            <div className="w-full bg-gray-700 rounded-full h-2.5 mt-2">
-              <div
-                className="bg-blue-500 h-2.5 rounded-full"
-                style={{ width: '30%' }}
-              ></div>
-            </div>
+            <Box className='flex items-center justify-between mb-1'>
+              <Typography
+                variant='body2'
+                sx={{
+                  color: '#101828',
+                  fontWeight: 'bold'
+                }}
+              >
+                30%
+              </Typography>
+              <Box className='w-full bg-blue-100 rounded-full h-2 ml-2'>
+                <Box className='bg-blue-500 h-2 rounded-full' style={{ width: '30%' }}></Box>
+              </Box>
+            </Box>
+            <Box className='flex justify-end items-center'>
+              <Typography
+                variant='body1'
+                sx={{
+                  color: '#101828',
+                  fontWeight: 'bold'
+                }}
+              >
+                {patientHeight}
+              </Typography>
+            </Box>
           </Box>
-          <Box className="bg-gray-800 p-3 rounded-lg">
-            <Typography variant="body2" className="font-medium mb-1">
+
+          {/* Body Weight */}
+          <Box className='bg-blue-50 p-3 rounded-lg'>
+            <Typography
+              variant='body2'
+              sx={{
+                color: '#475467',
+                mb: 1
+              }}
+            >
               Body Weight
             </Typography>
-            <Typography variant="body1">{patientWeight}</Typography>
-            <div className="w-full bg-gray-700 rounded-full h-2.5 mt-2">
-              <div
-                className="bg-blue-500 h-2.5 rounded-full"
-                style={{ width: '30%' }}
-              ></div>
-            </div>
+            <Box className='flex items-center justify-between mb-1'>
+              <Typography
+                variant='body2'
+                sx={{
+                  color: '#101828',
+                  fontWeight: 'bold'
+                }}
+              >
+                30%
+              </Typography>
+              <Box className='w-full bg-blue-100 rounded-full h-2 ml-2'>
+                <Box className='bg-blue-500 h-2 rounded-full' style={{ width: '30%' }}></Box>
+              </Box>
+            </Box>
+            <Box className='flex justify-end items-center'>
+              <Typography
+                variant='body1'
+                sx={{
+                  color: '#101828',
+                  fontWeight: 'bold'
+                }}
+              >
+                {patientWeight}
+              </Typography>
+            </Box>
           </Box>
         </Box>
       </CardContent>
-    </StyledCard>
+    </Card>
   );
 };
 
