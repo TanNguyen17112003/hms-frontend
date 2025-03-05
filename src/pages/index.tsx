@@ -10,16 +10,14 @@ const Page: PageType = () => {
 
   useEffect(() => {
     if (user) {
-      router.replace('/landing');
+      router.replace('/dashboard');
       console.log(user);
     } else {
-      router.replace('/dashboard');
+      router.replace('/landing');
     }
   }, [router, user]);
 
   return <></>;
 };
-
-Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
 export default Page;

@@ -58,3 +58,10 @@ export function formatStandardDate(date: string): string {
   const formattedDate = new Date(date).toLocaleDateString('en-GB', options);
   return formattedDate;
 }
+
+export function calculateAge(date: string): number {
+  const dob = new Date(date);
+  const ageDifMs = Date.now() - dob.getTime();
+  const ageDate = new Date(ageDifMs);
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+}

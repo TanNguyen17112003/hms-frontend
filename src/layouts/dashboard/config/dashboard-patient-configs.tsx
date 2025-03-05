@@ -22,22 +22,22 @@ export const getDashboardPatientConfigs = () => {
       items: [
         {
           title: 'Dashboard',
-          path: paths.auth.login,
+          path: paths.dashboard.index,
           icon: <BarChart2 className='h-6 w-6' />
         },
         {
           title: 'My Appointments',
-          path: paths.auth.login,
+          path: paths.appointment.index,
           icon: <CalendarPlus2 className='h-6 w-6' />
         },
         {
           title: 'Doctor List',
-          path: paths.auth.login,
+          path: paths.staff.index,
           icon: <Users className='h-6 w-6' />
         },
         {
           title: 'My Account',
-          paht: paths.auth.login,
+          paht: paths.account,
           icon: <User className='h-6 w-6' />
         }
       ]
