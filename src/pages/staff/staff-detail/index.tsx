@@ -1,22 +1,32 @@
 import { Layout as DashboardLayout } from 'src/layouts/dashboard';
 import type { Page as PageType } from 'src/types/page';
-import { useAuth } from '@hooks';
 import React, { useState } from 'react';
-import { Box, Divider, IconButton, Link, Paper } from '@mui/material';
+import {
+  Box,
+  Divider,
+  IconButton,
+  Link,
+  Card,
+  CardContent,
+  Avatar,
+  Typography,
+  Chip,
+  Button
+} from '@mui/material';
 import UserProvider from 'src/contexts/user/user-context';
 import AppointmentProvider from 'src/contexts/appointment/appointment-context';
-import { Card, CardContent, Avatar, Typography, Chip, Button } from '@mui/material';
 import {
   Star,
   Circle,
-  LocationOn,
-  StarRate,
-  Schedule,
+  MapPin,
+  Award,
+  Clock,
   ChevronLeft,
-  ChevronRight
-} from '@mui/icons-material';
-import { ShieldCheck, ThumbsUp } from 'lucide-react';
-import { border, Grid } from '@mui/system';
+  ChevronRight,
+  ShieldCheck,
+  ThumbsUp
+} from 'lucide-react';
+import Grid from '@mui/material/Grid2';
 
 const doctorData = {
   biography:
@@ -174,12 +184,12 @@ const Page: PageType = () => {
                 <Box className='flex items-center w-full justify-between'>
                   <div className='flex items-center gap-3'>
                     <Box className='flex items-center justify-end'>
-                      <StarRate fontSize='small' className='text-yellow-500 mr-1' />
+                      <Award fontSize='small' className='text-yellow-500 mr-1' />
                       <Typography variant='body2'>5 Star</Typography>
                     </Box>
 
                     <Box className='flex items-center gap-x-1'>
-                      <Schedule fontSize='small' className='text-blue-600' />
+                      <Clock fontSize='small' className='text-blue-600' />
                       <Typography variant='body2'>Max 15 mins wait</Typography>
                     </Box>
                   </div>
@@ -188,7 +198,7 @@ const Page: PageType = () => {
                 </Box>
 
                 <Box className='flex items-center gap-1'>
-                  <LocationOn fontSize='small' className='text-gray-500' />
+                  <MapPin fontSize='small' className='text-gray-500' />
                   <Typography variant='body2' className='text-gray-500'>
                     Sylhet, Bangladesh
                   </Typography>
@@ -236,7 +246,7 @@ const Page: PageType = () => {
             <Grid columns={12} container spacing={1} className='mb-2'>
               {timeSlots.map((slot, index) => {
                 return (
-                  <Grid size={4} key={index} className=''>
+                  <Grid size={4} key={index}>
                     <Button
                       fullWidth
                       variant={selectedTimeSlot === slot ? 'contained' : 'outlined'}
@@ -285,7 +295,7 @@ const Page: PageType = () => {
           <div className='flex flex-col gap-5 w-full sm:w-1/2'>
             <Typography variant='h6'>Education</Typography>
             <div className='flex gap-4'>
-              <Circle sx={{ color: '#070B5C', width: '10px' }} />
+              <Circle size={8} fill='currentColor' className='text-gray-500 mt-1 min-w-4' />
               <div className='flex flex-col gap-1'>
                 <Typography variant='body2' fontWeight={600}>
                   Chattagram International Dental College & Hospital
@@ -299,7 +309,7 @@ const Page: PageType = () => {
               </div>
             </div>
             <div className='flex gap-4'>
-              <Circle sx={{ color: '#070B5C', width: '10px' }} />
+              <Circle size={8} fill='currentColor' className='text-gray-500 mt-1 min-w-4' />
               <div className='flex flex-col gap-1'>
                 <Typography variant='body2' fontWeight={600}>
                   US Dental Medical University
@@ -316,7 +326,7 @@ const Page: PageType = () => {
           <div className='flex flex-col gap-5 w-full sm:w-1/2'>
             <Typography variant='h6'>Work & Experience</Typography>
             <div className='flex gap-4'>
-              <Circle sx={{ color: '#070B5C', width: '10px' }} />
+              <Circle size={8} fill='currentColor' className='text-gray-500 mt-1 min-w-4' />
               <div className='flex flex-col gap-1'>
                 <Typography variant='body2' fontWeight={600}>
                   Chattagram International Dental College & Hospital
@@ -327,7 +337,7 @@ const Page: PageType = () => {
               </div>
             </div>
             <div className='flex gap-4'>
-              <Circle sx={{ color: '#070B5C', width: '10px' }} />
+              <Circle size={8} fill='currentColor' className='text-gray-500 mt-1 min-w-4' />
               <div className='flex flex-col gap-1'>
                 <Typography variant='body2' fontWeight={600}>
                   Ibn Sina Specialized Hospital
@@ -338,7 +348,7 @@ const Page: PageType = () => {
               </div>
             </div>
             <div className='flex gap-4'>
-              <Circle sx={{ color: '#070B5C', width: '10px' }} />
+              <Circle size={8} fill='currentColor' className='text-gray-500 mt-1 min-w-4' />
               <div className='flex flex-col gap-1'>
                 <Typography variant='body2' fontWeight={600}>
                   Smile Dental Cares
@@ -355,7 +365,7 @@ const Page: PageType = () => {
           <Typography variant='h6'>Achievements</Typography>
           <div className='flex gap-4'>
             <div className='flex gap-4 w-full md:w-1/2'>
-              <Circle sx={{ color: '#070B5C', width: '10px' }} />
+              <Circle size={8} fill='currentColor' className='text-gray-500 mt-1 min-w-4' />
               <div className='flex flex-col gap-1'>
                 <Typography variant='body2' fontWeight={600}>
                   Best Dentist Award 2021
@@ -371,7 +381,7 @@ const Page: PageType = () => {
               </div>
             </div>
             <div className='flex gap-4 w-full md:w-1/2'>
-              <Circle sx={{ color: '#070B5C', width: '10px' }} />
+              <Circle size={8} fill='currentColor' className='text-gray-500 mt-1 min-w-4' />
               <div className='flex flex-col gap-1'>
                 <Typography variant='body2' fontWeight={600}>
                   The Dental Professional of The Year Award
