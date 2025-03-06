@@ -45,7 +45,7 @@ const RelativeInfoCard: React.FC<RelativeInfoCardProps> = (props) => {
           <Divider style={{ marginBottom: 10 }} color='gray' />
           <Box className='flex flex-col gap-3'>
             <TableContainer>
-              <Table sx={{ minWidth: 650 }} aria-label='relative table'>
+              <Table aria-label='relative table'>
                 <TableHead>
                   <TableRow>
                     <TableCell className='!bg-[#0E1680] !text-white !border-white'>

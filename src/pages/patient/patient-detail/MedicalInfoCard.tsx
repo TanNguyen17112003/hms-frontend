@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, Typography, Box, Divider } from '@mui/material';
 // import { normalize } from 'path';
-import { HeartPulse, Pencil } from 'lucide-react';
+import { ChevronUp, HeartPulse, Pencil, TrendingDown, TrendingUp } from 'lucide-react';
 
 interface MedicalInfoCardProps {
   medicalInfo: any;
@@ -24,20 +24,22 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
             </button>
           </Box>
           <Divider style={{ marginBottom: 10 }} color='gray' />
-          <Box className='grid grid-cols-4 gap-4'>
-            <Box className=' col-span-1 flex flex-col gap-3'>
+          <Box className='flex flex-col gap-2'>
+            <Box className='grid grid-cols-2 gap-3 mb-3'>
               <Box className='bg-blue-50 p-3 rounded-lg'>
-                <Box className='flex justify-between items-center'>
+                <Box className='flex justify-between items-center w-full mb-1'>
                   <Typography
                     variant='body2'
                     sx={{
-                      color: '#475467',
-                      mb: 1
+                      color: '#475467'
                     }}
                   >
                     BMI
                   </Typography>
-                  <Box></Box>
+                  <div className='flex gap-2 text-[#09A909]'>
+                    <TrendingUp />
+                    <div>10</div>
+                  </div>
                 </Box>
 
                 {/* <Box className='flex items-center justify-between mb-1'>
@@ -71,15 +73,20 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
               </Box>
 
               <Box className='bg-blue-50 p-3 rounded-lg'>
-                <Typography
-                  variant='body2'
-                  sx={{
-                    color: '#475467',
-                    mb: 1
-                  }}
-                >
-                  Height
-                </Typography>
+                <Box className='flex justify-between items-center w-full mb-1'>
+                  <Typography
+                    variant='body2'
+                    sx={{
+                      color: '#475467'
+                    }}
+                  >
+                    Height
+                  </Typography>
+                  <div className='flex gap-2 text-[#09A909]'>
+                    <TrendingUp />
+                    <div>5</div>
+                  </div>
+                </Box>
                 <Box className='flex gap-2 items-end'>
                   <Typography
                     variant='h5'
@@ -100,15 +107,20 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
                 </Box>
               </Box>
               <Box className='bg-blue-50 p-3 rounded-lg'>
-                <Typography
-                  variant='body2'
-                  sx={{
-                    color: '#475467',
-                    mb: 1
-                  }}
-                >
-                  Weight
-                </Typography>
+                <Box className='flex justify-between items-center w-full mb-1'>
+                  <Typography
+                    variant='body2'
+                    sx={{
+                      color: '#475467'
+                    }}
+                  >
+                    BMI
+                  </Typography>
+                  <div className='flex gap-2 text-red-500'>
+                    <TrendingDown />
+                    <div>10</div>
+                  </div>
+                </Box>
                 <Box className='flex gap-2 items-end'>
                   <Typography
                     variant='h5'
@@ -129,15 +141,20 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
                 </Box>
               </Box>
               <Box className='bg-blue-50 p-3 rounded-lg'>
-                <Typography
-                  variant='body2'
-                  sx={{
-                    color: '#475467',
-                    mb: 1
-                  }}
-                >
-                  Blood Pressure
-                </Typography>
+                <Box className='flex justify-between items-center w-full mb-1'>
+                  <Typography
+                    variant='body2'
+                    sx={{
+                      color: '#475467'
+                    }}
+                  >
+                    Blood Pressure
+                  </Typography>
+                  <div className='flex gap-2 text-red-500'>
+                    <TrendingDown />
+                    <div>10</div>
+                  </div>
+                </Box>
                 <Box className='flex gap-2 items-end'>
                   <Typography
                     variant='h5'
@@ -150,7 +167,7 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
                   </Typography>
                 </Box>
               </Box>
-              <Box className='bg-blue-50 p-3 rounded-lg'>
+              {/* <Box className='bg-blue-50 p-3 rounded-lg'>
                 <Typography
                   variant='body2'
                   sx={{
@@ -171,9 +188,17 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
                     {medicalInfo.bloodType}
                   </Typography>
                 </Box>
-              </Box>
+              </Box> */}
             </Box>
-            <Box className='col-span-3 flex flex-col gap-5'>
+            <Box className='col-span-2 grid grid-cols-2 gap-5'>
+              <Box>
+                <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
+                  Blood Type
+                </Typography>
+                <Typography variant='body1' sx={{ color: '#101828' }}>
+                  {medicalInfo.bloodType}
+                </Typography>
+              </Box>
               <Box>
                 <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
                   Insurance Type
@@ -198,7 +223,7 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
                   {medicalInfo.insurancePeriod}
                 </Typography>
               </Box>
-              <Box>
+              {/* <Box>
                 <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
                   Allergies
                 </Typography>
@@ -220,7 +245,7 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
                     </Typography>
                   </Box>
                 ))}
-              </Box>
+              </Box> */}
             </Box>
           </Box>
         </Box>
