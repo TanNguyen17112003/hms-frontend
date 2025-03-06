@@ -38,15 +38,15 @@ export const AuthGuard: FC<AuthGuardProps> = (props) => {
   // Only check on mount, this allows us to redirect the user manually when auth state changes
   useEffect(
     () => {
-      // check();
+      check();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
-  // if (!checked) {
-  //   return null;
-  // }
+  if (!checked) {
+    return null;
+  }
 
   // If got here, it means that the redirect did not occur, and that tells us that the user is
   // authenticated / authorized.
