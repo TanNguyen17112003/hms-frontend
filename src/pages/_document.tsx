@@ -79,29 +79,6 @@ const Pwa: FC = () => (
   </>
 );
 
-// const Seo: FC = () => (
-//   <>
-//     <meta name="twitter:card" content="summary" />
-//     <meta name="twitter:url" content="http://4.194.163.254:3001" />
-//     <meta name="twitter:title" content="HealthPro" />
-//     <meta name="twitter:description" content="HealthPro" />
-//     <meta
-//       name="twitter:image"
-//       content="http://4.194.163.254:3001/icons/android-chrome-192x192.png"
-//     />
-//     <meta name="twitter:creator" content="@SHub" />
-//     <meta property="og:type" content="website" />
-//     <meta property="og:title" content="HealthPro" />
-//     <meta property="og:description" content="HealthPro" />
-//     <meta property="og:site_name" content="HealthPro" />
-//     <meta property="og:url" content="http://4.194.163.254:3001" />
-//     <meta
-//       property="og:image"
-//       content="http://4.194.163.254:3001/icons/apple-touch-icon.png"
-//     />
-//   </>
-// );
-
 class CustomDocument extends Document {
   render() {
     return (

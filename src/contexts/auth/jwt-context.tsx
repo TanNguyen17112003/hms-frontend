@@ -24,7 +24,7 @@ type InitializeAction = {
   type: ActionType.INITIALIZE;
   payload: {
     isAuthenticated: boolean;
-    user: UserDetail;
+    user: UserDetail | null;
   };
 };
 
@@ -130,7 +130,51 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const router = useRouter();
 
-  const initialize = useCallback(async (): Promise<void> => {}, [dispatch]);
+  const initialize = useCallback(async (): Promise<void> => {
+    try {
+      const accessToken = CookieHelper.getItem(CookieKeys.TOKEN);
+      const userData = CookieHelper.getItem('user_data');
+      console.log('accessToken', accessToken);
+      console.log('user_data', userData);
+
+      if (accessToken && userData) {
+        let user: UserDetail | undefined = undefined;
+        try {
+          user = JSON.parse(userData);
+        } catch {}
+        if (!user) {
+          user = await JSON.parse(localStorage.getItem('user_data') || '{}');
+          if (!user || !user.id || !user.role || !user.name) {
+            throw new Error('Ger user failed.');
+          }
+        }
+        dispatch({
+          type: ActionType.INITIALIZE,
+          payload: {
+            isAuthenticated: true,
+            user: user || null
+          }
+        });
+      } else {
+        dispatch({
+          type: ActionType.INITIALIZE,
+          payload: {
+            isAuthenticated: false,
+            user: null
+          }
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      dispatch({
+        type: ActionType.INITIALIZE,
+        payload: {
+          isAuthenticated: false,
+          user: null
+        }
+      });
+    }
+  }, [dispatch]);
 
   useEffect(
     () => {

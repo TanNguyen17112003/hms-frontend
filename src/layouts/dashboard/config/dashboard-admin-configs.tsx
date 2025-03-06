@@ -21,27 +21,27 @@ export const getDashboardAdminConfigs = () => {
       items: [
         {
           title: 'Dashboard',
-          path: paths.auth.login,
+          path: paths.dashboard.index,
           icon: <BarChart2 className='h-6 w-6' />
         },
         {
           title: 'Appointment',
-          path: paths.auth.login,
+          path: paths.appointment.index,
           icon: <CalendarPlus2 className='h-6 w-6' />
         },
         {
           title: 'Staff Management',
-          path: paths.auth.login,
+          path: paths.staff.index,
           icon: <Users className='h-6 w-6' />
         },
         {
           title: 'Patient Management',
-          path: paths.auth.login,
+          path: paths.patient.index,
           icon: <Bed className='h-6 w-6' />
         },
         {
           title: 'My Account',
-          path: paths.auth.login,
+          path: paths.auth,
           icon: <User className='h-6 w-6' />
         }
       ]
