@@ -1,10 +1,26 @@
 import React from 'react';
-import { Card, CardContent, Box, Divider, Chip, Button } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  Box,
+  Divider,
+  Chip,
+  Button,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Tooltip,
+  IconButton
+} from '@mui/material';
 // import { normalize } from 'path';
 import {
   Activity,
   ClipboardPlus,
   Dna,
+  Info,
   Pencil,
   Pill,
   Plus,
@@ -23,6 +39,23 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
   const handleDelete = () => {
     console.log('delete');
   };
+
+  const createData = (name: string, howMuch: string, howOften: string) => {
+    return { name, howMuch, howOften };
+  };
+
+  const rows = [
+    {
+      name: 'Metformin',
+      howMuch: '500 mg',
+      howOften: '2 times/day'
+    },
+    {
+      name: 'Amlodipine',
+      howMuch: '5 mg',
+      howOften: '1 time/day'
+    }
+  ].map((item: any) => createData(item.name, item.howMuch, item.howOften));
 
   return (
     <Card className='w-full lg:p-5 '>
@@ -46,7 +79,7 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
               >
                 <Box>
                   <div className='flex items-center justify-between mb-4'>
-                    <Box className='w-full flex gap-3 justify-start text-[#0E1680]'>
+                    <Box className='w-full flex gap-3 justify-start items-center text-[#0E1680]'>
                       <Dna className='w-5 h-5' />
                       <div className='font-semibold'>Past Medical History</div>
                     </Box>
@@ -68,17 +101,20 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
               >
                 <Box>
                   <div className='flex items-center justify-between mb-4'>
-                    <Box className='w-full flex gap-3 justify-start text-[#0E1680]'>
+                    <Box className='w-full flex gap-3 justify-start items-center text-[#0E1680]'>
                       <Activity className='w-5 h-5' />
                       <div className='font-semibold'>Surgical History</div>
+                      <Tooltip title='Name (year)'>
+                        <Info className='hover: opacity-80 size-4' />
+                      </Tooltip>
                     </Box>
                     <Button variant='outlined' size='small' startIcon={<Plus />}>
                       Add
                     </Button>
                   </div>
                   <Box className='flex gap-3'>
-                    <Chip label='Anemia' onDelete={handleDelete} />
-                    <Chip label='Asthma' onDelete={handleDelete} />
+                    <Chip label='Breast Biopsy (2015)' onDelete={handleDelete} />
+                    <Chip label='PTCA (2023)' onDelete={handleDelete} />
                   </Box>
                 </Box>
               </CardContent>
@@ -90,7 +126,7 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
               >
                 <Box>
                   <div className='flex items-center justify-between mb-4'>
-                    <Box className='w-full flex gap-3 justify-start text-[#0E1680]'>
+                    <Box className='w-full flex gap-3 justify-start items-center text-[#0E1680]'>
                       <Pill className='w-5 h-5' />
                       <div className='font-semibold'>Medications</div>
                     </Box>
@@ -99,8 +135,40 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
                     </Button>
                   </div>
                   <Box className='flex gap-3'>
-                    <Chip label='Anemia' onDelete={handleDelete} />
-                    <Chip label='Asthma' onDelete={handleDelete} />
+                    <TableContainer>
+                      <Table aria-label='relative table'>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell className='!bg-[#0E1680] !text-white !border-white'>
+                              Medicine or Supplement
+                            </TableCell>
+                            <TableCell
+                              className='!bg-[#0E1680] !text-white !border-white'
+                              align='right'
+                            >
+                              How much?
+                            </TableCell>
+                            <TableCell
+                              className='!bg-[#0E1680] !text-white !border-white'
+                              align='right'
+                            >
+                              How often?
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {rows.map((row: any) => (
+                            <TableRow key={row.name}>
+                              <TableCell component='th' scope='row'>
+                                {row.name}
+                              </TableCell>
+                              <TableCell align='right'>{row.howMuch}</TableCell>
+                              <TableCell align='right'>{row.howOften}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
                   </Box>
                 </Box>
               </CardContent>
@@ -112,7 +180,7 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
               >
                 <Box>
                   <div className='flex items-center justify-between mb-4'>
-                    <Box className='w-full flex gap-3 justify-start text-[#0E1680]'>
+                    <Box className='w-full flex gap-3 justify-start items-center text-[#0E1680]'>
                       <ShieldPlus className='w-5 h-5' />
                       <div className='font-semibold'>Allergies</div>
                     </Box>
@@ -121,8 +189,8 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
                     </Button>
                   </div>
                   <Box className='flex gap-3'>
-                    <Chip label='Anemia' onDelete={handleDelete} />
-                    <Chip label='Asthma' onDelete={handleDelete} />
+                    <Chip label='Penicillin' onDelete={handleDelete} />
+                    <Chip label='Aspirin' onDelete={handleDelete} />
                   </Box>
                 </Box>
               </CardContent>
@@ -134,17 +202,20 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
               >
                 <Box>
                   <div className='flex items-center justify-between mb-4'>
-                    <Box className='w-full flex gap-3 justify-start text-[#0E1680]'>
+                    <Box className='w-full flex gap-3 justify-start items-center text-[#0E1680]'>
                       <Syringe className='w-5 h-5' />
                       <div className='font-semibold'>Vaccination</div>
+                      <Tooltip title='Name (date)'>
+                        <Info className='hover: opacity-80 size-4' />
+                      </Tooltip>
                     </Box>
                     <Button variant='outlined' size='small' startIcon={<Plus />}>
                       Add
                     </Button>
                   </div>
                   <Box className='flex gap-3'>
-                    <Chip label='Anemia' onDelete={handleDelete} />
-                    <Chip label='Asthma' onDelete={handleDelete} />
+                    <Chip label='Adacel (1/2/2023)' onDelete={handleDelete} />
+                    <Chip label='Gardasil (1/2/2024)' onDelete={handleDelete} />
                   </Box>
                 </Box>
               </CardContent>
@@ -156,17 +227,20 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
               >
                 <Box>
                   <div className='flex items-center justify-between mb-4'>
-                    <Box className='w-full flex gap-3 justify-start text-[#0E1680]'>
+                    <Box className='w-full flex gap-3 justify-start items-center text-[#0E1680]'>
                       <Users className='w-5 h-5' />
                       <div className='font-semibold'>Family History</div>
+                      <Tooltip title='Disease name (Relationship)'>
+                        <Info className='hover: opacity-80 size-4' />
+                      </Tooltip>
                     </Box>
                     <Button variant='outlined' size='small' startIcon={<Plus />}>
                       Add
                     </Button>
                   </div>
                   <Box className='flex gap-3'>
-                    <Chip label='Anemia' onDelete={handleDelete} />
-                    <Chip label='Asthma' onDelete={handleDelete} />
+                    <Chip label='Anemia (Father)' onDelete={handleDelete} />
+                    <Chip label='Asthma (Mother)' onDelete={handleDelete} />
                   </Box>
                 </Box>
               </CardContent>

@@ -14,7 +14,7 @@ const GeneralInfoCard: React.FC<GeneralInfoCardProps> = (props) => {
     <Card className='w-full lg:p-5 '>
       <CardContent className='p-4' style={{ justifyContent: 'normal', padding: 0, margin: 0 }}>
         <Box className='grid grid-cols-10 gap-5'>
-          <Box className='col-span-2'>
+          <Box className='col-span-4 lg:col-span-2'>
             <Box className='h-full flex flex-col items-center justify-center mb-4 md:mr-4 lg:mr-0'>
               {/* Profile Image with Blue Tick */}
               <Box className='relative'>
@@ -37,14 +37,14 @@ const GeneralInfoCard: React.FC<GeneralInfoCardProps> = (props) => {
               </Box>
             </Box>
           </Box>
-          <Box className='col-span-8'>
+          <Box className='col-span-6 lg:col-span-8'>
             {/* Contact and Medical Info */}
             <Box className='w-full flex justify-end mb-3'>
               <button className='rounded-full bg-[#0E1680] text-white p-2 hover:opacity-90'>
                 <Pencil className='size-5' />
               </button>
             </Box>
-            <Box className='grid grid-cols-4 gap-4 mb-4'>
+            <Box className='grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4'>
               <Box>
                 <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
                   SSN
