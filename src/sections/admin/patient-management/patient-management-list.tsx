@@ -1,5 +1,5 @@
 import { Box, Chip, Typography } from '@mui/material';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import usePagination from 'src/hooks/use-pagination';
 import getPatientManangementTableConfig from './patient-management-table-config';
 import { useDialog, useDrawer, useSelection } from '@hooks';
@@ -7,6 +7,7 @@ import { CustomTable } from '@components';
 import { Stack } from '@mui/system';
 import { PatientDetail } from 'src/types/user';
 import DeleteUserDialog from 'src/sections/delete-user-dialog';
+import { useRouter } from 'next/router';
 
 interface PatientManagementListProps {
   patients: PatientDetail[];
@@ -14,6 +15,7 @@ interface PatientManagementListProps {
 }
 const PatientManagementList: React.FC<PatientManagementListProps> = ({ patients, searchInput }) => {
   const select = useSelection<PatientDetail>(patients);
+  const router = useRouter();
   const deleteDialog = useDialog<PatientDetail>();
   const editDrawer = useDrawer<PatientDetail>();
   const pagination = usePagination({
@@ -30,6 +32,13 @@ const PatientManagementList: React.FC<PatientManagementListProps> = ({ patients,
       onClickEdit: (data) => editDrawer.handleOpen(data)
     });
   }, [getPatientManangementTableConfig]);
+
+  const handleGoPatient = useCallback((patient: PatientDetail) => {
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, patientId: patient.id }
+    });
+  }, []);
 
   return (
     <Box
@@ -52,6 +61,7 @@ const PatientManagementList: React.FC<PatientManagementListProps> = ({ patients,
         pagination={pagination}
         cellClassName='bg-white'
         select={select}
+        onClickRow={(data) => handleGoPatient(data as PatientDetail)}
       />
       <DeleteUserDialog
         open={deleteDialog.open}
