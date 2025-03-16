@@ -25,10 +25,10 @@ export const useSections = () => {
   const { user } = useAuth();
 
   return useMemo(() => {
-    return user?.role === 'ADMIN'
-      ? getDashboardAdminConfigs()
+    return user?.role === 'PATIENT'
+      ? getDashboardPatientConfigs()
       : user?.role === 'STAFF'
         ? getDashboardStaffConfigs()
-        : getDashboardPatientConfigs();
+        : getDashboardAdminConfigs();
   }, [user]);
 };
