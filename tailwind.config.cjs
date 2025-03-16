@@ -27,6 +27,8 @@ const config = {
         'bg-primary': '#0E1680',
         'border': "#02053D",
         border: 'hsl(var(--border))',
+        'side-nav-item-bg': '#EFF0FC',
+        'side-nav-item-text': '#070B5C',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',

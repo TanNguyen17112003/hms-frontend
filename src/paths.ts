@@ -8,25 +8,22 @@ export const paths = {
     },
     'forgot-password': '/auth/forgot-password',
     'reset-password': '/auth/reset-password',
-    logout: '/auth/logout',
-    landing: {
-      index: '/landing'
-    },
-    dashboard: {
-      index: '/dashboard'
-    },
-    appointment: {
-      index: '/appointment',
-      'appointment-detail': '/appointment/appointment-detail'
-    },
-    staff: {
-      index: '/staff',
-      'staff-detail': '/staff/staff-detail'
-    },
-    patient: {
-      index: '/patient',
-      'patient-detail': '/patient/patient-detail'
-    }
+    logout: '/auth/logout'
+  },
+  landing: {
+    index: '/landing'
+  },
+  dashboard: {
+    index: '/dashboard'
+  },
+  appointment: {
+    index: '/appointment'
+  },
+  staff: {
+    index: '/staff'
+  },
+  patient: {
+    index: '/patient'
   },
   account: '/account',
   401: '/401',
