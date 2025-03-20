@@ -116,8 +116,144 @@ const generateAppointments = (patients: PatientDetail[], doctors: StaffDetail[])
   return appointments;
 };
 
+const doctorData = {
+  biography:
+    'Jacob Jones, FPCNPC, is a pediatric nurse practitioner who was born and raised in the Maryland and Washington, DC area...',
+  education: [
+    {
+      institution: 'Chattagram International Dental College & Hospital',
+      degree: 'MDS - Periodontology and Oral Implantology, BDS',
+      year: '1998-2003'
+    },
+    {
+      institution: 'US Dental Medical University',
+      degree: 'Oral And MaxilloFacial Surgeon, Dentist',
+      year: '2003-2005'
+    }
+  ],
+  workExperience: [
+    {
+      hospital: 'Ibn Sina Specialized Hospital',
+      period: '2010 - Present',
+      duration: '5 years'
+    },
+    {
+      hospital: 'Dhaka Dental College and Hospital',
+      period: '2007-2010',
+      duration: '3 years'
+    },
+    {
+      hospital: 'Smile Dental Care',
+      period: '2005-2007',
+      duration: '2 years'
+    }
+  ],
+  achievements: [
+    {
+      title: 'Best Dentist Award 2021',
+      date: 'July 2019',
+      description:
+        'Dr. Firstname and his team are the proud recipients of the New Jersey Top Dentist award for 2019'
+    },
+    {
+      title: 'The Dental Professional of The Year Award',
+      date: 'May 2010',
+      description:
+        'Nicole Elting and Doron True are finalists for the Student Dentist of the Year and Student Dental Hygienist of the Year 2020 respectively'
+    }
+  ],
+  services: [
+    'Tooth cleaning',
+    'Root Canal Therapy',
+    'Implants',
+    'Surgical Extraction',
+    'Fissure Sealants',
+    'Composite Bonding',
+    'Orthodontics',
+    'Tooth extractions',
+    'Wisdom tooth removal'
+  ],
+  specializations: [
+    'Dental Care',
+    'Children Care',
+    'Oral and Maxillofacial Surgery',
+    'Orthodontics',
+    'Prosthodontics',
+    'Periodontist',
+    'Pediatric Dentistry'
+  ]
+};
+
+const weekDays = ['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue'];
+const timeSlots = [
+  '09:00 am',
+  '09:30 am',
+  '10:00 am',
+  '10:30 am',
+  '11:00 am',
+  '11:30 am',
+  '12:00 pm',
+  '12:30 pm',
+  '01:00 pm',
+  '01:30 pm',
+  '02:00 pm'
+];
+
+const archivements = [
+  {
+    title: 'Best Dentist Award 2021',
+    date: 'May 2019',
+    description:
+      'Dr. Friedman and his team are the proud recipients of the New Jersey Top Dentist award for 2019. We are proud to be selected for this honor by our wonderful patients.'
+  },
+  {
+    title: 'The Dental Professional of The Year Award',
+    date: 'May 2010',
+    description:
+      'Nicole Elango and Deeon Trute are finalists for the Student Dentist of the year and Student Dental Hygienist and/or Therapist of the Year 2020 respectively.'
+  }
+];
+
+const educations = [
+  {
+    institution: 'Chattagram International Dental College & Hospital',
+    degree: 'MDS - Periodonyology and Oral Implantology, BDS',
+    year: '1998 - 2003'
+  },
+  {
+    institution: 'US Dental Medical University',
+    degree: 'Oral And MaxilloFacial Surgeon, Dentist',
+    year: '1998 - 2003'
+  }
+];
+
+const works = [
+  {
+    company: 'Chattagram International Dental College & Hospital',
+    year: '1998 - 2003'
+  },
+  {
+    company: 'Ibn Sina Specialized Hospital',
+    year: '2010 - Present (5 years)'
+  },
+  {
+    company: 'Smile Dental Cares',
+    year: '2005 - 2007 (3 years)'
+  }
+];
+
 const patients = generatePatients();
 const doctors = generateDoctors(patients);
 const appointments = generateAppointments(patients, doctors);
 
-export { patients, doctors, appointments };
+export {
+  patients,
+  doctors,
+  appointments,
+  doctorData,
+  weekDays,
+  timeSlots,
+  archivements,
+  educations,
+  works
+};
