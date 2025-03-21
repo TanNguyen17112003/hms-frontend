@@ -7,12 +7,14 @@ import { Stethoscope, Clock, Calendar, FileText, ChevronRight } from 'lucide-rea
 import { FaEllipsisVertical } from 'react-icons/fa6';
 import { useResponsive } from 'src/utils/use-responsive';
 import Pagination from 'src/components/ui/Pagination';
+import { useRouter } from 'next/router';
 
 interface DoctorCardProps {
   doctor: StaffDetail;
+  onClick?: () => void;
 }
 
-const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
+const DoctorCard: React.FC<DoctorCardProps> = ({ doctor, onClick }) => {
   const { isMobile } = useResponsive();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -33,6 +35,8 @@ const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
       alignItems={'center'}
       justifyContent={'space-between'}
       border={'1px solid #E0E0E0'}
+      onClick={onClick}
+      className='cursor-pointer hover:bg-gray-200'
     >
       <Stack direction={'row'} spacing={2} alignItems={isMobile ? '' : 'center'}>
         <Avatar src={doctor.photoUrl} variant='square' sx={{ width: 64, height: 64 }} />
@@ -113,6 +117,7 @@ const InfoItem: React.FC<InfoItemProps> = ({ icon, text }) => (
 
 export const StaffManagement: React.FC = () => {
   const [page, setPage] = useState(0);
+  const router = useRouter();
   const rowsPerPage = 5; // Number of doctors per page
 
   const handlePageChange = (event: any, newPage: number) => {
@@ -126,7 +131,16 @@ export const StaffManagement: React.FC = () => {
       <StaffFilter />
       <Box display={'flex'} flexDirection={'column'} gap={2}>
         {paginatedDoctors.map((doctor) => (
-          <DoctorCard key={doctor.id} doctor={doctor} />
+          <DoctorCard
+            key={doctor.id}
+            doctor={doctor}
+            onClick={() =>
+              router.push({
+                pathname: router.pathname,
+                query: { ...router.query, staffId: doctor.id }
+              })
+            }
+          />
         ))}
       </Box>
       <Box className='pt-5'>
