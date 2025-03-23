@@ -8,6 +8,7 @@ import MedicalInfoCard from './MedicalInfoCard';
 import { Box } from '@mui/system';
 import RelativeInfoCard from './RelativeInfoCard';
 import MedicalHistoryCard from './MedicalHistoryCard';
+import MedicalRecordCard from './MedicalRecordCard';
 
 function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
   event.preventDefault();
@@ -74,6 +75,7 @@ const PatientDetail: PageType = () => {
             phone: '(704) 555-0127',
             address: '123 Le Dinh Huy, Ho Chi Minh City',
             job: 'Developer',
+            maritalStatus: 'MARRIED',
             nationality: 'Viet Nam'
           }}
         />
@@ -108,17 +110,7 @@ const PatientDetail: PageType = () => {
               },
               {
                 fullName: 'Lisa',
-                relationship: 'Mother',
-                phone: '0357677243'
-              },
-              {
-                fullName: 'Rose',
-                relationship: 'Sister',
-                phone: '0357677243'
-              },
-              {
-                fullName: 'Lisa',
-                relationship: 'Mother',
+                relationship: 'Wife',
                 phone: '0357677243'
               },
               {
@@ -130,6 +122,22 @@ const PatientDetail: PageType = () => {
           />
         </Box>
         <MedicalHistoryCard
+          medicalInfo={{
+            weight: 65,
+            height: 170,
+            bloodPressure: '124/80',
+            bloodType: 'O+',
+            allergies: 'Penicillin, Aspirin',
+            vaccination: [
+              { name: 'Adacel', date: '1/2/2023' },
+              { name: 'Gardasil', date: '1/2/2024' }
+            ],
+            insuranceType: 'Student',
+            insuranceCardNumber: '012345678910',
+            insurancePeriod: '02/02/2030'
+          }}
+        />
+        <MedicalRecordCard
           medicalInfo={{
             weight: 65,
             height: 170,

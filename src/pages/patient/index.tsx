@@ -25,7 +25,6 @@ const Page: PageType = () => {
   return (
     <Box
       sx={{
-        maxHeight: '100vh',
         overflow: 'auto'
       }}
     >

@@ -87,8 +87,8 @@ export const createTheme = (config: ThemeConfig): Theme => {
       : createLightOptions({
           colorPreset: config.colorPreset,
           contrast: config.contrast
-        }),
-    viVN
+        })
+    // viVN
   );
 
   // // Merge default breakpoints with existing breakpoints

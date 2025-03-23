@@ -40,22 +40,34 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
     console.log('delete');
   };
 
-  const createData = (name: string, howMuch: string, howOften: string) => {
-    return { name, howMuch, howOften };
+  const createData = (
+    name: string,
+    dosage: string,
+    frequency: string,
+    startDate: string,
+    endDate: string
+  ) => {
+    return { name, dosage, frequency, startDate, endDate };
   };
 
   const rows = [
     {
       name: 'Metformin',
-      howMuch: '500 mg',
-      howOften: '2 times/day'
+      dosage: '500 mg',
+      frequency: '2 times/day',
+      startDate: '1/1/2021',
+      endDate: '2/2/2021'
     },
     {
       name: 'Amlodipine',
-      howMuch: '5 mg',
-      howOften: '1 time/day'
+      dosage: '5 mg',
+      frequency: '1 time/day',
+      startDate: '1/1/2021',
+      endDate: '2/2/2021'
     }
-  ].map((item: any) => createData(item.name, item.howMuch, item.howOften));
+  ].map((item: any) =>
+    createData(item.name, item.dosage, item.frequency, item.startDate, item.endDate)
+  );
 
   return (
     <Card className='w-full lg:p-5 '>
@@ -154,6 +166,18 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
                             >
                               How often?
                             </TableCell>
+                            <TableCell
+                              className='!bg-[#0E1680] !text-white !border-white'
+                              align='right'
+                            >
+                              Start date
+                            </TableCell>
+                            <TableCell
+                              className='!bg-[#0E1680] !text-white !border-white'
+                              align='right'
+                            >
+                              End date
+                            </TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
@@ -162,8 +186,10 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
                               <TableCell component='th' scope='row'>
                                 {row.name}
                               </TableCell>
-                              <TableCell align='right'>{row.howMuch}</TableCell>
-                              <TableCell align='right'>{row.howOften}</TableCell>
+                              <TableCell align='right'>{row.dosage}</TableCell>
+                              <TableCell align='right'>{row.frequency}</TableCell>
+                              <TableCell align='right'>{row.startDate}</TableCell>
+                              <TableCell align='right'>{row.endDate}</TableCell>
                             </TableRow>
                           ))}
                         </TableBody>
@@ -183,14 +209,17 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
                     <Box className='w-full flex gap-3 justify-start items-center text-[#0E1680]'>
                       <ShieldPlus className='w-5 h-5' />
                       <div className='font-semibold'>Allergies</div>
+                      <Tooltip title='Allergen (Severity)'>
+                        <Info className='hover: opacity-80 size-4' />
+                      </Tooltip>
                     </Box>
                     <Button variant='outlined' size='small' startIcon={<Plus />}>
                       Add
                     </Button>
                   </div>
                   <Box className='flex gap-3'>
-                    <Chip label='Penicillin' onDelete={handleDelete} />
-                    <Chip label='Aspirin' onDelete={handleDelete} />
+                    <Chip label='Penicillin (Low)' onDelete={handleDelete} />
+                    <Chip label='Aspirin (High)' onDelete={handleDelete} />
                   </Box>
                 </Box>
               </CardContent>

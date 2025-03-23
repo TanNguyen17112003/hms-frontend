@@ -32,7 +32,7 @@ const GeneralInfoCard: React.FC<GeneralInfoCardProps> = (props) => {
                   {generalInfo.name}
                 </Typography>
                 <Typography variant='subtitle1' sx={{ color: '#475467' }}>
-                  {`${generalInfo.age} Years`}
+                  {`${generalInfo.age} Years, ${generalInfo.gender}`}
                 </Typography>
               </Box>
             </Box>
@@ -59,14 +59,6 @@ const GeneralInfoCard: React.FC<GeneralInfoCardProps> = (props) => {
                 </Typography>
                 <Typography variant='body1' sx={{ color: '#101828' }}>
                   {generalInfo.dateOfBirth}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
-                  Gender
-                </Typography>
-                <Typography variant='body1' sx={{ color: '#101828' }}>
-                  {generalInfo.gender}
                 </Typography>
               </Box>
               <Box>
@@ -99,6 +91,14 @@ const GeneralInfoCard: React.FC<GeneralInfoCardProps> = (props) => {
                 </Typography>
                 <Typography variant='body1' sx={{ color: '#101828' }}>
                   {generalInfo.job}
+                </Typography>
+              </Box>
+              <Box>
+                <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
+                  Marital status
+                </Typography>
+                <Typography variant='body1' sx={{ color: '#101828' }}>
+                  {generalInfo.maritalStatus}
                 </Typography>
               </Box>
               <Box>
