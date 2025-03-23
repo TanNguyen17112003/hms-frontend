@@ -45,18 +45,20 @@ const MedicalRecordCard: React.FC<MedicalRecordCardProps> = (props) => {
 
   const createData = (
     date: string,
+    doctor: string,
     symptoms: string,
     diagnoses: string,
     treatments: string,
     notes: string,
     actions: string
   ) => {
-    return { date, symptoms, diagnoses, treatments, notes, actions };
+    return { date, doctor, symptoms, diagnoses, treatments, notes, actions };
   };
 
   const rows = [
     {
       date: '2/2/2021',
+      doctor: 'Le Dinh Huy',
       symptoms: 'stomach ache',
       diagnoses: 'enteritis',
       treatments: 'take prescription medication',
@@ -65,6 +67,7 @@ const MedicalRecordCard: React.FC<MedicalRecordCardProps> = (props) => {
     },
     {
       date: '2/2/2021',
+      doctor: 'Le Dinh Huy',
       symptoms: 'stomach ache',
       diagnoses: 'enteritis',
       treatments: 'take prescription medication',
@@ -73,6 +76,7 @@ const MedicalRecordCard: React.FC<MedicalRecordCardProps> = (props) => {
     },
     {
       date: '2/2/2021',
+      doctor: 'Le Dinh Huy',
       symptoms: 'stomach ache',
       diagnoses: 'enteritis',
       treatments: 'take prescription medication',
@@ -81,6 +85,7 @@ const MedicalRecordCard: React.FC<MedicalRecordCardProps> = (props) => {
     },
     {
       date: '2/2/2021',
+      doctor: 'Le Dinh Huy',
       symptoms: 'stomach ache',
       diagnoses: 'enteritis',
       treatments: 'take prescription medication',
@@ -89,6 +94,7 @@ const MedicalRecordCard: React.FC<MedicalRecordCardProps> = (props) => {
     },
     {
       date: '2/2/2021',
+      doctor: 'Le Dinh Huy',
       symptoms: 'stomach ache',
       diagnoses: 'enteritis',
       treatments: 'take prescription medication',
@@ -96,7 +102,15 @@ const MedicalRecordCard: React.FC<MedicalRecordCardProps> = (props) => {
       actions: '1'
     }
   ].map((item: any) =>
-    createData(item.date, item.symptoms, item.diagnoses, item.treatments, item.notes, item.actions)
+    createData(
+      item.date,
+      item.doctor,
+      item.symptoms,
+      item.diagnoses,
+      item.treatments,
+      item.notes,
+      item.actions
+    )
   );
 
   return (
@@ -118,6 +132,9 @@ const MedicalRecordCard: React.FC<MedicalRecordCardProps> = (props) => {
               <TableHead>
                 <TableRow>
                   <TableCell className='!bg-[#0E1680] !text-white !border-white'>Date</TableCell>
+                  <TableCell className='!bg-[#0E1680] !text-white !border-white' align='right'>
+                    Doctor
+                  </TableCell>
                   <TableCell className='!bg-[#0E1680] !text-white !border-white' align='right'>
                     Symptoms
                   </TableCell>
@@ -141,6 +158,7 @@ const MedicalRecordCard: React.FC<MedicalRecordCardProps> = (props) => {
                     <TableCell component='th' scope='row'>
                       {row.date}
                     </TableCell>
+                    <TableCell align='right'>{row.doctor}</TableCell>
                     <TableCell align='right'>{row.symptoms}</TableCell>
                     <TableCell align='right'>{row.diagnoses}</TableCell>
                     <TableCell align='right'>{row.treatments}</TableCell>
