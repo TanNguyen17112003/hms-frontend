@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import PropTypes from 'prop-types';
 import type { DropzoneOptions, FileWithPath } from 'react-dropzone';
 import { useDropzone } from 'react-dropzone';
+import { UploadCloud } from 'lucide-react';
 import Upload01Icon from '@untitled-ui/icons-react/build/esm/Upload01';
 import XIcon from '@untitled-ui/icons-react/build/esm/X';
 import {
@@ -83,7 +84,7 @@ export const FileDropzone: FC<FileDropzoneProps & { sx?: BoxProps['sx'] }> = (pr
         {(!hasAnyFiles || (hasAnyFiles && type === 'multiple')) && (
           <>
             <input {...getInputProps()} />
-            <Stack alignItems='center' direction='row' spacing={2}>
+            <Stack alignItems='center' direction='column' spacing={2}>
               <Avatar
                 sx={{
                   height: 64,
@@ -91,11 +92,13 @@ export const FileDropzone: FC<FileDropzoneProps & { sx?: BoxProps['sx'] }> = (pr
                 }}
               >
                 <SvgIcon>
-                  <Upload01Icon />
+                  <UploadCloud />
                 </SvgIcon>
               </Avatar>
-              <Stack spacing={1}>
-                <Typography variant='h6'>{title || 'Nhấn để tải lên hoặc kéo thả'}</Typography>
+              <Stack spacing={1} alignItems='center'>
+                <Typography variant='h6' className='text-bg-primary'>
+                  {title}
+                </Typography>
                 {caption && <Typography>{caption}</Typography>}
               </Stack>
             </Stack>

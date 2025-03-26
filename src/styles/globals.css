@@ -4,7 +4,8 @@
 
 @layer base {
   :root {
-    --background: 120 57% 97%;
+    --background-button: 234 87% 28%;
+    --background: 231 67% 95%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -34,9 +35,9 @@
 
     --radius: 0.5rem;
 
-    --text-primary: 108 72% 56%;
-    --text-secondary: 217 19% 27%;
-    --text-tetiary: 220 9% 46%;
+    --text-primary: 210 41.5% 26.7%;
+    --text-secondary: 210 10% 45%;
+    --text-tetiary: 227 89% 18%;
   }
 
   .dark {
@@ -101,11 +102,6 @@
   z-index: 2000000;
 }
 
-.landing {
-  overflow: hidden;
-  height: 100vh;
-  width: 100vw;
-}
 
 @keyframes fadeIn {
   from {
@@ -119,5 +115,11 @@
 .fade-in {
   animation: fadeIn 5s ease-in-out;
 }
+
+.custom-dots li.slick-active div {
+  background-color: #0E1680 !important; 
+}
+
+
 
 

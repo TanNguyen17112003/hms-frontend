@@ -4,11 +4,12 @@ import { Issuer } from 'src/utils/auth';
 import CookieHelper, { CookieKeys } from 'src/utils/cookie-helper';
 import { useRouter } from 'next/router';
 import { paths } from 'src/paths';
+import { initialUser, UserDetail } from 'src/types/user';
 
 interface State {
   isInitialized: boolean;
   isAuthenticated: boolean;
-  user: string | null;
+  user: UserDetail | null;
 }
 
 enum ActionType {
@@ -23,21 +24,21 @@ type InitializeAction = {
   type: ActionType.INITIALIZE;
   payload: {
     isAuthenticated: boolean;
-    user: string | null;
+    user: UserDetail | null;
   };
 };
 
 type SignInAction = {
   type: ActionType.SIGN_IN;
   payload: {
-    user: string;
+    user: UserDetail;
   };
 };
 
 type SignUpAction = {
   type: ActionType.SIGN_UP;
   payload: {
-    user: string;
+    user: UserDetail;
   };
 };
 
@@ -48,7 +49,7 @@ type SignOutAction = {
 type UpdateProfileAction = {
   type: ActionType.UPDATE_PROFILE;
   payload: {
-    user: string;
+    user: UserDetail;
   };
 };
 
@@ -94,7 +95,7 @@ const handlers: Record<ActionType, Handler> = {
   SIGN_OUT: (state: State): State => ({
     ...state,
     isAuthenticated: false,
-    user: null
+    user: initialUser
   }),
   UPDATE_PROFILE: (state: State, action: UpdateProfileAction): State => ({
     ...state,
@@ -117,7 +118,7 @@ export const AuthContext = createContext<AuthContextType>({
   issuer: Issuer.JWT,
   signIn: () => Promise.resolve(undefined),
   signOut: () => Promise.resolve(),
-  refreshToken: () => Promise.resolve(),
+  refreshToken: () => Promise.resolve()
 });
 
 interface AuthProviderProps {
@@ -130,7 +131,49 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const router = useRouter();
 
   const initialize = useCallback(async (): Promise<void> => {
-   
+    try {
+      const accessToken = CookieHelper.getItem(CookieKeys.TOKEN);
+      const userData = CookieHelper.getItem('user_data');
+      console.log('accessToken', accessToken);
+      console.log('user_data', userData);
+
+      if (accessToken && userData) {
+        let user: UserDetail | undefined = undefined;
+        try {
+          user = JSON.parse(userData);
+        } catch {}
+        if (!user) {
+          user = await JSON.parse(localStorage.getItem('user_data') || '{}');
+          if (!user || !user.id || !user.role || !user.name) {
+            throw new Error('Ger user failed.');
+          }
+        }
+        dispatch({
+          type: ActionType.INITIALIZE,
+          payload: {
+            isAuthenticated: true,
+            user: user || null
+          }
+        });
+      } else {
+        dispatch({
+          type: ActionType.INITIALIZE,
+          payload: {
+            isAuthenticated: false,
+            user: null
+          }
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      dispatch({
+        type: ActionType.INITIALIZE,
+        payload: {
+          isAuthenticated: false,
+          user: null
+        }
+      });
+    }
   }, [dispatch]);
 
   useEffect(
@@ -141,24 +184,17 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     []
   );
 
-  const signIn = useCallback(async (email: string, password: string): Promise<string | undefined> => {
-    // Implement your sign-in logic here
-    return undefined;
-  }, [dispatch, CookieHelper]);
+  const signIn = useCallback(
+    async (email: string, password: string): Promise<string | undefined> => {
+      // Implement your sign-in logic here
+      return undefined;
+    },
+    [dispatch, CookieHelper]
+  );
 
+  const signOut = useCallback(async (): Promise<void> => {}, [router, dispatch]);
 
-
-
-
-  const signOut = useCallback(async (): Promise<void> => {
-    
-  }, [router, dispatch]);
-
-  const refreshToken = useCallback(async (): Promise<void> => {
-  
-  }, [signOut, CookieHelper]);
-
-
+  const refreshToken = useCallback(async (): Promise<void> => {}, [signOut, CookieHelper]);
 
   return (
     <AuthContext.Provider
@@ -167,7 +203,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         issuer: Issuer.JWT,
         signIn,
         signOut,
-        refreshToken,
+        refreshToken
       }}
     >
       {children}

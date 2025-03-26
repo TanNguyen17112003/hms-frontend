@@ -1,9 +1,22 @@
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import type { Page as PageType } from 'src/types/page';
+import { useAuth } from '@hooks';
+import { Layout as DashboardLayout } from 'src/layouts/dashboard';
 
 const Page: PageType = () => {
   const router = useRouter();
-  router.replace('/landing');
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      router.replace('/dashboard');
+      console.log(user);
+    } else {
+      router.replace('/landing');
+    }
+  }, [router, user]);
+
   return <></>;
 };
 

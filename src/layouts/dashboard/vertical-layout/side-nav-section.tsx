@@ -1,8 +1,9 @@
-import React, { FC, ReactNode } from "react";
-import PropTypes from "prop-types";
-import Link from "next/link";
-import clsx from "clsx";
-import { SideNavItem } from "./side-nav-item";
+import React, { FC, ReactNode } from 'react';
+import PropTypes from 'prop-types';
+import Link from 'next/link';
+import clsx from 'clsx';
+import { SideNavItem } from './side-nav-item';
+import { Divider } from '@mui/material';
 
 interface DashboardItem {
   disabled?: boolean;
@@ -17,7 +18,7 @@ interface DashboardItem {
 const renderItems = ({
   depth = 0,
   items,
-  pathname,
+  pathname
 }: {
   depth?: number;
   items: DashboardItem[];
@@ -29,7 +30,7 @@ const renderItems = ({
         acc,
         depth,
         item,
-        pathname,
+        pathname
       }),
     []
   );
@@ -38,7 +39,7 @@ const reduceChildRoutes = ({
   acc,
   depth,
   item,
-  pathname,
+  pathname
 }: {
   acc: JSX.Element[];
   depth: number;
@@ -46,7 +47,7 @@ const reduceChildRoutes = ({
   pathname?: string | null;
 }): Array<JSX.Element> => {
   const checkPath = !!(item.path && pathname);
-  const partialMatch = checkPath ? pathname?.includes(item.path || "$") : false;
+  const partialMatch = checkPath ? pathname?.includes(item.path || '$') : false;
   const exactMatch = checkPath ? pathname === item.path : false;
 
   if (item.items) {
@@ -61,11 +62,11 @@ const reduceChildRoutes = ({
         open={true}
         title={item.title}
       >
-        <ul className="flex flex-col">
+        <ul className='flex flex-col'>
           {renderItems({
             depth: depth + 1,
             items: item.items,
-            pathname,
+            pathname
           })}
         </ul>
       </SideNavItem>
@@ -93,27 +94,22 @@ interface SideNavSectionProps {
   items?: DashboardItem[];
   pathname?: string | null;
   subheader?: string;
+  isLast?: boolean;
 }
 
 export const SideNavSection: FC<SideNavSectionProps> = (props) => {
-  const { items = [], pathname, subheader = "" } = props;
+  const { items = [], pathname, subheader = '' } = props;
 
   return (
-    <ul className="list-none p-0 m-0">
-      {subheader && (
-        <li className="flex items-center pl-2 mb-1">
-          <span className="text-xs text-nav-section-title-color font-bold uppercase">
-            {subheader}
-          </span>
-        </li>
-      )}
-      {renderItems({ items, pathname })}
-    </ul>
+    <>
+      <ul className='list-none p-0 m-0'>{renderItems({ items, pathname })}</ul>
+      {!props.isLast && <Divider />}
+    </>
   );
 };
 
 SideNavSection.propTypes = {
   items: PropTypes.array,
   pathname: PropTypes.string,
-  subheader: PropTypes.string,
+  subheader: PropTypes.string
 };

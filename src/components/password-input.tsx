@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { IoEyeOutline } from 'react-icons/io5';
+import { IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
 import FormInput, { FormInputProps } from 'src/components/ui/FormInput';
 
 const PasswordInput = ({
@@ -8,7 +8,7 @@ const PasswordInput = ({
   ...FormInputProps
 }: {
   showPassword: boolean;
-  togglePasswordVisibility: () => void;
+  togglePasswordVisibility?: () => void;
 } & FormInputProps) => {
   return (
     <div className='relative'>
@@ -21,7 +21,7 @@ const PasswordInput = ({
         className='flex absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer'
         onClick={togglePasswordVisibility}
       >
-        <IoEyeOutline className='' />
+        {showPassword ? <IoEyeOffOutline className='' /> : <IoEyeOutline className='' />}
       </div>
     </div>
   );

@@ -3,7 +3,8 @@ import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 import { useAuth } from 'src/hooks/use-auth';
 import { getDashboardAdminConfigs } from './dashboard-admin-configs';
-import { dashboardStudentConfigs } from './dashboard-student-configs';
+import { getDashboardPatientConfigs } from './dashboard-patient-configs';
+import { getDashboardStaffConfigs } from './dashboard-staff-config';
 
 export interface DashboardItem {
   disabled?: boolean;
@@ -24,6 +25,10 @@ export const useSections = () => {
   const { user } = useAuth();
 
   return useMemo(() => {
-      return getDashboardAdminConfigs();
+    return user?.role === 'PATIENT'
+      ? getDashboardPatientConfigs()
+      : user?.role === 'STAFF'
+        ? getDashboardStaffConfigs()
+        : getDashboardAdminConfigs();
   }, [user]);
 };

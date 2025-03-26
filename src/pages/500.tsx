@@ -14,10 +14,10 @@ const Page = () => {
           classNach
           <div className='flex justify-center mt-6'>
             <button
-              onClick={() => router.push(paths.auth.login)}
+              onClick={() => router.push(paths.index)}
               className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-800'
             >
-              Quay về trang chủ
+              Back to Home
             </button>
           </div>
         </div>
