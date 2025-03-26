@@ -5,36 +5,32 @@ import 'slick-carousel/slick/slick-theme.css';
 import { IoArrowBackOutline, IoArrowForwardOutline } from 'react-icons/io5';
 import './Slider.module.css';
 
-// 🔹 Định nghĩa kiểu props cho nút điều hướng
+// 🔹 Props cho nút điều hướng
 interface ArrowButtonProps {
   onClick?: () => void;
 }
 
-// 🔹 Component nút "Prev"
-const ArrowButtonPrev: React.FC<ArrowButtonProps> = ({ onClick }) => {
-  return (
-    <button
-      className="hover:opacity-75 transition-all duration-300 !p-1 !w-6 !h-6 !text-white slick-prev !text-xl !after:content-[''] !flex justify-center items-center !bg-primary rounded-full !aspect-square"
-      onClick={onClick}
-    >
-      <IoArrowBackOutline />
-    </button>
-  );
-};
+// 🔹 Nút "Prev"
+const ArrowButtonPrev: React.FC<ArrowButtonProps> = ({ onClick }) => (
+  <button
+    className="hover:opacity-75 transition-all duration-300 !p-1 !w-6 !h-6 !text-white slick-prev !text-xl !after:content-[''] !flex justify-center items-center !bg-primary rounded-full !aspect-square"
+    onClick={onClick}
+  >
+    <IoArrowBackOutline />
+  </button>
+);
 
-// 🔹 Component nút "Next"
-const ArrowButtonNext: React.FC<ArrowButtonProps> = ({ onClick }) => {
-  return (
-    <button
-      className="hover:opacity-75 transition-all duration-300 !p-1 !w-6 !h-6 !text-white slick-next !text-xl !after:content-[''] !flex justify-center items-center !bg-primary rounded-full !aspect-square"
-      onClick={onClick}
-    >
-      <IoArrowForwardOutline />
-    </button>
-  );
-};
+// 🔹 Nút "Next"
+const ArrowButtonNext: React.FC<ArrowButtonProps> = ({ onClick }) => (
+  <button
+    className="hover:opacity-75 transition-all duration-300 !p-1 !w-6 !h-6 !text-white slick-next !text-xl !after:content-[''] !flex justify-center items-center !bg-primary rounded-full !aspect-square"
+    onClick={onClick}
+  >
+    <IoArrowForwardOutline />
+  </button>
+);
 
-// 🔹 Định nghĩa kiểu props cho `NewSlider`
+// 🔹 Props cho `NewSlider`
 interface NewSliderProps<T> {
   list: T[];
   config?: Partial<Settings>;
