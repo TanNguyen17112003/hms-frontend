@@ -23,8 +23,8 @@ import { paths } from 'src/paths';
 import type { NavColor } from 'src/types/settings';
 import { Section } from '../config/config';
 import { MobileNavSection } from './mobile-nav-section';
-import mobileLogo from 'public/bold-mobile-logo.png';
 import Image from 'next/image';
+import logo from 'public/logo.png';
 
 const useCssVars = (color: NavColor): Record<string, string> => {
   const theme = useTheme();
@@ -47,7 +47,7 @@ const useCssVars = (color: NavColor): Record<string, string> => {
             '--nav-item-active-color': 'primary.main',
             '--nav-item-disabled-color': theme.palette.neutral[600],
             '--nav-item-icon-color': theme.palette.neutral[900],
-            '--nav-item-icon-active-color': 'primary.main',
+            '--nav-item-icon-active-color': '#EEEFFC',
             '--nav-item-icon-disabled-color': theme.palette.neutral[700],
             '--nav-item-chevron-color': theme.palette.neutral[700],
             '--nav-scrollbar-color': theme.palette.neutral[400]
@@ -160,21 +160,14 @@ export const MobileNav: FC<MobileNavProps> = (props) => {
             spacing={2}
             sx={{ p: 2, justifyContent: 'space-between', alignItems: 'center' }}
           >
-            <Box
-              component={RouterLink}
-              href={paths.index}
-              sx={{
-                display: 'flex'
-              }}
-              onClick={onClose}
-            >
-              <Image alt='Logo' height={80} src={mobileLogo} width={60} />
-            </Box>
             <IconButton onClick={onClose} color='inherit'>
-              <CloseIcon color='success' />
+              <CloseIcon color='inherit' />
             </IconButton>
+            <Stack direction={'row'} alignContent={'center'} alignItems={'center'} gap={1}>
+              <Image src={logo} alt='logo' width={20} height={20} />
+              <Typography>HealthPro</Typography>
+            </Stack>
           </Stack>
-
           <Stack
             component='nav'
             spacing={2}
@@ -190,6 +183,7 @@ export const MobileNav: FC<MobileNavProps> = (props) => {
                 pathname={router.pathname}
                 subheader={section.subheader}
                 onClose={onClose}
+                isLast={index === sections.length - 1}
               />
             ))}
           </Stack>

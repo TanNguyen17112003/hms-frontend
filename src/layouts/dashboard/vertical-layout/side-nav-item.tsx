@@ -1,8 +1,8 @@
-import React, { FC, ReactNode, useState, useCallback } from "react";
-import Link from "next/link";
-import { Collapse } from "src/components/ui/Collapse";
-import clsx from "clsx";
-import { Button } from "src/components/shadcn/ui/button";
+import React, { FC, ReactNode, useState, useCallback } from 'react';
+import Link from 'next/link';
+import { Collapse } from 'src/components/ui/Collapse';
+import clsx from 'clsx';
+import { Button } from 'src/components/shadcn/ui/button';
 
 interface SideNavItemProps {
   active?: boolean;
@@ -28,7 +28,7 @@ export const SideNavItem: FC<SideNavItemProps> = (props) => {
     label,
     open: openProp,
     path,
-    title,
+    title
   } = props;
   const [open, setOpen] = useState<boolean>(!!openProp);
 
@@ -43,10 +43,10 @@ export const SideNavItem: FC<SideNavItemProps> = (props) => {
     startIcon = icon;
   } else {
     startIcon = (
-      <span className="inline-flex items-center justify-center h-20 w-20">
+      <span className='inline-flex items-center justify-center h-20 w-20'>
         <span
           className={`bg-nav-item-icon-color rounded-full h-4 w-4 ${
-            active && "bg-nav-item-icon-active-color h-6 w-6"
+            active && 'bg-nav-item-icon-active-color h-6 w-6'
           }`}
         />
       </span>
@@ -59,16 +59,14 @@ export const SideNavItem: FC<SideNavItemProps> = (props) => {
         <Button
           disabled={disabled}
           onClick={handleToggle}
-          className={clsx("w-full justify-start text-text-secondary")}
+          className={clsx('w-full justify-start text-text-secondary')}
         >
           {startIcon && <div>{startIcon}</div>}
 
           {title}
-          <div className="text-nav-item-chevron-color text-sm ml-2">
-            {open ? "▼" : "▶"}
-          </div>
+          <div className='text-nav-item-chevron-color text-sm ml-2'>{open ? '▼' : '▶'}</div>
         </Button>
-        <Collapse in={open} className="mt-2">
+        <Collapse in={open} className='mt-2'>
           {children}
         </Collapse>
       </li>
@@ -77,15 +75,19 @@ export const SideNavItem: FC<SideNavItemProps> = (props) => {
 
   return (
     <li>
-      <Link href={path || "#"}>
+      <Link href={path || '#'}>
         <Button
-          variant={active ? "default" : "ghost"}
+          variant={active ? 'default' : 'ghost'}
           disabled={disabled}
-          className={clsx("w-full justify-start rounded-xl")}
+          className={clsx(
+            `w-full justify-start rounded-xl ${
+              active && 'bg-side-nav-item-bg  text-side-nav-item-text'
+            }`
+          )}
         >
-          {startIcon && <span className="mr-2">{startIcon}</span>}
-          <div className={clsx("prose-sm prose")}>{title}</div>
-          {label && <span className="ml-2">{label}</span>}
+          {startIcon && <span className='mr-2'>{startIcon}</span>}
+          <div className={clsx(`${active && 'font-bold'}`)}>{title}</div>
+          {label && <span className='ml-2'>{label}</span>}
         </Button>
       </Link>
     </li>

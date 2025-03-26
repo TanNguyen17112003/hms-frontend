@@ -43,7 +43,6 @@ export * from './shadcn/ui/tooltip';
 export * from './ui/Collapse';
 export * from './ui/Error';
 export * from './ui/FormInput';
-export * from './ui/HeaderTitle';
 export * from './ui/Logo';
 export * from './ui/SplashScreen';
 export * from './ui/Pagination/index';

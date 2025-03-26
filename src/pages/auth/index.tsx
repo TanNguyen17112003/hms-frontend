@@ -1,19 +1,21 @@
+import AppleIcon from '@mui/icons-material/Apple';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import GoogleIcon from '@mui/icons-material/Google';
+import { Box, Button, Divider, IconButton, Stack, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
-import { Button } from 'src/components/shadcn/ui/button';
+import Link from 'next/link';
+import { default as backgroundAuth } from 'public/background-auth.jpg';
+import React, { useEffect, useState } from 'react';
+import PasswordInput from 'src/components/password-input';
 import FormInput from 'src/components/ui/FormInput';
-import { useAuth } from 'src/hooks/use-auth';
 import { paths } from 'src/paths';
 import type { Page as PageType } from 'src/types/page';
 import * as Yup from 'yup';
-import backgroundImage from 'public/ui/background-auth.png';
-import Link from 'next/link';
-import React from 'react';
-import { Box, Typography, Divider, Stack, useTheme, useMediaQuery } from '@mui/material';
-import { useMounted } from '@hooks';
-import PasswordInput from 'src/components/password-input';
+import { useRouter } from 'next/router';
+import { useResponsive } from 'src/utils/use-responsive';
+import { ArrowLeft } from 'iconsax-react';
+import logo from 'public/logo-black.png';
 
 export const loginSchema = Yup.object({
   email: Yup.string().required('Email không được để trống'),
@@ -21,12 +23,9 @@ export const loginSchema = Yup.object({
 });
 
 const Page: PageType = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isMounted = useMounted();
-  const [showPassword, setShowPassword] = useState(false);
+  const { isTablet, isMobile } = useResponsive();
   const router = useRouter();
-  const { signIn, user } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -34,14 +33,13 @@ const Page: PageType = () => {
       general: ''
     },
     validationSchema: loginSchema,
-    onSubmit: async (values, { setSubmitting, setFieldError }) => {
-   
+    onSubmit: async (values, { setSubmitting }) => {
+      console.log('Email:', values.email);
+      console.log('Password:', values.password);
+      console.log('General:', values.general);
+      setSubmitting(true);
     }
   });
-
-  const handleBack = useCallback(() => {
-    router.push(paths.auth.login);
-  }, [router]);
 
   useEffect(() => {
     if (formik.values.email || formik.values.password) {
@@ -51,100 +49,171 @@ const Page: PageType = () => {
   }, [formik.values.email, formik.values.password]);
 
   return (
-    <Box className='h-screen flex bg-[#F6FDF5] items-center gap-10 px-6 text-black'>
-      {!isMobile && (
-        <Box width={'40%'}>
-          <Image
-            src={backgroundImage}
-            className='w-[100%] object-contain'
-            alt='Background images'
-          />
-        </Box>
-      )}
-      <Box width={isMobile ? '100%' : '60%'} className='flex justify-center'>
-        <Box width={isMobile ? '100%' : '70%'} className='flex flex-col gap-5'>
+    <Box className='min-h-screen flex bg-white relative'>
+      <Stack
+        direction={'row'}
+        spacing={2}
+        alignItems={'center'}
+        justifyContent={'start'}
+        justifySelf={'center'}
+        marginBottom={3}
+        className='absolute top-4 left-4'
+      >
+        <IconButton onClick={() => router.push(paths.index)} className='bg-white p-2 rounded-md'>
+          <ArrowLeft className='w-6 h-6' />
+        </IconButton>
+      </Stack>
+      <Box className='w-full lg:w-1/2 flex items-center justify-center'>
+        <Box className='w-full max-w-md px-6'>
           <Stack
-            direction={'row'}
-            spacing={1}
-            alignItems={'center'}
-            className='cursor-pointer'
-            onClick={handleBack}
+            direction='row'
+            spacing={2}
+            alignItems='center'
+            justifyContent={'start'}
+            justifySelf={'center'}
+            marginBottom={3}
           >
-            <Typography>Trang chủ</Typography>
-          </Stack>
-          <Typography variant='h3'>Đăng nhập</Typography>
-          <Divider>Hoặc</Divider>
-          <form onSubmit={formik.handleSubmit} className='flex flex-col gap-3 w-full'>
-            <Box className='flex flex-col gap-1'>
-              <Typography
-                fontWeight={'bold'}
-                className='label color-label-input-caret label-text text-xs'
-              >
-                Email
-              </Typography>
-              <FormInput
-                type='text'
-                className='w-full px-3 rounded-lg bg-white'
-                {...formik.getFieldProps('email')}
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                error={formik.touched.email && !!formik.errors.email}
-                helperText={formik.touched.email && formik.errors.email}
-              />
-              <Typography variant='body2'>Nhập địa chỉ email của bạn</Typography>
+            <Box className=''>
+              <Image src={logo} alt='Health360 Logo' width={50} height={50} />
             </Box>
-            <Box className='flex flex-col gap-1'>
-              <Typography
-                fontWeight='bold'
-                className='label color-label-input-caret label-text text-xs font-semibold'
-              >
-                Mật khẩu
+            <Typography variant='h3'>HealthPro</Typography>
+          </Stack>
+
+          <Stack spacing={4}>
+            <Stack spacing={1} alignItems={'center'}>
+              <Typography variant='h4' fontWeight='bold'>
+                Sign in to your account
               </Typography>
-              <PasswordInput
-                {...formik.getFieldProps('password')}
-                showPassword={showPassword}
-                togglePasswordVisibility={() => setShowPassword(!showPassword)}
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                error={formik.touched.password && !!formik.errors.password}
-                helperText={formik.touched.password && formik.errors.password}
-                className='bg-white'
-              />
-              <Stack direction={'row'} justifyContent={'space-between'}>
-                <Typography variant='body2'>Nhập mật khẩu</Typography>
+              <Typography color='text.secondary'>
+                Welcome back! Please enter your details.
+              </Typography>
+            </Stack>
+
+            {/* Form */}
+            <form onSubmit={formik.handleSubmit}>
+              <Stack spacing={3}>
+                <Stack spacing={1}>
+                  <Stack direction='row' alignItems='center'>
+                    <Typography variant='subtitle2'>Email </Typography>
+                    <Typography color='red'> *</Typography>
+                  </Stack>
+                  <FormInput
+                    type='text'
+                    className='w-full px-3 rounded-lg bg-white'
+                    {...formik.getFieldProps('email')}
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    error={formik.touched.email && !!formik.errors.email}
+                    helperText={formik.touched.email && formik.errors.email}
+                    placeholder='Enter your email'
+                  />
+                </Stack>
+
+                <Stack spacing={1}>
+                  <Stack direction='row' alignItems='center'>
+                    <Typography variant='subtitle2'>Password </Typography>
+                    <Typography color='red'> *</Typography>
+                  </Stack>
+                  <PasswordInput
+                    {...formik.getFieldProps('password')}
+                    showPassword={showPassword}
+                    togglePasswordVisibility={() => setShowPassword(!showPassword)}
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    error={formik.touched.password && !!formik.errors.password}
+                    helperText={formik.touched.password && formik.errors.password}
+                    className='bg-white'
+                    placeholder='Enter your password'
+                  />
+                  <Typography variant='caption' color='text.secondary'>
+                    Must be at least 8 characters.
+                  </Typography>
+                </Stack>
+
+                {formik.errors.general && (
+                  <Typography color='error' align='center'>
+                    {formik.errors.general}
+                  </Typography>
+                )}
+
                 <Button
-                  color='primary'
-                  variant='ghost'
-                  className='px-4 pt-1 pb-1 max-w-max h-[24px] text-xs text-primary hover:text-primary underline'
+                  type='submit'
+                  disabled={formik.isSubmitting}
+                  fullWidth
+                  className='rounded-xs'
+                  sx={{
+                    backgroundColor: '#0E1680',
+                    color: 'white',
+                    padding: '10px 18px',
+                    '&:hover': {
+                      backgroundColor: '#1e40af'
+                    }
+                  }}
                 >
-                  Quên mật khẩu
+                  Log in
                 </Button>
               </Stack>
-            </Box>
-            {formik.errors.general && (
-              <Box>
-                <Typography className='text-sm font-semibold text-center flex items-center justify-center text-red-500 gap-6'>
-                  {formik.errors.general}
-                </Typography>
-                <Box className='mt-5'></Box>
-              </Box>
-            )}
-            <Button className='mt-2' type='submit' disabled={formik.isSubmitting}>
-              Đăng nhập
-            </Button>
-          </form>
-          <Box className='flex items-center'>
-            <Typography>Chưa có tài khoản?</Typography>
-            <Button
-              asChild
-              variant='ghost'
-              className='px-4 pt-1 pb-1 max-w-max h-[24px] text-primary hover:text-primary'
+            </form>
+
+            {/* Divider */}
+            <Divider className='my-6'>
+              <Typography color='text.secondary'>OR</Typography>
+            </Divider>
+
+            {/* Social Login */}
+            <Stack
+              direction='row'
+              spacing={1.5} // gap: 12px
+              justifyContent='center'
             >
-              <Link href={paths.auth.register.index} className='underline italic'>
-                Đăng ký
+              {['Facebook', 'Google', 'Apple'].map((provider) => (
+                <IconButton
+                  key={provider}
+                  className='w-[112px] h-[44px] p-[10px] hover:bg-[#F9FAFB] hover:border-[#D0D5DD]'
+                  sx={{
+                    borderRadius: '8px',
+                    border: '1px solid #D0D5DD'
+                  }}
+                >
+                  {provider === 'Facebook' && (
+                    <FacebookIcon className='w-[24px] h-[24px]' sx={{ color: '#1877F2' }} />
+                  )}
+                  {provider === 'Google' && (
+                    <GoogleIcon className='w-[24px] h-[24px]' sx={{ color: '#DB4437' }} />
+                  )}
+                  {provider === 'Apple' && (
+                    <AppleIcon className='w-[24px] h-[24px]' sx={{ color: '#000000' }} />
+                  )}
+                </IconButton>
+              ))}
+            </Stack>
+
+            {/* Sign Up Link */}
+            <Stack
+              direction='row'
+              spacing={1}
+              justifyContent='center'
+              alignItems='center'
+              className='mt-6'
+            >
+              <Typography color='text.secondary'>You don&apos;t have an account?</Typography>
+              <Link href={paths.auth.register.index} className='text.tetiary font-medium'>
+                <Typography color='primary' fontWeight={'bold'}>
+                  Register
+                </Typography>
               </Link>
-            </Button>
-          </Box>
+            </Stack>
+          </Stack>
+        </Box>
+      </Box>
+
+      <Box className='hidden lg:block w-1/2 '>
+        <Box className='w-full'>
+          <Image
+            src={backgroundAuth}
+            alt='Background Image'
+            className='w-[100%] h-screen object-contain'
+          />
         </Box>
       </Box>
     </Box>

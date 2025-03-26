@@ -42,3 +42,26 @@ export function formatVNDcurrency(value: number): string {
 export function getCurentUnixTimestamp(): string {
   return String(Math.floor(Date.now() / 1000));
 }
+
+export function formatTagName(name: string): string {
+  return `@${name.split(' ')[0]}`;
+}
+
+export function formatTime(date: string): string {
+  const options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
+  const formattedTime = new Date(date).toLocaleTimeString('en-GB', options);
+  return formattedTime;
+}
+
+export function formatStandardDate(date: string): string {
+  const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
+  const formattedDate = new Date(date).toLocaleDateString('en-GB', options);
+  return formattedDate;
+}
+
+export function calculateAge(date: string): number {
+  const dob = new Date(date);
+  const ageDifMs = Date.now() - dob.getTime();
+  const ageDate = new Date(ageDifMs);
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+}

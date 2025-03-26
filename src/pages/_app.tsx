@@ -16,6 +16,9 @@ import { createEmotionCache } from 'src/utils/create-emotion-cache';
 import { PagesProgressBar as ProgressBar } from 'next-nprogress-bar';
 import { createTheme } from 'src/theme';
 import { initialSettings } from 'src/contexts/settings-context';
+import LandingScreen from 'src/components/ui/LandingScreen';
+import { Header } from 'src/sections/header';
+import { Stack } from '@mui/material';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -29,7 +32,8 @@ const App = (props: AppProps) => {
     <CacheProvider value={emotionCache}>
       <ProgressBar height='4px' color='#2970FF' options={{ showSpinner: true }} shallowRouting />
       <Head>
-        <title>TSA</title>
+        <title>HealthPro</title>
+        <link rel='icon' type='image/png' href='/ui/HEALTH360 LIGHT ONLY.png' />
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
 
@@ -39,9 +43,6 @@ const App = (props: AppProps) => {
             {(auth) => {
               const theme = createTheme(initialSettings);
               const showSplashScreen = !auth.isInitialized;
-              if (showSplashScreen) {
-                return <SplashScreen />;
-              }
               return (
                 <ThemeProvider theme={theme}>
                   <Head>
@@ -49,7 +50,14 @@ const App = (props: AppProps) => {
                     <meta name='theme-color' content={theme.palette.primary.main} />
                   </Head>
                   <CssBaseline />
-                  {getLayout(<Component {...pageProps} />)}
+                  {showSplashScreen ? (
+                    <SplashScreen />
+                  ) : (
+                    <Stack direction={'column'}>
+                      <Header />
+                      {getLayout(<Component {...pageProps} />)}
+                    </Stack>
+                  )}
                 </ThemeProvider>
               );
             }}

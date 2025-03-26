@@ -12,19 +12,16 @@ interface LayoutProps {
   pagePermission?: string;
 }
 
-export const Layout: FC<LayoutProps> = withAuthGuard((props) => {
+export const Layout: FC<LayoutProps> = (props) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const sections = useSections();
-  return isMobile ? (
+  return !isDesktop ? (
     <MobileLayout sections={sections} {...props} />
-  ) : isTablet ? (
-    <TabletLayout sections={sections} {...props} />
   ) : (
     <VerticalLayout sections={sections} {...props} />
   );
-});
+};
 
 Layout.propTypes = {
   children: PropTypes.any
