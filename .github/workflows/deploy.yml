@@ -3,7 +3,7 @@ name: Deploy Next.js to Vercel
 on:
   push:
     branches:
-      - main  # Chạy khi có thay đổi trên nhánh main
+      - master
 
 jobs:
   deploy:
