@@ -1,34 +1,23 @@
-# Base image
-FROM node:18-alpine AS builder
+# Sử dụng Node.js LTS
+FROM node:18-alpine
 
-# Set working directory
+# Đặt thư mục làm việc trong container
 WORKDIR /app
 
-# Copy package.json và yarn.lock
+# Copy file package.json và yarn.lock
 COPY package.json yarn.lock ./
+
+# Cài đặt dependencies
 RUN yarn install --frozen-lockfile
 
-# Copy toàn bộ source code
+# Copy toàn bộ code vào container
 COPY . .
 
-# Build Next.js app
+# Build project
 RUN yarn build
 
-# Production image
-FROM node:18-alpine AS runner
-
-WORKDIR /app
-
-# Copy built output từ builder stage
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./package.json
-
-# Install production dependencies
-RUN yarn install --production
+# Chạy server Next.js
+CMD ["yarn", "start"]
 
 # Expose cổng 3000
 EXPOSE 3000
-
-# Start app
-CMD ["yarn", "start"]
