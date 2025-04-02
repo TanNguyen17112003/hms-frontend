@@ -15,6 +15,10 @@ export interface User {
   role: UserRole;
   SSN: string;
   gender: UserGender;
+  nationality?: string;
+  occupation?: string;
+  maritalStatus?: string;
+  createdAt?: string;
 }
 
 export interface UserDetail extends User {}

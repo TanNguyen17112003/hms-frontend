@@ -24,6 +24,7 @@ import { MobileNavSection } from 'src/layouts/dashboard/mobile-layout/mobile-nav
 import { useSections } from 'src/layouts';
 import { useResponsive } from 'src/utils/use-responsive';
 import { FaEllipsis } from 'react-icons/fa6';
+import { UserTick } from 'iconsax-react';
 
 export const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -81,6 +82,16 @@ export const Header = () => {
       ) : (
         <>
           <Divider />
+          <Stack
+            direction={'row'}
+            className='px-4 py-3 cursor-pointer hover:bg-blue-600 hover:text-white gap-2'
+            onClick={() => {
+              router.push(paths.auth.staff.index);
+            }}
+          >
+            <UserRoundCheck size={24} className='hover:bg-white' />
+            <Typography fontWeight={'bold'}>Login with staff</Typography>
+          </Stack>
           <Stack
             direction={'row'}
             className='px-4 py-3 cursor-pointer hover:bg-blue-600 hover:text-white gap-2'

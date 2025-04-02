@@ -10,6 +10,8 @@ import useFunction from 'src/hooks/use-function';
 import { useRouter } from 'next/router';
 import logo from 'public/logo-text-black.png';
 import Image from 'next/image';
+import { Add } from 'iconsax-react';
+import { paths } from 'src/paths';
 
 interface SideNavProps {
   color?: NavColor;
@@ -48,11 +50,17 @@ export const SideNav: FC<SideNavProps> = (props) => {
                   paddingY={2}
                 >
                   <Image src={logo.src} alt='logo' height={50} width={160} />
-                  {/* <Typography color='black' fontWeight={'bold'} variant='h5'>
-                    HealthPro
-                  </Typography> */}
                 </Stack>
                 <Divider />
+                <Button
+                  variant='contained'
+                  color='primary'
+                  className='w-full'
+                  startIcon={<Add />}
+                  onClick={() => router.push(paths.appointment.add.index)}
+                >
+                  Add appointment
+                </Button>
                 {sections.map((section, index) => (
                   <SideNavSection
                     items={section.items}

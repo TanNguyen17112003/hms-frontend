@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const appointmentStatusList: AppointmentStatus[] = ['DECLINED', 'PENDING', 'COMPLETED'];
 const timeSlotStatusList: TimeSlotStatus[] = ['AVAILABLE', 'BOOKED'];
-const appointmentTypeList: AppointmentType[] = ['INITIAL', 'FOLLOW_UP'];
+const appointmentTypeList: AppointmentType[] = ['FIRST_VISIT', 'FOLLOW_UP'];
 
 const generateRandomDate = (start: Date, end: Date) => {
   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
@@ -102,6 +102,7 @@ const generateAppointments = (patients: PatientDetail[], doctors: StaffDetail[])
             staffId: doctor.id,
             userId: patient.id,
             timeSlot,
+            date: randomDate.toISOString(),
             notes: `Appointment notes for ${patient.name} with ${doctor.name}`,
             status: appointmentStatusList[Math.floor(Math.random() * appointmentStatusList.length)],
             type: appointmentTypeList[Math.floor(Math.random() * appointmentTypeList.length)],

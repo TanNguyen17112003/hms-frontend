@@ -20,7 +20,10 @@ export const paths = {
     index: '/dashboard'
   },
   appointment: {
-    index: '/appointment'
+    index: '/appointment',
+    add: {
+      index: '/appointment/appointment-add'
+    }
   },
   staff: {
     index: '/staff'
@@ -28,7 +31,9 @@ export const paths = {
   patient: {
     index: '/patient'
   },
-  account: '/account',
+  account: {
+    index: '/account'
+  },
   401: '/401',
   404: '/404',
   500: '/500'
