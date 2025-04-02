@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
-import { CircleUserRound, UserPlus, MessageSquareDot, MessageSquareWarning } from 'lucide-react';
+import { CircleUserRound, UserPlus, MessageSquareDot, MessageSquareWarning, UserRoundCheck } from 'lucide-react';
 import logo from 'public/logo-black.png';
 import {
   AppBar,
@@ -108,7 +108,7 @@ export const Header = () => {
 
   return (
     router.pathname !== paths.auth.login &&
-    router.pathname !== paths.auth.register.index && (
+    router.pathname !== paths.auth.register.index && router.pathname !== paths.auth.staff.index && (
       <AppBar position='sticky' sx={{ backgroundColor: '#02053D', color: 'white', paddingY: 0.5 }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', paddingY: 1 }}>
           {user ? (
@@ -255,6 +255,16 @@ export const Header = () => {
                     </Typography>
                   </Stack>
                   <Stack direction={'row'} gap={2}>
+                  <Button
+                      onClick={() => router.push(paths.auth.staff.index)}
+                      variant='outlined'
+                      className='flex items-center gap-2 text-white'
+                    >
+                      <UserRoundCheck size={24} color='white' fontVariant={"bold"}/>
+                      <Typography color='white' fontWeight={'bold'}>
+                        Login with staff account
+                      </Typography>
+                    </Button>
                     <Button
                       onClick={() => router.push(paths.auth.login)}
                       variant='outlined'

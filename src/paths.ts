@@ -8,7 +8,10 @@ export const paths = {
     },
     'forgot-password': '/auth/forgot-password',
     'reset-password': '/auth/reset-password',
-    logout: '/auth/logout'
+    logout: '/auth/logout',
+    staff: {
+      index: '/auth/staff'
+    }
   },
   landing: {
     index: '/landing'
