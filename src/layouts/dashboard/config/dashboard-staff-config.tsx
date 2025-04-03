@@ -3,12 +3,6 @@ import { PiMotorcycle } from 'react-icons/pi';
 import {
   BarChart2,
   CalendarPlus2,
-  File,
-  FileBarChart,
-  FileBarChart2,
-  FlaskConical,
-  Home,
-  Users,
   User,
   Settings,
   LogOut,
@@ -36,13 +30,8 @@ export const getDashboardStaffConfigs = () => {
           icon: <Bed className='h-6 w-6' />
         },
         {
-          title: 'My Portfolio',
-          path: paths.dashboard,
-          icon: <Briefcase className='h-6 w-6' />
-        },
-        {
           title: 'My Account',
-          paht: paths.account,
+          path: paths.account.index,
           icon: <User className='h-6 w-6' />
         }
       ]

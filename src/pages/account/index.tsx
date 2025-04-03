@@ -19,13 +19,13 @@ const Page: PageType = () => {
           <Box className='px-6 py-4'>
             <AdminAccount />
           </Box>
-        ) : user?.role === 'STAFF' ? (
+        ) : user?.role === 'PATIENT' ? (
           <Box className='px-6 py-4'>
-            <StaffAccount />
+            <PatientAccount />
           </Box>
         ) : (
           <Box className='px-6 py-4'>
-            <PatientAccount />
+            <StaffAccount />
           </Box>
         )
       }

@@ -34,6 +34,9 @@ export const paths = {
   account: {
     index: '/account'
   },
+  portfolio: {
+    index: '/portfolio'
+  },
   401: '/401',
   404: '/404',
   500: '/500'

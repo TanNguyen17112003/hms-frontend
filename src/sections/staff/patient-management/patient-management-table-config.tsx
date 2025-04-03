@@ -7,10 +7,8 @@ import { PatientDetail } from 'src/types/user';
 import { formatStandardDate } from 'src/utils/format-time-currency';
 
 const getPatientManangementTableConfig = ({
-  onClickRemove,
   onClickEdit
 }: {
-  onClickRemove: (data: PatientDetail) => void;
   onClickEdit: (data: PatientDetail) => void;
 }): CustomTableConfig<PatientDetail['id'], PatientDetail>[] => [
   {
@@ -79,27 +77,6 @@ const getPatientManangementTableConfig = ({
     type: 'string',
     renderCell: (data) => <Typography variant='body1'>{data.address}</Typography>
   },
-  {
-    key: 'action',
-    headerLabel: '',
-    type: 'string',
-    renderCell: (data) => (
-      <Stack direction='row' spacing={2}>
-        <Tooltip title='Delete Patient'>
-          <Trash
-            variant='Bold'
-            color='red'
-            size={28}
-            className='cursor-pointer'
-            onClick={(event) => {
-              event.stopPropagation();
-              onClickRemove(data);
-            }}
-          />
-        </Tooltip>
-      </Stack>
-    )
-  }
 ];
 
 export default getPatientManangementTableConfig;

@@ -27,8 +27,8 @@ export const useSections = () => {
   return useMemo(() => {
     return user?.role === 'ADMIN'
       ? getDashboardAdminConfigs()
-      : user?.role === 'STAFF'
-        ? getDashboardStaffConfigs()
-        : getDashboardPatientConfigs();
+      : user?.role === 'PATIENT'
+        ? getDashboardPatientConfigs()
+        : getDashboardStaffConfigs()
   }, [user]);
 };

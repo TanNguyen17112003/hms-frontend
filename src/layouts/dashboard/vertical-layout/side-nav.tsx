@@ -52,15 +52,17 @@ export const SideNav: FC<SideNavProps> = (props) => {
                   <Image src={logo.src} alt='logo' height={50} width={160} />
                 </Stack>
                 <Divider />
-                <Button
-                  variant='contained'
-                  color='primary'
-                  className='w-full'
-                  startIcon={<Add />}
-                  onClick={() => router.push(paths.appointment.add.index)}
-                >
-                  Add appointment
-                </Button>
+                {user?.role === "PATIENT" && (
+                  <Button
+                    variant='contained'
+                    color='primary'
+                    className='w-full'
+                    startIcon={<Add />}
+                    onClick={() => router.push(paths.appointment.add.index)}
+                  >
+                    Add appointment
+                  </Button>
+                )}
                 {sections.map((section, index) => (
                   <SideNavSection
                     items={section.items}
