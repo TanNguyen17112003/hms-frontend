@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import { CircleUserRound, UserPlus, MessageSquareDot, MessageSquareWarning, UserRoundCheck } from 'lucide-react';
-import logo from 'public/logo-black.png';
+import logo from 'public/logo.png';
 import {
   AppBar,
   Toolbar,
@@ -90,7 +90,7 @@ export const Header = () => {
             }}
           >
             <UserRoundCheck size={24} className='hover:bg-white' />
-            <Typography fontWeight={'bold'}>Login with staff</Typography>
+            <Typography fontWeight={'bold'}>Login as staff</Typography>
           </Stack>
           <Stack
             direction={'row'}
@@ -273,7 +273,7 @@ export const Header = () => {
                     >
                       <UserRoundCheck size={24} color='white' fontVariant={"bold"}/>
                       <Typography color='white' fontWeight={'bold'}>
-                        Login with staff account
+                        Login as staff
                       </Typography>
                     </Button>
                     <Button
