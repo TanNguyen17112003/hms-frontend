@@ -5,7 +5,7 @@ import CookieHelper, { CookieKeys } from 'src/utils/cookie-helper';
 import { useRouter } from 'next/router';
 import { paths } from 'src/paths';
 import { initialUser, UserDetail } from 'src/types/user';
-import { UsersApi } from 'src/api/user';
+import { UpdateProfileRequest, UpdateProfileResponse, UsersApi } from 'src/api/user';
 
 
 
@@ -98,7 +98,7 @@ const handlers: Record<ActionType, Handler> = {
   SIGN_OUT: (state: State): State => ({
     ...state,
     isAuthenticated: false,
-    user: initialUser
+    user: null
   }),
   UPDATE_PROFILE: (state: State, action: UpdateProfileAction): State => ({
     ...state,
@@ -114,6 +114,7 @@ export interface AuthContextType extends State {
   signIn: (email: string, password: string) => Promise<UserDetail | undefined>;
   signOut: () => Promise<void>;
   refreshToken: () => Promise<void>;
+  updateProfile: (info: UpdateProfileRequest) => Promise<UpdateProfileResponse>;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -121,7 +122,8 @@ export const AuthContext = createContext<AuthContextType>({
   issuer: Issuer.JWT,
   signIn: () => Promise.resolve(undefined),
   signOut: () => Promise.resolve(),
-  refreshToken: () => Promise.resolve()
+  refreshToken: () => Promise.resolve(),
+  updateProfile: () => Promise.resolve({} as UpdateProfileResponse)
 });
 
 interface AuthProviderProps {
@@ -213,10 +215,32 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     },
     [dispatch]
   );
-
-  const signOut = useCallback(async (): Promise<void> => {}, [router, dispatch]);
+  const signOut = useCallback(async (): Promise<void> => {
+    CookieHelper.removeItem(CookieKeys.TOKEN);
+    dispatch({ type: ActionType.SIGN_OUT });
+    router.push(paths.index);
+  }, [router]);
 
   const refreshToken = useCallback(async (): Promise<void> => {}, [signOut, CookieHelper]);
+
+  const updateProfile = useCallback(
+    async (info: UpdateProfileRequest): Promise<UpdateProfileResponse> => {
+      const response = await UsersApi.updateProfile(info);
+      const user = {
+        ...state.user,
+        ...response
+      };
+      CookieHelper.setItem('user_data', JSON.stringify(user));
+      dispatch({
+        type: ActionType.UPDATE_PROFILE,
+        payload: {
+          user
+        }
+      });
+      return response;
+    }, [CookieHelper]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  );
 
   return (
     <AuthContext.Provider
@@ -225,7 +249,8 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         issuer: Issuer.JWT,
         signIn,
         signOut,
-        refreshToken
+        refreshToken,
+        updateProfile
       }}
     >
       {children}

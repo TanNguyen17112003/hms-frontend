@@ -27,18 +27,31 @@ export type SignUpResponse = SignUpRequest & {
   lastLoginAt: string;
 };
 
-
-export type InitialSignUpRequest = {
+export type UpdateInfoRequest = {
   email: string;
-};
+  fullName: string;
+  ssn: string;
+  phoneNumber: string;
+}
 
+export type UpdatePassworRequest = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export type UpdatePasswordResponse = {
+  messsage: string;
+}
 
 export type UpdateProfileRequest = Partial<
   Pick<
     SignUpRequest,
-    'fullName' | 'password' | 'ssn' | 'phoneNumber'
+    'fullName' | 'email' | 'ssn' | 'phoneNumber'
   >
 >;
+
+export type UpdateProfileResponse = Partial<SignUpResponse>;
 
 export class UsersApi {
   static async postUser(request: Omit<User, 'id'>): Promise<User> {
@@ -59,18 +72,15 @@ export class UsersApi {
   }
 
   static async me(): Promise<Partial<UserDetail>> {
-    return await apiGet('/users/profile');
+    return await apiGet('/api/v1/patients/account');
   }
 
-  static async updatePassword(payload: {
-    currentPassword: string;
-    newPassword: string;
-  }): Promise<User> {
-    return await apiPut('/users/password', payload);
+  static async updatePassword(payload: UpdatePassworRequest): Promise<UpdatePasswordResponse> {
+    return await apiPut('/api/v1/patients/account/password', payload);
   }
 
   static async updateProfile(payload: UpdateProfileRequest): Promise<User> {
-    return await apiPatch('/users/profile', payload);
+    return await apiPut('/api/v1/patients/account', payload);
   }
 
 
@@ -82,7 +92,4 @@ export class UsersApi {
     return await apiPost('/auth/refresh', { refreshToken });
   }
 
-  static async signOut(refreshToken: string): Promise<void> {
-    return await apiPost('/auth/signout', { refreshToken });
-  }
 }
