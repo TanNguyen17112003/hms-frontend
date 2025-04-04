@@ -47,9 +47,11 @@ export type UpdatePasswordResponse = {
 export type UpdateProfileRequest = Partial<
   Pick<
     SignUpRequest,
-    'fullName' | 'password' | 'ssn' | 'phoneNumber'
+    'fullName' | 'email' | 'ssn' | 'phoneNumber'
   >
 >;
+
+export type UpdateProfileResponse = Partial<SignUpResponse>;
 
 export class UsersApi {
   static async postUser(request: Omit<User, 'id'>): Promise<User> {
@@ -78,7 +80,7 @@ export class UsersApi {
   }
 
   static async updateProfile(payload: UpdateProfileRequest): Promise<User> {
-    return await apiPatch('/users/profile', payload);
+    return await apiPut('/api/v1/patients/account', payload);
   }
 
 

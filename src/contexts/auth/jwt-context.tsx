@@ -5,7 +5,7 @@ import CookieHelper, { CookieKeys } from 'src/utils/cookie-helper';
 import { useRouter } from 'next/router';
 import { paths } from 'src/paths';
 import { initialUser, UserDetail } from 'src/types/user';
-import { UpdateProfileRequest, UsersApi } from 'src/api/user';
+import { UpdateProfileRequest, UpdateProfileResponse, UsersApi } from 'src/api/user';
 
 
 
@@ -114,7 +114,7 @@ export interface AuthContextType extends State {
   signIn: (email: string, password: string) => Promise<UserDetail | undefined>;
   signOut: () => Promise<void>;
   refreshToken: () => Promise<void>;
-  updateProfile: (info: UpdateProfileRequest) => Promise<void>;
+  updateProfile: (info: UpdateProfileRequest) => Promise<UpdateProfileResponse>;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -123,7 +123,7 @@ export const AuthContext = createContext<AuthContextType>({
   signIn: () => Promise.resolve(undefined),
   signOut: () => Promise.resolve(),
   refreshToken: () => Promise.resolve(),
-  updateProfile: () => Promise.resolve()
+  updateProfile: () => Promise.resolve({} as UpdateProfileResponse)
 });
 
 interface AuthProviderProps {
@@ -224,7 +224,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const refreshToken = useCallback(async (): Promise<void> => {}, [signOut, CookieHelper]);
 
   const updateProfile = useCallback(
-    async (info: UpdateProfileRequest): Promise<void> => {
+    async (info: UpdateProfileRequest): Promise<UpdateProfileResponse> => {
       const response = await UsersApi.updateProfile(info);
       const user = {
         ...state.user,
@@ -237,6 +237,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
           user
         }
       });
+      return response;
     }, [CookieHelper]
     // eslint-disable-next-line react-hooks/exhaustive-deps
   );
