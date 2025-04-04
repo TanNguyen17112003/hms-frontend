@@ -26,6 +26,7 @@ import {
   Plus,
   ShieldPlus,
   Syringe,
+  Trash,
   Users
 } from 'lucide-react';
 
@@ -45,13 +46,15 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
     dosage: string,
     frequency: string,
     startDate: string,
-    endDate: string
+    endDate: string,
+    action: any
   ) => {
-    return { name, dosage, frequency, startDate, endDate };
+    return { name, dosage, frequency, startDate, endDate, action };
   };
 
   const rows = [
     {
+      id: 1,
       name: 'Metformin',
       dosage: '500 mg',
       frequency: '2 times/day',
@@ -59,6 +62,7 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
       endDate: '2/2/2021'
     },
     {
+      id: 2,
       name: 'Amlodipine',
       dosage: '5 mg',
       frequency: '1 time/day',
@@ -66,7 +70,7 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
       endDate: '2/2/2021'
     }
   ].map((item: any) =>
-    createData(item.name, item.dosage, item.frequency, item.startDate, item.endDate)
+    createData(item.name, item.dosage, item.frequency, item.startDate, item.endDate, item.id)
   );
 
   return (
@@ -78,9 +82,9 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
               <ClipboardPlus />
               <div className='font-semibold text-lg'>Medical History</div>
             </Box>
-            <button className='rounded-full bg-[#0E1680] text-white p-2 hover:opacity-90'>
+            {/* <button className='rounded-full bg-[#0E1680] text-white p-2 hover:opacity-90'>
               <Pencil className='size-5' />
-            </button>
+            </button> */}
           </Box>
           <Divider style={{ marginBottom: 10 }} color='gray' />
           <div className='grid grid-cols-2 gap-5'>
@@ -151,45 +155,64 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
                       <Table aria-label='relative table'>
                         <TableHead>
                           <TableRow>
-                            <TableCell className='!bg-[#0E1680] !text-white !border-white'>
+                            <TableCell className='!bg-[#0E1680] !text-white !border-white !text-sm'>
                               Medicine or Supplement
                             </TableCell>
                             <TableCell
-                              className='!bg-[#0E1680] !text-white !border-white'
+                              className='!bg-[#0E1680] !text-white !border-white !text-sm'
                               align='right'
                             >
                               How much?
                             </TableCell>
                             <TableCell
-                              className='!bg-[#0E1680] !text-white !border-white'
+                              className='!bg-[#0E1680] !text-white !border-white !text-sm'
                               align='right'
                             >
                               How often?
                             </TableCell>
                             <TableCell
-                              className='!bg-[#0E1680] !text-white !border-white'
+                              className='!bg-[#0E1680] !text-white !border-white !text-sm'
                               align='right'
                             >
                               Start date
                             </TableCell>
                             <TableCell
-                              className='!bg-[#0E1680] !text-white !border-white'
+                              className='!bg-[#0E1680] !text-white !border-white !text-sm'
                               align='right'
                             >
                               End date
+                            </TableCell>
+                            <TableCell
+                              className='!bg-[#0E1680] !text-white !border-white !text-sm'
+                              align='right'
+                            >
+                              Actions
                             </TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
                           {rows.map((row: any) => (
                             <TableRow key={row.name}>
-                              <TableCell component='th' scope='row'>
+                              <TableCell component='th' scope='row' className='!text-sm'>
                                 {row.name}
                               </TableCell>
-                              <TableCell align='right'>{row.dosage}</TableCell>
-                              <TableCell align='right'>{row.frequency}</TableCell>
-                              <TableCell align='right'>{row.startDate}</TableCell>
-                              <TableCell align='right'>{row.endDate}</TableCell>
+                              <TableCell className='!text-sm' align='right'>
+                                {row.dosage}
+                              </TableCell>
+                              <TableCell className='!text-sm' align='right'>
+                                {row.frequency}
+                              </TableCell>
+                              <TableCell className='!text-sm' align='right'>
+                                {row.startDate}
+                              </TableCell>
+                              <TableCell className='!text-sm' align='right'>
+                                {row.endDate}
+                              </TableCell>
+                              <TableCell className='!text-sm' align='right'>
+                                <button>
+                                  <Trash className='size-4 text-red-500' />
+                                </button>
+                              </TableCell>
                             </TableRow>
                           ))}
                         </TableBody>

@@ -3,50 +3,42 @@ import React from 'react';
 import { DashboardLayout } from 'src/layouts';
 import { ArrowLeft, Calendar, ChevronRight } from 'lucide-react';
 import { Breadcrumbs, Button, Link, Typography } from '@mui/material';
-import GeneralInfoCard from './GeneralInfoCard';
-import MedicalInfoCard from './MedicalInfoCard';
+import GeneralInfoCard from './general-info-card';
+import MedicalInfoCard from './medical-info-card';
 import { Box } from '@mui/system';
-import RelativeInfoCard from './RelativeInfoCard';
-import MedicalHistoryCard from './MedicalHistoryCard';
-import MedicalRecordCard from './MedicalRecordCard';
-
-function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
-  event.preventDefault();
-  console.info('You clicked a breadcrumb.');
-}
-
-const breadcrumbs = [
-  <Link
-    underline='hover'
-    key='1'
-    color='#0E1680'
-    href='/'
-    onClick={handleClick}
-    className='!font-semibold'
-  >
-    Doctor Appointment
-  </Link>,
-  <Link
-    underline='hover'
-    key='2'
-    color='#0E1680'
-    href='/material-ui/getting-started/installation/'
-    onClick={handleClick}
-    className='!font-semibold'
-  >
-    Patients Details
-  </Link>,
-  <Typography key='3' sx={{ color: '#0E1680' }} className='!font-semibold'>
-    Morshed Ali
-  </Typography>
-];
+import RelativeInfoCard from './relative-info-card';
+import MedicalHistoryCard from './medical-history-card';
+import MedicalRecordCard from './medical-record-card';
+import { useRouter } from 'next/router';
 
 const PatientDetail: PageType = () => {
+  const router = useRouter();
+
+  function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+    event.preventDefault();
+    router.push('/patient');
+  }
+
+  const breadcrumbs = [
+    <Link
+      underline='hover'
+      key='1'
+      color='#0E1680'
+      onClick={handleClick}
+      className='!font-semibold cursor-pointer'
+    >
+      Patient Management
+    </Link>,
+    <Typography key='3' sx={{ color: '#0E1680' }} className='!font-semibold'>
+      Morshed Ali
+    </Typography>
+  ];
+
   return (
     <div className='ml-4'>
       <div className='w-full flex justify-between items-center mb-5'>
         <div className='flex gap-5'>
-          <button className='text-[#0E1680]'>
+          <button className='text-[#0E1680]' onClick={() => router.push('/patient')}>
             <ArrowLeft />
           </button>
           <Breadcrumbs separator={<ChevronRight />} aria-label='breadcrumb'>

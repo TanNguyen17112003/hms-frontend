@@ -12,7 +12,7 @@ import {
   TableBody
 } from '@mui/material';
 // import { normalize } from 'path';
-import { Pencil, Users } from 'lucide-react';
+import { Pencil, Plus, Users, Trash } from 'lucide-react';
 
 interface RelativeInfoCardProps {
   relativeInfo: any;
@@ -21,12 +21,12 @@ interface RelativeInfoCardProps {
 const RelativeInfoCard: React.FC<RelativeInfoCardProps> = (props) => {
   const { relativeInfo } = props;
 
-  const createData = (fullName: string, relationship: string, phone: string) => {
+  const createData = (fullName: string, relationship: string, phone: string, action: any) => {
     return { fullName, relationship, phone };
   };
 
   const rows = relativeInfo.map((item: any) =>
-    createData(item.fullName, item.relationship, item.phone)
+    createData(item.fullName, item.relationship, item.phone, item)
   );
 
   return (
@@ -39,7 +39,7 @@ const RelativeInfoCard: React.FC<RelativeInfoCardProps> = (props) => {
               <div className='font-semibold text-lg'>Relative Info</div>
             </Box>
             <button className='rounded-full bg-[#0E1680] text-white p-2 hover:opacity-90'>
-              <Pencil className='size-5' />
+              <Plus className='size-5' />
             </button>
           </Box>
           <Divider style={{ marginBottom: 10 }} color='gray' />
@@ -48,25 +48,43 @@ const RelativeInfoCard: React.FC<RelativeInfoCardProps> = (props) => {
               <Table aria-label='relative table'>
                 <TableHead>
                   <TableRow>
-                    <TableCell className='!bg-[#0E1680] !text-white !border-white'>
+                    <TableCell className='!bg-[#0E1680] !text-white !border-white !text-sm'>
                       Relative name
                     </TableCell>
-                    <TableCell className='!bg-[#0E1680] !text-white !border-white' align='right'>
+                    <TableCell
+                      className='!bg-[#0E1680] !text-white !border-white !text-sm'
+                      align='right'
+                    >
                       Relationship
                     </TableCell>
-                    <TableCell className='!bg-[#0E1680] !text-white !border-white' align='right'>
+                    <TableCell
+                      className='!bg-[#0E1680] !text-white !border-white !text-sm'
+                      align='right'
+                    >
                       Phone number
+                    </TableCell>
+                    <TableCell className='!bg-[#0E1680] !text-white !border-white' align='right'>
+                      Actions
                     </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {rows.map((row: any) => (
                     <TableRow key={row.fullName}>
-                      <TableCell component='th' scope='row'>
+                      <TableCell className='!text-sm' component='th' scope='row'>
                         {row.fullName}
                       </TableCell>
-                      <TableCell align='right'>{row.relationship}</TableCell>
-                      <TableCell align='right'>{row.phone}</TableCell>
+                      <TableCell className='!text-sm' align='right'>
+                        {row.relationship}
+                      </TableCell>
+                      <TableCell className='!text-sm' align='right'>
+                        {row.phone}
+                      </TableCell>
+                      <TableCell className='!text-sm' align='right'>
+                        <button>
+                          <Trash className='size-4 text-red-500' />
+                        </button>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

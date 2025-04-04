@@ -21,7 +21,7 @@ const Page: PageType = () => {
     setDateRange(dateRange);
   }, []);
   return (
-    <Box className='h-auto bg-white'>
+    <Box className='h-auto'>
       <ContentHeader
         title={'Dashboard'}
         rightSection={

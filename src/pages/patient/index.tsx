@@ -9,7 +9,7 @@ import { patients } from 'src/utils/generate-mock';
 import { useRouter } from 'next/router';
 import { Box, Button, InputAdornment, Stack, TextField } from '@mui/material';
 import { PlusIcon, SearchIcon } from 'lucide-react';
-import PatientDetail from 'src/sections/patient-detail/PatientDetail';
+import PatientDetail from 'src/sections/patient-detail/patient-detail';
 import PatientManagementList from 'src/sections/admin/patient-management/patient-management-list';
 import AddPatientDialog from 'src/sections/admin/patient-management/add-patient-dialog';
 import AdvancedFilter from 'src/components/advanced-filter/advanced-filter';

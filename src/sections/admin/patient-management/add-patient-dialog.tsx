@@ -9,8 +9,10 @@ import {
   FormControl,
   FormControlLabel,
   Grid,
+  MenuItem,
   Radio,
   RadioGroup,
+  Select,
   Typography
 } from '@mui/material';
 import { AddPatientTextField } from './add-patient-text-field';
@@ -18,6 +20,7 @@ import { Box } from '@mui/system';
 import { useFormik } from 'formik';
 import useFunction from 'src/hooks/use-function';
 import { useCallback } from 'react';
+import { PatientFormField } from './add-patient-form-field';
 
 export const COMMON_DISEASES = [
   { value: 'Hypertension', label: 'Hypertension' },
@@ -28,26 +31,36 @@ export const COMMON_DISEASES = [
 ];
 interface AddPatientFormProps {
   name: string;
+  ssn: string;
   email: string;
   phone: string;
   date: string;
   diseases: string;
-  governmentId: string;
-  hospitalId: string;
-  sex: 'Male' | 'Female';
+  address: string;
+  nationality: string;
+  occupation: string;
+  sex: 'Male' | 'Female' | undefined;
+  maritalStatus: 'SINGLE' | 'MARRIED' | 'DIVORCED' | 'WIDOWED' | undefined;
 }
 
-function AddPatientDialog({ ...DialogProps }: DialogProps) {
+interface AddPatientDialogProps extends DialogProps {
+  type?: 'add' | 'edit';
+}
+
+function AddPatientDialog({ type = 'add', ...DialogProps }: AddPatientDialogProps) {
   const formik = useFormik<AddPatientFormProps>({
     initialValues: {
       name: '',
+      ssn: '',
       email: '',
       phone: '',
       date: '',
       diseases: '',
-      governmentId: '',
-      hospitalId: '',
-      sex: 'Female'
+      address: '',
+      nationality: '',
+      occupation: '',
+      sex: undefined,
+      maritalStatus: undefined
     },
     onSubmit: async (values) => {
       await handleSubmitOrderHelper.call(values);
@@ -64,7 +77,9 @@ function AddPatientDialog({ ...DialogProps }: DialogProps) {
   return (
     <Dialog fullWidth maxWidth='md' {...DialogProps}>
       <DialogTitle>
-        <Typography variant='h6'>Add New Patients</Typography>
+        <Typography variant='h6'>
+          {type === 'add' ? 'Add New Patient' : 'Edit Patient General Info'}
+        </Typography>
         <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
       </DialogTitle>
       <DialogContent>
@@ -81,23 +96,13 @@ function AddPatientDialog({ ...DialogProps }: DialogProps) {
           />
           <AddPatientTextField
             type='text'
-            title='Email ID'
+            title='SSN'
             lg={4}
             xs={12}
             onChange={formik.handleChange}
-            value={formik.values.email}
-            name='email'
-            placeholder='Enter email id'
-          />
-          <AddPatientTextField
-            type='text'
-            title='Mobile Number'
-            lg={4}
-            xs={12}
-            onChange={formik.handleChange}
-            value={formik.values.phone}
-            name='phone'
-            placeholder='Enter mobile number'
+            value={formik.values.ssn}
+            name='ssn'
+            placeholder='Enter SSN'
           />
           <AddPatientTextField
             type='dateTime'
@@ -126,7 +131,7 @@ function AddPatientDialog({ ...DialogProps }: DialogProps) {
                 <RadioGroup
                   aria-labelledby='demo-controlled-radio-buttons-group'
                   name='controlled-radio-buttons-group'
-                  defaultValue={'Female'}
+                  defaultValue={formik.values.sex}
                   value={formik.values.sex}
                   onChange={(e) => formik.setFieldValue('sex', e.target.value)}
                   row={true}
@@ -139,26 +144,69 @@ function AddPatientDialog({ ...DialogProps }: DialogProps) {
           </Grid>
           <AddPatientTextField
             type='text'
-            title='Government ID'
+            title='Email'
             lg={4}
             xs={12}
             onChange={formik.handleChange}
-            value={formik.values.governmentId}
-            name='governmentId'
-            placeholder='Enter government id'
+            value={formik.values.email}
+            name='email'
+            placeholder='Enter email'
           />
-
           <AddPatientTextField
             type='text'
-            title='Hospital ID'
+            title='Phone Number'
             lg={4}
             xs={12}
             onChange={formik.handleChange}
-            value={formik.values.hospitalId}
-            name='hospitalId'
-            placeholder='Enter hospital id'
+            value={formik.values.phone}
+            name='phone'
+            placeholder='Enter phone number'
           />
           <AddPatientTextField
+            type='text'
+            title='Address'
+            lg={4}
+            xs={12}
+            onChange={formik.handleChange}
+            value={formik.values.address}
+            name='address'
+            placeholder='Enter address'
+          />
+          <AddPatientTextField
+            type='text'
+            title='Occupation'
+            lg={4}
+            xs={12}
+            onChange={formik.handleChange}
+            value={formik.values.occupation}
+            name='occupation'
+            placeholder='Enter occupation'
+          />
+          <PatientFormField title='Marital Status' lg={4} xs={12}>
+            <Select
+              labelId='select-marital-status'
+              value={formik.values.maritalStatus}
+              onChange={formik.handleChange}
+              variant='outlined'
+              fullWidth
+            >
+              <MenuItem value='SINGLE'>SINGLE</MenuItem>
+              <MenuItem value='MARRIED'>MARRIED</MenuItem>
+              <MenuItem value='DIVORCED'>DIVORCED</MenuItem>
+              <MenuItem value='WIDOWED'>WIDOWED</MenuItem>
+            </Select>
+          </PatientFormField>
+          <AddPatientTextField
+            type='text'
+            title='Nationality'
+            lg={4}
+            xs={12}
+            onChange={formik.handleChange}
+            value={formik.values.nationality}
+            name='nationality'
+            placeholder='Enter nationality'
+          />
+          {/* <AddPatientTextField
             type='autoComplete'
             title='Diseases'
             lg={12}
@@ -169,7 +217,7 @@ function AddPatientDialog({ ...DialogProps }: DialogProps) {
             name='diseases'
             placeholder='Enter diseases'
             isMultiple={true}
-          />
+          /> */}
         </Grid>
       </DialogContent>
       <DialogActions className='flex justify-center'>
@@ -190,7 +238,7 @@ function AddPatientDialog({ ...DialogProps }: DialogProps) {
             formik.handleSubmit();
           }}
         >
-          Add
+          {type === 'add' ? 'Add' : 'Save'}
         </Button>
       </DialogActions>
     </Dialog>
