@@ -67,14 +67,14 @@ const Page: PageType = () => {
                   <AdvancedFilter filters={[]} />
                   {user?.role === 'STAFF' && (
                     <Button
-                    variant='contained'
-                    className='w-40'
-                    startIcon={<PlusIcon />}
-                    sx={{ backgroundColor: 'rgba(14, 22, 128, 1)' }}
-                    onClick={() => addDialog.handleOpen()}
-                  >
-                    Add Patient
-                  </Button>
+                      variant='contained'
+                      className='w-40'
+                      startIcon={<PlusIcon />}
+                      sx={{ backgroundColor: 'rgba(14, 22, 128, 1)' }}
+                      onClick={() => addDialog.handleOpen()}
+                    >
+                      Add Patient
+                    </Button>
                   )}
                 </Stack>
               </Stack>
