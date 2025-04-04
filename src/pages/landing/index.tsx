@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box } from '@mui/material';
+import { useAuth } from '@hooks';
 import { Page as PageType } from 'src/types/page';
 import AppointmentSection from '../../sections/landing/AppointmentSection';
 import ContactSection from '../../sections/landing/ContactSection';

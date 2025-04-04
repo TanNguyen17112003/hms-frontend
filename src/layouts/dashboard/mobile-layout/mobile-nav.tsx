@@ -179,7 +179,7 @@ export const MobileNav: FC<MobileNavProps> = (props) => {
             {sections?.map((section, index) => (
               <MobileNavSection
                 key={index}
-                items={section.items}
+                items={section.items as any[]}
                 pathname={router.pathname}
                 subheader={section.subheader}
                 onClose={onClose}

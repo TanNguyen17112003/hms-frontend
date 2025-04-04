@@ -29,7 +29,7 @@ function DeleteUserDialog({
           }}
         >
           <Typography variant='h6'>
-            Xóa {user?.role === 'PATIENT' ? 'bệnh nhân' : 'nhân viên'} {user?.name}
+            Xóa {user?.role === 'PATIENT' ? 'bệnh nhân' : 'nhân viên'} {user?.fullName}
           </Typography>
         </Box>
       </DialogTitle>

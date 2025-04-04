@@ -6,15 +6,20 @@ type WorkStatus = 'FULL_TIME' | 'PART_TIME';
 
 export interface User {
   id: string;
-  photoUrl: string;
-  name: string;
-  email?: string;
-  phone: string;
-  dob: string;
-  address: string;
+  photoUrl?: string;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  dob?: string;
+  address?: string;
   role: UserRole;
-  SSN: string;
-  gender: UserGender;
+  ssn: string;
+  gender?: UserGender;
+  nationality?: string;
+  occupation?: string;
+  maritalStatus?: string;
+  createdAt?: string;
+  lastLoginAt?: string;
 }
 
 export interface UserDetail extends User {}
@@ -22,13 +27,13 @@ export interface UserDetail extends User {}
 export const initialUser: UserDetail = {
   id: '',
   photoUrl: '',
-  name: '',
+  fullName: '',
   email: '',
-  phone: '',
+  phoneNumber: '',
   dob: '',
   address: '',
   role: 'PATIENT',
-  SSN: '',
+  ssn: '',
   gender: 'MALE'
 };
 

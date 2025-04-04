@@ -11,7 +11,6 @@ const Page: PageType = () => {
   useEffect(() => {
     if (user) {
       router.replace('/dashboard');
-      console.log(user);
     } else {
       router.replace('/landing');
     }

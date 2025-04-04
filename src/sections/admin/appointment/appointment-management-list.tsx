@@ -11,6 +11,9 @@ import { AppointmentDetail } from 'src/types/appointment';
 import ApproveAppointmentDialog from './appointment-approve-dialog';
 import DeclineAppointmentDialog from './appointment-decline-dialog';
 import { useRouter } from 'next/router';
+import { useAuth } from '@hooks';
+import { UserDetail } from 'src/types/user';
+
 
 interface AppointmentManagementListProps {
   appointments: AppointmentDetail[];
@@ -20,6 +23,7 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
   appointments,
   searchInput
 }) => {
+  const { user } = useAuth();
   const configAppointments = useMemo(() => {
     return appointments.map((appointment) => {
       const patient = patients.find((patient) => patient.id === appointment.userId);
@@ -47,7 +51,8 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
   const AppointmentManagementListConfig = useMemo(() => {
     return getAppointmentManangementTableConfig({
       onClickDecline: (data) => declineDialog.handleOpen(data),
-      onClickApprove: (data) => approveDialog.handleOpen(data)
+      onClickApprove: (data) => approveDialog.handleOpen(data),
+      user: user as UserDetail
     });
   }, [getAppointmentManangementTableConfig]);
 

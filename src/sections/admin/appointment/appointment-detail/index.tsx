@@ -33,7 +33,7 @@ function AppointmentDetail() {
         justifyContent={!isMobile ? 'space-between' : ''}
         gap={2}
       >
-        <AppointmentDetailHeader patientName={filteredAppointment.patient?.name as string} />
+        <AppointmentDetailHeader patientName={filteredAppointment.patient?.fullName as string} />
         {filteredAppointment.status === 'PENDING' && (
           <Stack direction={'row'} spacing={1.5} alignItems={'center'}>
             <Button variant='outlined' startIcon={<Ban size={16} />} color='inherit'>

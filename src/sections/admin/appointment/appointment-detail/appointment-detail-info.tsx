@@ -20,7 +20,7 @@ const AppointmentDetailInfo: React.FC<AppointmentDetailInfoProps> = ({ appointme
             <TextField
               variant='outlined'
               fullWidth
-              value={appointment.type === 'INITIAL' ? 'Initial' : 'Follow-up'}
+              value={appointment.type === 'FIRST_VISIT' ? 'Initial' : 'Follow-up'}
               disabled
             />
           </Stack>
@@ -31,7 +31,7 @@ const AppointmentDetailInfo: React.FC<AppointmentDetailInfoProps> = ({ appointme
             <TextField
               variant='outlined'
               fullWidth
-              value={appointment.doctor?.name || ''}
+              value={appointment.doctor?.fullName || ''}
               disabled={appointment.staffId !== null}
             />
           </Stack>
@@ -68,21 +68,6 @@ const AppointmentDetailInfo: React.FC<AppointmentDetailInfoProps> = ({ appointme
           <Stack spacing={1}>
             <Typography variant='body2'>Review notes</Typography>
             <TextField variant='outlined' fullWidth value={appointment.notes} disabled />
-          </Stack>
-        </Grid>
-        <Grid item xs={12}>
-          <Stack spacing={1}>
-            <Typography variant='body2'>Upload files for note</Typography>
-            <FileDropzone
-              title='Click to upload or drag and drop'
-              accept={{ '*/*': [] }}
-              caption={'SVG, PNG, JPG or GIF (max. 800x400px)'}
-              onDrop={() => {}}
-              onRemove={() => {}}
-              onRemoveAll={() => {}}
-              onUpload={() => {}}
-              type='single'
-            />
           </Stack>
         </Grid>
       </Grid>
