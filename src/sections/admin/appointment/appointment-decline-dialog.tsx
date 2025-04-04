@@ -13,7 +13,7 @@ function DeclineAppointmentDialog({
   onConfirm?: () => Promise<void>;
 }) {
   const onConfirmHelper = useFunction(onConfirm!, {
-    successMessage: `Đã từ chối lịch hẹn từ bệnh nhân ${appointment?.patient?.name}!`
+    successMessage: `Đã từ chối lịch hẹn từ bệnh nhân ${appointment?.patient?.fullName}!`
   });
 
   return (
@@ -28,7 +28,7 @@ function DeclineAppointmentDialog({
           }}
         >
           <Typography variant='h6'>
-            Từ chối lịch hẹn từ bệnh nhân {appointment?.patient?.name}?
+            Từ chối lịch hẹn từ bệnh nhân {appointment?.patient?.fullName}?
           </Typography>
         </Box>
       </DialogTitle>

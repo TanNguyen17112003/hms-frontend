@@ -5,6 +5,9 @@ import CookieHelper, { CookieKeys } from 'src/utils/cookie-helper';
 import { useRouter } from 'next/router';
 import { paths } from 'src/paths';
 import { initialUser, UserDetail } from 'src/types/user';
+import { UpdateProfileRequest, UpdateProfileResponse, UsersApi } from 'src/api/user';
+
+
 
 interface State {
   isInitialized: boolean;
@@ -95,7 +98,7 @@ const handlers: Record<ActionType, Handler> = {
   SIGN_OUT: (state: State): State => ({
     ...state,
     isAuthenticated: false,
-    user: initialUser
+    user: null
   }),
   UPDATE_PROFILE: (state: State, action: UpdateProfileAction): State => ({
     ...state,
@@ -108,9 +111,10 @@ const reducer = (state: State, action: Action): State =>
 
 export interface AuthContextType extends State {
   issuer: Issuer.JWT;
-  signIn: (email: string, password: string) => Promise<string | undefined>;
+  signIn: (email: string, password: string) => Promise<UserDetail | undefined>;
   signOut: () => Promise<void>;
   refreshToken: () => Promise<void>;
+  updateProfile: (info: UpdateProfileRequest) => Promise<UpdateProfileResponse>;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -118,7 +122,8 @@ export const AuthContext = createContext<AuthContextType>({
   issuer: Issuer.JWT,
   signIn: () => Promise.resolve(undefined),
   signOut: () => Promise.resolve(),
-  refreshToken: () => Promise.resolve()
+  refreshToken: () => Promise.resolve(),
+  updateProfile: () => Promise.resolve({} as UpdateProfileResponse)
 });
 
 interface AuthProviderProps {
@@ -144,7 +149,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         } catch {}
         if (!user) {
           user = await JSON.parse(localStorage.getItem('user_data') || '{}');
-          if (!user || !user.id || !user.role || !user.name) {
+          if (!user || !user.id || !user.role || !user.fullName) {
             throw new Error('Ger user failed.');
           }
         }
@@ -185,16 +190,57 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   );
 
   const signIn = useCallback(
-    async (email: string, password: string): Promise<string | undefined> => {
-      // Implement your sign-in logic here
-      return undefined;
-    },
-    [dispatch, CookieHelper]
-  );
+    async (email: string, password: string): Promise<UserDetail> => {
+      const response = await UsersApi.signIn({ email, password });
+      const responseData = {
+        id: response.userInfo.id,
+        email: response.userInfo.email,
+        fullName: response.userInfo.fullName,
+        phoneNumber: response.userInfo.phoneNumber,
+        role: response.userInfo.role,
+        ssn: response.userInfo.ssn,
+        createdAt: response.userInfo.createdAt,
+        lastLoginAt: response.userInfo.lastLoginAt,
+      };
+      CookieHelper.setItem(CookieKeys.TOKEN, response.accessToken);
+      CookieHelper.setItem('user_data', JSON.stringify(responseData));
 
-  const signOut = useCallback(async (): Promise<void> => {}, [router, dispatch]);
+      dispatch({
+        type: ActionType.SIGN_IN,
+        payload: {
+          user: responseData
+        }
+      });
+      return responseData;
+    },
+    [dispatch]
+  );
+  const signOut = useCallback(async (): Promise<void> => {
+    CookieHelper.removeItem(CookieKeys.TOKEN);
+    dispatch({ type: ActionType.SIGN_OUT });
+    router.push(paths.index);
+  }, [router]);
 
   const refreshToken = useCallback(async (): Promise<void> => {}, [signOut, CookieHelper]);
+
+  const updateProfile = useCallback(
+    async (info: UpdateProfileRequest): Promise<UpdateProfileResponse> => {
+      const response = await UsersApi.updateProfile(info);
+      const user = {
+        ...state.user,
+        ...response
+      };
+      CookieHelper.setItem('user_data', JSON.stringify(user));
+      dispatch({
+        type: ActionType.UPDATE_PROFILE,
+        payload: {
+          user
+        }
+      });
+      return response;
+    }, [CookieHelper]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  );
 
   return (
     <AuthContext.Provider
@@ -203,7 +249,8 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         issuer: Issuer.JWT,
         signIn,
         signOut,
-        refreshToken
+        refreshToken,
+        updateProfile
       }}
     >
       {children}

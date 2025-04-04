@@ -2,47 +2,56 @@ import type { User, UserDetail } from 'src/types/user';
 import { apiDelete, apiGet, apiPatch, apiPost, apiPut, getFormData } from 'src/utils/api-request';
 import CookieHelper, { CookieKeys } from 'src/utils/cookie-helper';
 
-type SignInRequest = {
+export type SignInRequest = {
   email: string;
   password: string;
 };
 
-type SignInResponse = {
+export type SignInResponse = {
   accessToken: string;
   userInfo: UserDetail;
   refreshToken: string;
 };
 
-type FirebaseSignInResponse = {
-  refreshToken(REFRESH_TOKEN: CookieKeys, refreshToken: any): unknown;
-  userInfo: UserDetail;
-  accessToken: string;
-};
-
-type LoginFirebaseRequest = { idToken: string };
-
-export type InitialSignUpRequest = {
-  email: string;
-};
-
 export type SignUpRequest = {
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
+  fullName: string;
+  email: string;
   password: string;
-  dormitory: string;
-  building: string;
-  photoUrl?: string;
-  room: string;
-  token: string;
+  ssn: string;
+  phoneNumber: string
+}
+
+export type SignUpResponse = SignUpRequest & {
+  id: string;
+  createdAt: string;
+  lastLoginAt: string;
 };
+
+export type UpdateInfoRequest = {
+  email: string;
+  fullName: string;
+  ssn: string;
+  phoneNumber: string;
+}
+
+export type UpdatePassworRequest = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export type UpdatePasswordResponse = {
+  messsage: string;
+}
 
 export type UpdateProfileRequest = Partial<
   Pick<
     SignUpRequest,
-    'firstName' | 'lastName' | 'phoneNumber' | 'dormitory' | 'building' | 'room' | 'photoUrl'
+    'fullName' | 'email' | 'ssn' | 'phoneNumber'
   >
 >;
+
+export type UpdateProfileResponse = Partial<SignUpResponse>;
 
 export class UsersApi {
   static async postUser(request: Omit<User, 'id'>): Promise<User> {
@@ -55,40 +64,25 @@ export class UsersApi {
   }
 
   static async signIn(request: SignInRequest): Promise<SignInResponse> {
-    return await apiPost('/auth/signin', request);
+    return await apiPost('/api/v1/patients/auth/signin', request);
   }
 
-  static async loginFirebase(request: LoginFirebaseRequest): Promise<FirebaseSignInResponse> {
-    return await apiPost('/auth/signin/google', request);
-  }
-
-  static async initiateSignUp(request: InitialSignUpRequest): Promise<void> {
-    return await apiPost('/auth/signup/initiate', request);
-  }
-
-  static async completeSignUp(request: SignUpRequest): Promise<UserDetail> {
-    const response = await apiPost('/auth/signup/complete', request);
-    return response;
+  static async signUp(request: SignUpRequest): Promise<SignUpResponse> {
+    return await apiPost('/api/v1/patients/auth/signup', request);
   }
 
   static async me(): Promise<Partial<UserDetail>> {
-    return await apiGet('/users/profile');
+    return await apiGet('/api/v1/patients/account');
   }
 
-  static async updatePassword(payload: {
-    currentPassword: string;
-    newPassword: string;
-  }): Promise<User> {
-    return await apiPut('/users/password', payload);
+  static async updatePassword(payload: UpdatePassworRequest): Promise<UpdatePasswordResponse> {
+    return await apiPut('/api/v1/patients/account/password', payload);
   }
 
   static async updateProfile(payload: UpdateProfileRequest): Promise<User> {
-    return await apiPatch('/users/profile', payload);
+    return await apiPut('/api/v1/patients/account', payload);
   }
 
-  static async updateUserRole(id: User['id'], role: User['role']): Promise<User> {
-    return await apiPut(`/users/role/${id}`, { role });
-  }
 
   static async deleteUser(id: User['id']) {
     return await apiDelete(`/users/${id}`, {});
@@ -98,7 +92,4 @@ export class UsersApi {
     return await apiPost('/auth/refresh', { refreshToken });
   }
 
-  static async signOut(refreshToken: string): Promise<void> {
-    return await apiPost('/auth/signout', { refreshToken });
-  }
 }

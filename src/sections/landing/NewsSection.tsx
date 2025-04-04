@@ -97,7 +97,7 @@ const NewsSection = () => {
               className='flex flex-col sm:flex-row rounded-lg overflow-hidden bg-[#FCFEFE] hover:bg-white hover:shadow-md cursor-pointer'
               key={item.title}
             >
-              <img src={item.avt as unknown as string} alt='' className='sm:h-40' />
+            <img src={item.avt as unknown as string} alt='' className='sm:h-40' />
               <div className='p-5'>
                 <div className='text-[#159EEC] text-sm mb-3'>
                   <span>{item.time}</span> | <span>{item.author}</span>

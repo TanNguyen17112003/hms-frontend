@@ -30,7 +30,7 @@ function ContentHeader({
           top: 0,
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'flex-start',
+          alignItems: 'center',
           gap: 2,
           flexWrap: 'wrap'
         }}

@@ -6,15 +6,22 @@ import useFunction, {
 } from 'src/hooks/use-function';
 import { UserDetail } from 'src/types/user';
 import { useAuth } from '@hooks';
+import { UpdatePassworRequest, UpdatePasswordResponse, UpdateProfileRequest } from 'src/api/user';
+
+
 
 interface ContextValue {
   getListUsersApi: UseFunctionReturnType<FormData, UserDetail[]>;
   deleteUser: (id: UserDetail['id']) => Promise<void>;
+  changePassword: (request: UpdatePassworRequest) => Promise<UpdatePasswordResponse>;
 }
 
 export const UserContext = createContext<ContextValue>({
   getListUsersApi: DEFAULT_FUNCTION_RETURN,
-  deleteUser: async () => {}
+  deleteUser: async () => {},
+  changePassword: async (request: UpdatePassworRequest) => {
+    return {} as UpdatePasswordResponse;
+  },
 });
 
 const UserProvider = ({ children }: { children: ReactNode }) => {
@@ -33,6 +40,15 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     [getListUsersApi]
   );
 
+  const changePassword = useCallback(async (request: UpdatePassworRequest) => {
+    try {
+      const response: UpdatePasswordResponse = await UsersApi.updatePassword(request);
+      return response; 
+    } catch (err) {
+      throw err;
+    }
+  }, []);
+
   useEffect(() => {
     if (user?.role === 'ADMIN') {
       getListUsersApi.call(new FormData());
@@ -43,7 +59,8 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     <UserContext.Provider
       value={{
         getListUsersApi,
-        deleteUser
+        deleteUser,
+        changePassword,
       }}
     >
       {children}

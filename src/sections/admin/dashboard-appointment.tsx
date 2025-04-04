@@ -50,7 +50,7 @@ function DashboardAppointment() {
                 <Stack direction={'row'} spacing={2} alignItems={'center'}>
                   <Avatar src={appointment.doctor?.photoUrl} />
                   <Box>
-                    <Typography variant={'h6'}>{appointment.doctor?.name}</Typography>
+                    <Typography variant={'h6'}>{appointment.doctor?.fullName}</Typography>
                     <Typography variant={'body2'} fontWeight={'light'}>
                       {appointment.doctor?.speciality}
                     </Typography>
@@ -59,7 +59,7 @@ function DashboardAppointment() {
                 <Divider />
                 <Stack direction={'row'} spacing={2} alignItems={'center'}>
                   <Avatar src={appointment.patient?.photoUrl} />
-                  <Typography variant={'h6'}>{appointment.patient?.name}</Typography>
+                  <Typography variant={'h6'}>{appointment.patient?.fullName}</Typography>
                 </Stack>
                 <Stack
                   direction={'row'}

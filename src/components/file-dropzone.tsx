@@ -61,6 +61,7 @@ export const FileDropzone: FC<FileDropzoneProps & { sx?: BoxProps['sx'] }> = (pr
           borderStyle: 'dashed',
           borderColor: 'divider',
           display: 'flex',
+          bgcolor: 'white',
           flexWrap: 'wrap',
           justifyContent: 'center',
           outline: 'none',
@@ -117,7 +118,7 @@ export const FileDropzone: FC<FileDropzoneProps & { sx?: BoxProps['sx'] }> = (pr
               }}
             >
               <img
-                src={'/ui/excel.png'}
+                src={'/ui/folder.png'}
                 alt='preview'
                 style={{
                   aspectRatio: '1/1',
