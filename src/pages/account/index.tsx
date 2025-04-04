@@ -6,6 +6,7 @@ import { useAuth } from '@hooks';
 import PatientAccount from 'src/sections/patient/account';
 import StaffAccount from 'src/sections/staff/account';
 import AdminAccount from 'src/sections/admin/account';
+import UserProvider from 'src/contexts/user/user-context';
 const Page: PageType = () => {
   const { user } = useAuth();
   return (
@@ -33,6 +34,11 @@ const Page: PageType = () => {
   )
 };
 
-Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+Page.getLayout = (page) => 
+  <DashboardLayout>
+    <UserProvider>
+      {page}
+    </UserProvider>
+  </DashboardLayout>;
 
 export default Page;
