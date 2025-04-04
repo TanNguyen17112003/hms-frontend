@@ -13,7 +13,7 @@ function ApproveAppointmentDialog({
   onConfirm?: () => Promise<void>;
 }) {
   const onConfirmHelper = useFunction(onConfirm!, {
-    successMessage: `Đã chấp nhận lịch hẹn từ bệnh nhân ${appointment?.patient?.name}!`
+    successMessage: `Đã chấp nhận lịch hẹn từ bệnh nhân ${appointment?.patient?.fullName}!`
   });
 
   return (
@@ -28,7 +28,7 @@ function ApproveAppointmentDialog({
           }}
         >
           <Typography variant='h6'>
-            Chấp nhận lịch hẹn từ bệnh nhân {appointment?.patient?.name}?
+            Chấp nhận lịch hẹn từ bệnh nhân {appointment?.patient?.fullName}?
           </Typography>
         </Box>
       </DialogTitle>

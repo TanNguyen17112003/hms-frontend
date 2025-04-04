@@ -9,7 +9,7 @@ import {
   Grid,
   Typography
 } from '@mui/material';
-import { AddPatientTextField } from '../admin/patient-management/add-patient-text-field';
+import { AddPatientTextField } from '../staff/patient-management/add-patient-text-field';
 import { useFormik } from 'formik';
 import useFunction from 'src/hooks/use-function';
 import { useCallback } from 'react';

@@ -1,5 +1,4 @@
 import { FormatRelativeFnOptions, FormatRelativeToken, Locale } from 'date-fns';
-// import locale from 'date-fns/locale/en-US';
 
 const formatDistanceLocale: Record<string, string> = {
   lessThanXSeconds: '{{count}}s',

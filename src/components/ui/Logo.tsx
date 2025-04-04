@@ -13,7 +13,7 @@ export const Logo: FC = () => {
         fontWeight={'bold'}
         variant={isMobile ? 'subtitle2' : isTablet ? 'body2' : 'h5'}
       >
-        Hệ thống đang khởi động, vui lòng đợi...{' '}
+        The system is loading. Please wait...{' '}
       </Typography>
     </Stack>
   );

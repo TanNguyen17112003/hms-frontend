@@ -47,7 +47,7 @@ const DoctorCard: React.FC<DoctorCardProps> = ({ doctor, onClick }) => {
           alignItems={'flex-start'}
           gap={1}
         >
-          <Typography variant='h5'>{doctor.name}</Typography>
+          <Typography variant='h5'>{doctor.fullName}</Typography>
           <Stack direction={isMobile ? 'column' : 'row'} spacing={2}>
             <InfoItem icon={<Stethoscope size={16} />} text={doctor.speciality} />
             <InfoItem icon={<Clock size={16} />} text='9.30am - 01:00am BST' />

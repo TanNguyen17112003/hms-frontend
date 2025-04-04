@@ -47,7 +47,7 @@ export const TabletNav: FC<TabletNavProps> = (props) => {
                 </Box>
                 {sections.map((section, index) => (
                   <TabletNavSection
-                    items={section.items}
+                    items={section.items as any[]}
                     key={index}
                     pathname={pathname}
                     subheader={section.subheader}

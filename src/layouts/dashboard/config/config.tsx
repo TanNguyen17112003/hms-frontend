@@ -12,7 +12,7 @@ export interface DashboardItem {
   icon?: ReactNode;
   items?: DashboardItem[];
   label?: ReactNode;
-  path?: any;
+  path?: string | Record<string, any>;
   title: string;
 }
 
@@ -25,10 +25,10 @@ export const useSections = () => {
   const { user } = useAuth();
 
   return useMemo(() => {
-    return user?.role === 'PATIENT'
-      ? getDashboardPatientConfigs()
-      : user?.role === 'STAFF'
-        ? getDashboardStaffConfigs()
-        : getDashboardAdminConfigs();
+    return user?.role === 'ADMIN'
+      ? getDashboardAdminConfigs()
+      : user?.role === 'PATIENT'
+        ? getDashboardPatientConfigs()
+        : getDashboardStaffConfigs()
   }, [user]);
 };

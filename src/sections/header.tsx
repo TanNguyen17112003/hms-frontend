@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
-import { CircleUserRound, UserPlus, MessageSquareDot, MessageSquareWarning } from 'lucide-react';
+import { CircleUserRound, UserPlus, MessageSquareDot, MessageSquareWarning, UserRoundCheck } from 'lucide-react';
 import logo from 'public/logo-black.png';
 import {
   AppBar,
@@ -24,6 +24,7 @@ import { MobileNavSection } from 'src/layouts/dashboard/mobile-layout/mobile-nav
 import { useSections } from 'src/layouts';
 import { useResponsive } from 'src/utils/use-responsive';
 import { FaEllipsis } from 'react-icons/fa6';
+import { UserTick } from 'iconsax-react';
 
 export const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -85,6 +86,16 @@ export const Header = () => {
             direction={'row'}
             className='px-4 py-3 cursor-pointer hover:bg-blue-600 hover:text-white gap-2'
             onClick={() => {
+              router.push(paths.auth.staff.index);
+            }}
+          >
+            <UserRoundCheck size={24} className='hover:bg-white' />
+            <Typography fontWeight={'bold'}>Login with staff</Typography>
+          </Stack>
+          <Stack
+            direction={'row'}
+            className='px-4 py-3 cursor-pointer hover:bg-blue-600 hover:text-white gap-2'
+            onClick={() => {
               router.push(paths.auth.login);
             }}
           >
@@ -108,7 +119,7 @@ export const Header = () => {
 
   return (
     router.pathname !== paths.auth.login &&
-    router.pathname !== paths.auth.register.index && (
+    router.pathname !== paths.auth.register.index && router.pathname !== paths.auth.staff.index && (
       <AppBar position='sticky' sx={{ backgroundColor: '#02053D', color: 'white', paddingY: 0.5 }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', paddingY: 1 }}>
           {user ? (
@@ -145,7 +156,7 @@ export const Header = () => {
                     <Avatar src={user?.photoUrl} sx={{ width: 26, height: 26 }} />
                     {!isMobile && (
                       <Box display={'flex'} flexDirection={'column'} gap={0.2}>
-                        <Typography variant={'body1'}>{user?.name || 'Chovy'}</Typography>
+                        <Typography variant={'body1'}>{user?.fullName || 'Chovy'}</Typography>
                         <Typography variant={'body2'} fontWeight={100}>
                           {user?.email || 'duytan17112003@gmail.com'}
                         </Typography>
@@ -255,6 +266,16 @@ export const Header = () => {
                     </Typography>
                   </Stack>
                   <Stack direction={'row'} gap={2}>
+                  <Button
+                      onClick={() => router.push(paths.auth.staff.index)}
+                      variant='outlined'
+                      className='flex items-center gap-2 text-white'
+                    >
+                      <UserRoundCheck size={24} color='white' fontVariant={"bold"}/>
+                      <Typography color='white' fontWeight={'bold'}>
+                        Login with staff account
+                      </Typography>
+                    </Button>
                     <Button
                       onClick={() => router.push(paths.auth.login)}
                       variant='outlined'

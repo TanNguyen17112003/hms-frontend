@@ -16,7 +16,7 @@ const AppointmentDetailPatient: React.FC<AppointmentDetailPatientProps> = ({ app
       },
       {
         title: 'SSN',
-        value: appointment.patient?.SSN
+        value: appointment.patient?.ssn
       },
       {
         title: 'Address',
@@ -24,7 +24,7 @@ const AppointmentDetailPatient: React.FC<AppointmentDetailPatientProps> = ({ app
       },
       {
         title: 'Phone',
-        value: appointment.patient?.phone
+        value: appointment.patient?.phoneNumber
       },
       {
         title: 'Date of Birth',
@@ -42,7 +42,7 @@ const AppointmentDetailPatient: React.FC<AppointmentDetailPatientProps> = ({ app
         <Avatar src={appointment.patient?.photoUrl} sx={{ width: 100, height: 100 }} />
         <Stack direction={'column'} spacing={0.5}>
           <Typography className='text-bg-primary' fontWeight={'bold'}>
-            {appointment.patient?.name}
+            {appointment.patient?.fullName}
           </Typography>
           <Typography variant='body2'>
             {calculateAge(appointment.patient?.dob as string)} Years,{' '}

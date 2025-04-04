@@ -5,6 +5,9 @@ import CookieHelper, { CookieKeys } from 'src/utils/cookie-helper';
 import { useRouter } from 'next/router';
 import { paths } from 'src/paths';
 import { initialUser, UserDetail } from 'src/types/user';
+import { UsersApi } from 'src/api/user';
+
+
 
 interface State {
   isInitialized: boolean;
@@ -108,7 +111,7 @@ const reducer = (state: State, action: Action): State =>
 
 export interface AuthContextType extends State {
   issuer: Issuer.JWT;
-  signIn: (email: string, password: string) => Promise<string | undefined>;
+  signIn: (email: string, password: string) => Promise<UserDetail | undefined>;
   signOut: () => Promise<void>;
   refreshToken: () => Promise<void>;
 }
@@ -144,7 +147,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         } catch {}
         if (!user) {
           user = await JSON.parse(localStorage.getItem('user_data') || '{}');
-          if (!user || !user.id || !user.role || !user.name) {
+          if (!user || !user.id || !user.role || !user.fullName) {
             throw new Error('Ger user failed.');
           }
         }
@@ -185,11 +188,30 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   );
 
   const signIn = useCallback(
-    async (email: string, password: string): Promise<string | undefined> => {
-      // Implement your sign-in logic here
-      return undefined;
+    async (email: string, password: string): Promise<UserDetail> => {
+      const response = await UsersApi.signIn({ email, password });
+      const responseData = {
+        id: response.userInfo.id,
+        email: response.userInfo.email,
+        fullName: response.userInfo.fullName,
+        phoneNumber: response.userInfo.phoneNumber,
+        role: response.userInfo.role,
+        ssn: response.userInfo.ssn,
+        createdAt: response.userInfo.createdAt,
+        lastLoginAt: response.userInfo.lastLoginAt,
+      };
+      CookieHelper.setItem(CookieKeys.TOKEN, response.accessToken);
+      CookieHelper.setItem('user_data', JSON.stringify(responseData));
+
+      dispatch({
+        type: ActionType.SIGN_IN,
+        payload: {
+          user: responseData
+        }
+      });
+      return responseData;
     },
-    [dispatch, CookieHelper]
+    [dispatch]
   );
 
   const signOut = useCallback(async (): Promise<void> => {}, [router, dispatch]);
