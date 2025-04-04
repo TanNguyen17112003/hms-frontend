@@ -6,16 +6,17 @@ import { useFormik } from 'formik';
 import Image from 'next/image';
 import Link from 'next/link';
 import { default as backgroundAuth } from 'public/background-auth.jpg';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PasswordInput from 'src/components/password-input';
 import FormInput from 'src/components/ui/FormInput';
 import { paths } from 'src/paths';
 import type { Page as PageType } from 'src/types/page';
 import * as Yup from 'yup';
 import { useRouter } from 'next/router';
-import { useResponsive } from 'src/utils/use-responsive';
 import { ArrowLeft } from 'iconsax-react';
 import logo from 'public/logo-black.png';
+import { SignInRequest, UsersApi } from 'src/api/user';
+import useFunction from 'src/hooks/use-function';
 
 export const loginSchema = Yup.object({
   email: Yup.string().required('Email không được để trống'),
@@ -23,9 +24,23 @@ export const loginSchema = Yup.object({
 });
 
 const Page: PageType = () => {
-  const { isTablet, isMobile } = useResponsive();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const handleLogin = useCallback(async (values: SignInRequest) => {
+    try {
+      const response = await UsersApi.signIn(values);
+      if (response) {
+        router.push(paths.index);
+      }
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        formik.setFieldError('general', 'Email hoặc mật khẩu không chính xác');
+      } else {
+        formik.setFieldError('general', 'Đã có lỗi xảy ra, vui lòng thử lại sau');
+      }
+    }
+  }, []); 
+  const handleLoginHelper = useFunction(handleLogin);
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -34,9 +49,10 @@ const Page: PageType = () => {
     },
     validationSchema: loginSchema,
     onSubmit: async (values, { setSubmitting }) => {
-      console.log('Email:', values.email);
-      console.log('Password:', values.password);
-      console.log('General:', values.general);
+      handleLoginHelper.call({
+        password: values.password,
+        email: values.email
+      })
       setSubmitting(true);
     }
   });
@@ -138,7 +154,7 @@ const Page: PageType = () => {
 
                 <Button
                   type='submit'
-                  disabled={formik.isSubmitting}
+                  disabled={formik.isSubmitting || !formik.isValid}
                   fullWidth
                   className='rounded-xs'
                   sx={{
