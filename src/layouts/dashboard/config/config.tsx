@@ -12,7 +12,7 @@ export interface DashboardItem {
   icon?: ReactNode;
   items?: DashboardItem[];
   label?: ReactNode;
-  path?: string;
+  path?: string | Record<string, any>;
   title: string;
 }
 

@@ -20,7 +20,7 @@ const PatientManagementList: React.FC<PatientManagementListProps> = ({ patients,
     count: patients.length
   });
   const filteredUsers = patients.filter((user) => {
-    return user.name.toLowerCase().includes(searchInput.toLowerCase());
+    return user.fullName.toLowerCase().includes(searchInput.toLowerCase());
   });
   const results = filteredUsers.map((patient, index) => ({ ...patient, index: index + 1 }));
 

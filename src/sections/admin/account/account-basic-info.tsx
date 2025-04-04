@@ -15,14 +15,14 @@ function AccountBasicInfo({user}: {user: UserDetail}) {
         <TextField
           variant='outlined'
           fullWidth
-          value={user?.name}
+          value={user?.fullName}
         />
       </Stack>
     </Grid>
     <Grid item xs={12} md={6}>
       <Stack spacing={1}>
         <Typography variant='body2'>Phone number</Typography>
-        <TextField variant='outlined' fullWidth value={user?.phone} />
+        <TextField variant='outlined' fullWidth value={user?.phoneNumber} />
       </Stack>
     </Grid>
  
@@ -50,7 +50,7 @@ function AccountBasicInfo({user}: {user: UserDetail}) {
         <TextField
           variant='outlined'
           fullWidth
-          value={formatStandardDate(user?.dob)}
+          value={formatStandardDate(user?.dob as string)}
           disabled
         />
       </Stack>
@@ -85,7 +85,7 @@ function AccountBasicInfo({user}: {user: UserDetail}) {
         <TextField
           variant='outlined'
           fullWidth
-          value={user?.SSN}
+          value={user?.ssn}
           disabled
         />
       </Stack>

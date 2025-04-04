@@ -35,15 +35,15 @@ const generatePatients = (): PatientDetail[] => {
     patients.push({
       ...initialUser,
       id: uuidv4(),
-      name: `Patient ${i + 1}`,
+      fullName: `Patient ${i + 1}`,
       photoUrl:
         'https://static.vecteezy.com/system/resources/previews/027/245/520/original/male-3d-avatar-free-png.png',
-      phone: `123456789${i}`,
+      phoneNumber: `123456789${i}`,
       dob: generateRandomDate(new Date(1970, 0, 1), new Date(2000, 0, 1)).toISOString(),
       address: `Address ${i + 1}`,
       email: `patient${i + 1}@gmail.com`,
       role: 'PATIENT',
-      SSN: `SSN${i + 1}`,
+      ssn: `SSN${i + 1}`,
       gender: i % 2 === 0 ? 'MALE' : 'FEMALE',
       job: `Job ${i + 1}`
     });
@@ -65,15 +65,15 @@ const generateDoctors = (patients: PatientDetail[]): StaffDetail[] => {
     doctors.push({
       ...initialUser,
       id: uuidv4(),
-      name: `Doctor ${i + 1}`,
-      phone: `987654321${i}`,
+      fullName: `Doctor ${i + 1}`,
+      phoneNumber: `987654321${i}`,
       photoUrl:
         'https://static.vecteezy.com/system/resources/previews/027/245/520/original/male-3d-avatar-free-png.png',
       dob: generateRandomDate(new Date(1960, 0, 1), new Date(1990, 0, 1)).toISOString(),
       address: `Address ${i + 1}`,
       role: 'STAFF',
       email: `doctor${i + 1}@gmail.com`,
-      SSN: `SSN${i + 1}`,
+      ssn: `SSN${i + 1}`,
       gender: i % 2 === 0 ? 'MALE' : 'FEMALE',
       speciality: `Speciality ${i + 1}`,
       workStatus: i % 2 === 0 ? 'FULL_TIME' : 'PART_TIME',
@@ -103,7 +103,7 @@ const generateAppointments = (patients: PatientDetail[], doctors: StaffDetail[])
             userId: patient.id,
             timeSlot,
             date: randomDate.toISOString(),
-            notes: `Appointment notes for ${patient.name} with ${doctor.name}`,
+            notes: `Appointment notes for ${patient.fullName} with ${doctor.fullName}`,
             status: appointmentStatusList[Math.floor(Math.random() * appointmentStatusList.length)],
             type: appointmentTypeList[Math.floor(Math.random() * appointmentTypeList.length)],
             createdAt: generateRandomDate(new Date(2015, 0, 1), new Date(2025, 0, 1)).toISOString(),

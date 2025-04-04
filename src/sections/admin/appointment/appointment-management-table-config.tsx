@@ -5,7 +5,7 @@ import { formatStandardDate, formatTime } from 'src/utils/format-time-currency';
 import { AppointmentDetail } from 'src/types/appointment';
 import { Check, X } from 'lucide-react';
 import { useAuth } from '@hooks';
-import { PatientDetail, StaffDetail } from 'src/types/user';
+import { PatientDetail, StaffDetail, UserDetail } from 'src/types/user';
 
 export interface AppointmentDetailConfig extends AppointmentDetail {
   patient: PatientDetail | undefined;
@@ -14,14 +14,14 @@ export interface AppointmentDetailConfig extends AppointmentDetail {
 
 const getAppointmentManangementTableConfig = ({
   onClickApprove,
-  onClickDecline
+  onClickDecline,
+  user
 }: {
   onClickApprove: (data: AppointmentDetailConfig) => void;
   onClickDecline: (data: AppointmentDetailConfig) => void;
+  user: UserDetail;
 }): CustomTableConfig<AppointmentDetailConfig['id'], AppointmentDetailConfig>[] => {
-  const { user } = useAuth(); // Get the current user's role
 
-  // Base configuration
   const baseConfig: CustomTableConfig<AppointmentDetailConfig['id'], AppointmentDetailConfig>[] = [
     {
       key: 'bookingId',
@@ -113,7 +113,7 @@ const getAppointmentManangementTableConfig = ({
         <Stack direction='row' alignItems={'center'} spacing={1}>
           <Avatar src={data.patient?.photoUrl} />
           <Box>
-            <Typography variant='body1'>{data.patient?.name}</Typography>
+            <Typography variant='body1'>{data.patient?.fullName}</Typography>
             <Typography variant='body2' color='textSecondary'>
               {data.patient?.email as string}
             </Typography>
@@ -131,7 +131,7 @@ const getAppointmentManangementTableConfig = ({
           <Stack direction='row' alignItems={'center'} spacing={1}>
             <Avatar src={data.doctor?.photoUrl} />
             <Box>
-              <Typography variant='body1'>{data.doctor?.name}</Typography>
+              <Typography variant='body1'>{data.doctor?.fullName}</Typography>
               <Typography variant='body2' color='textSecondary'>
                 {data.doctor?.email as string}
               </Typography>
@@ -149,7 +149,7 @@ const getAppointmentManangementTableConfig = ({
           <Stack direction='row' alignItems={'center'} spacing={1}>
             <Avatar src={data.doctor?.photoUrl} />
             <Box>
-              <Typography variant='body1'>{data.doctor?.name}</Typography>
+              <Typography variant='body1'>{data.doctor?.fullName}</Typography>
               <Typography variant='body2' color='textSecondary'>
                 {data.doctor?.email as string}
               </Typography>
@@ -166,7 +166,7 @@ const getAppointmentManangementTableConfig = ({
         <Stack direction='row' alignItems={'center'} spacing={1}>
           <Avatar src={data.patient?.photoUrl} />
           <Box>
-            <Typography variant='body1'>{data.patient?.name}</Typography>
+            <Typography variant='body1'>{data.patient?.fullName}</Typography>
             <Typography variant='body2' color='textSecondary'>
               {data.patient?.email as string}
             </Typography>

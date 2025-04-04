@@ -65,7 +65,7 @@ export const SideNav: FC<SideNavProps> = (props) => {
                 )}
                 {sections.map((section, index) => (
                   <SideNavSection
-                    items={section.items}
+                    items={section.items as any[]}
                     key={index}
                     pathname={pathname}
                     subheader={section.subheader}

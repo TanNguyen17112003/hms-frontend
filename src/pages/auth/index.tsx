@@ -17,6 +17,7 @@ import { ArrowLeft } from 'iconsax-react';
 import logo from 'public/logo-black.png';
 import { SignInRequest, UsersApi } from 'src/api/user';
 import useFunction from 'src/hooks/use-function';
+import { useAuth } from '@hooks';
 
 export const loginSchema = Yup.object({
   email: Yup.string().required('Email không được để trống'),
@@ -25,10 +26,11 @@ export const loginSchema = Yup.object({
 
 const Page: PageType = () => {
   const router = useRouter();
+  const { signIn } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const handleLogin = useCallback(async (values: SignInRequest) => {
     try {
-      const response = await UsersApi.signIn(values);
+      const response = await signIn(values.email, values.password)
       if (response) {
         router.push(paths.index);
       }

@@ -156,7 +156,7 @@ export const Header = () => {
                     <Avatar src={user?.photoUrl} sx={{ width: 26, height: 26 }} />
                     {!isMobile && (
                       <Box display={'flex'} flexDirection={'column'} gap={0.2}>
-                        <Typography variant={'body1'}>{user?.name || 'Chovy'}</Typography>
+                        <Typography variant={'body1'}>{user?.fullName || 'Chovy'}</Typography>
                         <Typography variant={'body2'} fontWeight={100}>
                           {user?.email || 'duytan17112003@gmail.com'}
                         </Typography>

@@ -21,9 +21,9 @@ const getPatientManangementTableConfig = ({
       <Stack direction='row' alignItems={'center'} spacing={1}>
         <Avatar src={data.photoUrl} />
         <Box>
-          <Typography variant='body1'>{data.name}</Typography>
+          <Typography variant='body1'>{data.fullName}</Typography>
           <Typography variant='body2' color='textSecondary'>
-            {formatTagName(data.name)}
+            {formatTagName(data.fullName)}
           </Typography>
         </Box>
       </Stack>
@@ -39,13 +39,13 @@ const getPatientManangementTableConfig = ({
     key: 'SSN',
     headerLabel: 'SSN',
     type: 'string',
-    renderCell: (data) => <Typography variant='body1'>#{data.SSN}</Typography>
+    renderCell: (data) => <Typography variant='body1'>#{data.ssn}</Typography>
   },
   {
     key: 'date',
     headerLabel: 'Date of Birth',
     type: 'string',
-    renderCell: (data) => <Typography variant='body1'>{formatStandardDate(data.dob)}</Typography>
+    renderCell: (data) => <Typography variant='body1'>{formatStandardDate(data.dob as string)}</Typography>
   },
   {
     key: 'nationality',
@@ -71,7 +71,7 @@ const getPatientManangementTableConfig = ({
     key: 'phone',
     headerLabel: 'Phone',
     type: 'string',
-    renderCell: (data) => <Typography variant='body1'>{data.phone}</Typography>
+    renderCell: (data) => <Typography variant='body1'>{data.phoneNumber}</Typography>
   },
   {
     key: 'address',

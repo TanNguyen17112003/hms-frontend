@@ -31,7 +31,7 @@ const AppointmentDetailInfo: React.FC<AppointmentDetailInfoProps> = ({ appointme
             <TextField
               variant='outlined'
               fullWidth
-              value={appointment.doctor?.name || ''}
+              value={appointment.doctor?.fullName || ''}
               disabled={appointment.staffId !== null}
             />
           </Stack>

@@ -2,7 +2,6 @@ import { CalendarToday } from '@mui/icons-material';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { Dialog, IconButton, InputAdornment, TextField } from '@mui/material';
 import { addDays } from 'date-fns';
-import viLocale from 'date-fns/locale/vi';
 import { DateRangePicker } from 'mui-daterange-picker';
 import { DateRangePickerWrapperProps } from 'mui-daterange-picker/dist/components/DateRangePickerWrapper';
 import { useState } from 'react';
@@ -77,7 +76,6 @@ function DateRangePickerTextField(
             });
             setInputDialogOpen(false);
           }}
-          locale={viLocale}
         />
       </Dialog>
     </>
