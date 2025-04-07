@@ -64,6 +64,10 @@ export class UsersApi {
     return await apiPost('/api/v1/patients/auth/signin', request);
   }
 
+  static async signInAsStaff(request: SignInRequest): Promise<SignInResponse> {
+    return await apiPost('/api/v1/staff/auth/signin', request);
+  }
+
   static async signUp(request: SignUpRequest): Promise<SignUpResponse> {
     return await apiPost('/api/v1/patients/auth/signup', request);
   }

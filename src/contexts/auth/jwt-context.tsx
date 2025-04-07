@@ -110,6 +110,7 @@ const reducer = (state: State, action: Action): State =>
 export interface AuthContextType extends State {
   issuer: Issuer.JWT;
   signIn: (email: string, password: string) => Promise<UserDetail | undefined>;
+  signInAsStaff: (email: string, password: string) => Promise<UserDetail | undefined>;
   signOut: () => Promise<void>;
   refreshToken: () => Promise<void>;
   updateProfile: (info: UpdateProfileRequest) => Promise<UpdateProfileResponse>;
@@ -119,6 +120,7 @@ export const AuthContext = createContext<AuthContextType>({
   ...initialState,
   issuer: Issuer.JWT,
   signIn: () => Promise.resolve(undefined),
+  signInAsStaff: () => Promise.resolve(undefined),
   signOut: () => Promise.resolve(),
   refreshToken: () => Promise.resolve(),
   updateProfile: () => Promise.resolve({} as UpdateProfileResponse)
@@ -213,6 +215,32 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     },
     [dispatch]
   );
+  const signInAsStaff = useCallback(
+    async (email: string, password: string): Promise<UserDetail> => {
+      const response = await UsersApi.signInAsStaff({ email, password });
+      const responseData = {
+        id: response.userInfo.id,
+        email: response.userInfo.email,
+        fullName: response.userInfo.fullName,
+        phoneNumber: response.userInfo.phoneNumber,
+        role: response.userInfo.role,
+        ssn: response.userInfo.ssn,
+        createdAt: response.userInfo.createdAt,
+        lastLoginAt: response.userInfo.lastLoginAt
+      };
+      CookieHelper.setItem(CookieKeys.TOKEN, response.accessToken);
+      CookieHelper.setItem('user_data', JSON.stringify(responseData));
+
+      dispatch({
+        type: ActionType.SIGN_IN,
+        payload: {
+          user: responseData
+        }
+      });
+      return responseData;
+    },
+    [dispatch]
+  );
   const signOut = useCallback(async (): Promise<void> => {
     CookieHelper.removeItem(CookieKeys.TOKEN);
     dispatch({ type: ActionType.SIGN_OUT });
@@ -247,6 +275,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         ...state,
         issuer: Issuer.JWT,
         signIn,
+        signInAsStaff,
         signOut,
         refreshToken,
         updateProfile

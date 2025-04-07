@@ -111,7 +111,7 @@ export const Header = () => {
             }}
           >
             <UserRoundCheck size={24} className='hover:bg-white' />
-            <Typography fontWeight={'bold'}>Login with staff</Typography>
+            <Typography fontWeight={'bold'}>Login as staff</Typography>
           </Stack>
           <Stack
             direction={'row'}
@@ -321,7 +321,7 @@ export const Header = () => {
                     >
                       <UserRoundCheck size={24} color='white' fontVariant={'bold'} />
                       <Typography color='white' fontWeight={'bold'}>
-                        Login with staff account
+                        Login as staff
                       </Typography>
                     </Button>
                     <Button
