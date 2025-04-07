@@ -6,33 +6,36 @@ import { useAuth } from '@hooks';
 import PatientAccount from 'src/sections/patient/account';
 import StaffAccount from 'src/sections/staff/account';
 import AdminAccount from 'src/sections/admin/account';
+import UserProvider from 'src/contexts/user/user-context';
 const Page: PageType = () => {
   const { user } = useAuth();
   return (
     <>
-      <ContentHeader 
+      <ContentHeader
         title='My Profile'
         description='This Information will be displayed publicly so be careful what you share.'
       />
-      {
-        user?.role === 'ADMIN' ? (
-          <Box className='px-6 py-4'>
-            <AdminAccount />
-          </Box>
-        ) : user?.role === 'PATIENT' ? (
-          <Box className='px-6 py-4'>
-            <PatientAccount />
-          </Box>
-        ) : (
-          <Box className='px-6 py-4'>
-            <StaffAccount />
-          </Box>
-        )
-      }
+      {user?.role === 'ADMIN' ? (
+        <Box className='px-6 py-4'>
+          <AdminAccount />
+        </Box>
+      ) : user?.role === 'PATIENT' ? (
+        <Box className='px-6 py-4'>
+          <PatientAccount />
+        </Box>
+      ) : (
+        <Box className='px-6 py-4'>
+          <StaffAccount />
+        </Box>
+      )}
     </>
-  )
+  );
 };
 
-Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+Page.getLayout = (page) => (
+  <DashboardLayout>
+    <UserProvider>{page}</UserProvider>
+  </DashboardLayout>
+);
 
 export default Page;

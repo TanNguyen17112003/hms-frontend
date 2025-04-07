@@ -8,20 +8,35 @@ import {
   TextField,
   IconButton
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Box, Stack } from '@mui/system';
 import { LockCircle } from 'iconsax-react';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 import { useFormik } from 'formik';
 import useFunction from 'src/hooks/use-function';
+import { useUserContext } from 'src/contexts/user/user-context';
+import { UpdatePassworRequest } from 'src/api/user';
+import useAppSnackbar from 'src/hooks/use-app-snackbar';
 
 function AccountPasswordDialog({ ...props }: DialogProps) {
   const [viewRawOldPassword, setViewRawOldPassword] = useState(false);
   const [viewRawNewPassword, setViewRawNewPassword] = useState(false);
   const [viewRawRetypePassword, setViewRawRetypePassword] = useState(false);
-  const updatePasswordApi = useFunction((async () => console.log(1)), {
-    successMessage: 'Update password successfully!'
-  });
+
+  const { changePassword } = useUserContext();
+  const { showSnackbarSuccess } = useAppSnackbar();
+
+  const handleUpdatePassword = useCallback(
+    async (payload: UpdatePassworRequest) => {
+      const response = await changePassword(payload);
+      if (response) {
+        showSnackbarSuccess('Update password successfully!');
+      }
+    },
+    [changePassword, showSnackbarSuccess]
+  );
+
+  const handleUpdatePasswordHelper = useFunction(handleUpdatePassword);
 
   const formik = useFormik({
     initialValues: {
@@ -33,9 +48,10 @@ function AccountPasswordDialog({ ...props }: DialogProps) {
       if (values.newPassword != values.newPasswordConfirm) {
         formik.setFieldError('newPasswordConfirm', 'Mật khẩu không khớp');
       }
-      const { error } = await updatePasswordApi.call({
+      const { error } = await handleUpdatePasswordHelper.call({
         currentPassword: values.currentPassword,
-        newPassword: values.newPassword
+        newPassword: values.newPassword,
+        confirmPassword: values.newPasswordConfirm
       });
       if (!error) {
         formik.setValues({
@@ -188,4 +204,3 @@ export default AccountPasswordDialog;
 function async(arg0: () => void): (payload: unknown) => Promise<unknown> {
   throw new Error('Function not implemented.');
 }
-

@@ -1,6 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
-import { CircleUserRound, UserPlus, MessageSquareDot, MessageSquareWarning, UserRoundCheck } from 'lucide-react';
+import {
+  CircleUserRound,
+  UserPlus,
+  MessageSquareDot,
+  MessageSquareWarning,
+  UserRoundCheck
+} from 'lucide-react';
 import logo from 'public/logo.png';
 import {
   AppBar,
@@ -13,7 +19,9 @@ import {
   Divider,
   Stack,
   Button,
-  Avatar
+  Avatar,
+  Menu,
+  MenuItem
 } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -24,14 +32,14 @@ import { MobileNavSection } from 'src/layouts/dashboard/mobile-layout/mobile-nav
 import { useSections } from 'src/layouts';
 import { useResponsive } from 'src/utils/use-responsive';
 import { FaEllipsis } from 'react-icons/fa6';
-import { UserTick } from 'iconsax-react';
 
 export const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null); // State for menu anchor
   const sections = useSections();
   const router = useRouter();
   const { isMobile, isTablet, isDesktop } = useResponsive();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth(); // Assuming `logout` is available in `useAuth`
 
   const handleLinkClick = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement | HTMLDivElement | HTMLLIElement>, link: string) => {
@@ -54,6 +62,19 @@ export const Header = () => {
       return;
     }
     setDrawerOpen(open);
+  };
+
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setMenuAnchorEl(event.currentTarget); // Open the menu
+  };
+
+  const handleMenuClose = () => {
+    setMenuAnchorEl(null); // Close the menu
+  };
+
+  const handleLogout = () => {
+    signOut(); // Call the logout function
+    router.push(paths.index); // Redirect to the home page
   };
 
   const drawerList = (
@@ -90,7 +111,7 @@ export const Header = () => {
             }}
           >
             <UserRoundCheck size={24} className='hover:bg-white' />
-            <Typography fontWeight={'bold'}>Login as staff</Typography>
+            <Typography fontWeight={'bold'}>Login with staff</Typography>
           </Stack>
           <Stack
             direction={'row'}
@@ -119,7 +140,8 @@ export const Header = () => {
 
   return (
     router.pathname !== paths.auth.login &&
-    router.pathname !== paths.auth.register.index && router.pathname !== paths.auth.staff.index && (
+    router.pathname !== paths.auth.register.index &&
+    router.pathname !== paths.auth.staff.index && (
       <AppBar position='sticky' sx={{ backgroundColor: '#02053D', color: 'white', paddingY: 0.5 }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', paddingY: 1 }}>
           {user ? (
@@ -163,11 +185,37 @@ export const Header = () => {
                       </Box>
                     )}
                   </Stack>
-                  <Box className='p-1 border rounded-lg border-[#3B44B2] cursor-pointer'>
+                  <Box
+                    onClick={handleMenuOpen}
+                    className='p-1 border rounded-lg border-[#3B44B2] cursor-pointer'
+                  >
                     <FaEllipsis />
                   </Box>
                 </Stack>
               </Box>
+              <Menu
+                anchorEl={menuAnchorEl}
+                open={Boolean(menuAnchorEl)}
+                onClose={handleMenuClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right'
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right'
+                }}
+              >
+                <MenuItem
+                  onClick={() => {
+                    router.push(paths.account.index); // Navigate to profile page
+                    handleMenuClose();
+                  }}
+                >
+                  Profile
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
               <Drawer anchor='right' open={drawerOpen} onClose={toggleDrawer(false)}>
                 <Box sx={{ width: 250 }}>
                   <Stack
@@ -266,14 +314,14 @@ export const Header = () => {
                     </Typography>
                   </Stack>
                   <Stack direction={'row'} gap={2}>
-                  <Button
+                    <Button
                       onClick={() => router.push(paths.auth.staff.index)}
                       variant='outlined'
                       className='flex items-center gap-2 text-white'
                     >
-                      <UserRoundCheck size={24} color='white' fontVariant={"bold"}/>
+                      <UserRoundCheck size={24} color='white' fontVariant={'bold'} />
                       <Typography color='white' fontWeight={'bold'}>
-                        Login as staff
+                        Login with staff account
                       </Typography>
                     </Button>
                     <Button
