@@ -1,4 +1,4 @@
-import type { User, UserDetail } from 'src/types/user';
+import type { StaffDetail, User, UserDetail } from 'src/types/user';
 import { apiDelete, apiGet, apiPatch, apiPost, apiPut, getFormData } from 'src/utils/api-request';
 import CookieHelper, { CookieKeys } from 'src/utils/cookie-helper';
 
@@ -76,12 +76,27 @@ export class UsersApi {
     return await apiGet('/api/v1/patients/account');
   }
 
+  static async getStaffProfile() {
+    return await apiGet('/api/v1/staff/auth/account');
+  }
+
   static async updatePassword(payload: UpdatePassworRequest): Promise<UpdatePasswordResponse> {
     return await apiPut('/api/v1/patients/account/password', payload);
   }
 
+  static async updateStaffPassword(payload: UpdatePassworRequest): Promise<UpdatePasswordResponse> {
+    return await apiPut('/api/v1/staff/auth/account/password', payload);
+  }
+
   static async updateProfile(payload: UpdateProfileRequest): Promise<User> {
     return await apiPut('/api/v1/patients/account', payload);
+  }
+
+  static async updateStaffInfo(
+    id: string,
+    payload: Partial<StaffDetail>
+  ): Promise<Partial<StaffDetail>> {
+    return await apiPatch(`/api/v1/staff/${id}`, payload);
   }
 
   static async deleteUser(id: User['id']) {

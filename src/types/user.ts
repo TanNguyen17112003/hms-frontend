@@ -2,7 +2,7 @@ import { Schedule } from './appointment';
 
 type UserRole = 'ADMIN' | 'STAFF' | 'PATIENT';
 type UserGender = 'MALE' | 'FEMALE';
-type WorkStatus = 'FULL_TIME' | 'PART_TIME';
+type StaffStatus = 'ACTIVE' | 'INACTIVE';
 
 export interface User {
   id: string;
@@ -10,11 +10,11 @@ export interface User {
   fullName: string;
   email: string;
   phoneNumber: string;
-  dob?: string;
+  dateOfBirth?: string;
   address?: string;
   role: UserRole;
   ssn: string;
-  gender?: UserGender;
+  sex?: UserGender;
   nationality?: string;
   occupation?: string;
   maritalStatus?: string;
@@ -30,22 +30,26 @@ export const initialUser: UserDetail = {
   fullName: '',
   email: '',
   phoneNumber: '',
-  dob: '',
+  dateOfBirth: '',
   address: '',
   role: 'PATIENT',
   ssn: '',
-  gender: 'MALE'
+  sex: 'MALE'
 };
 
 export interface PatientDetail extends UserDetail {
   job: string;
 }
 export interface StaffDetail extends UserDetail {
-  speciality: string;
-  workStatus: WorkStatus;
+  status: StaffStatus;
+  startWorkingDate: string;
+  department: string;
+  services: string[];
+  biography: string;
+  specializations: string[];
   qualification: string;
   licenseNumber: string;
-  patients: PatientDetail[];
+  patients?: PatientDetail[];
   schedule: Schedule[];
 }
 
@@ -61,7 +65,7 @@ export interface PatientData {
   sex: UserGender;
   phoneNumber: string;
   address: string;
-  dob: string;
+  dateOfBirth: string;
   governmentId: string;
   hospitalId: string;
 }

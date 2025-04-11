@@ -1,6 +1,6 @@
 import { Button, CircularProgress, Grid, Stack, TextField, Typography } from '@mui/material';
 import React, { useCallback } from 'react';
-import { UserDetail } from 'src/types/user';
+import { StaffDetail } from 'src/types/user';
 import { formatStandardDate } from 'src/utils/format-time-currency';
 import { useAuth } from '@hooks';
 import { useFormik } from 'formik';
@@ -8,7 +8,7 @@ import { UpdateProfileRequest } from 'src/api/user';
 import useFunction from 'src/hooks/use-function';
 import useAppSnackbar from 'src/hooks/use-app-snackbar';
 
-function AccountBasicInfo({ user }: { user: UserDetail }) {
+function AccountBasicInfo({ staff }: { staff: StaffDetail }) {
   const { updateProfile } = useAuth();
   const { showSnackbarSuccess } = useAppSnackbar();
 
@@ -29,10 +29,10 @@ function AccountBasicInfo({ user }: { user: UserDetail }) {
 
   const formik = useFormik<Partial<UpdateProfileRequest>>({
     initialValues: {
-      fullName: user.fullName,
-      email: user.email,
-      phoneNumber: user.phoneNumber,
-      ssn: user.ssn
+      fullName: staff?.fullName,
+      email: staff?.email,
+      phoneNumber: staff?.phoneNumber,
+      ssn: staff?.ssn
     },
     onSubmit: async (values) => {
       const { error } = await handleSubmitHelper.call({
@@ -64,7 +64,7 @@ function AccountBasicInfo({ user }: { user: UserDetail }) {
               <TextField
                 variant='outlined'
                 fullWidth
-                value={formik.values.fullName || user.fullName}
+                value={formik.values.fullName || staff?.fullName}
                 onChange={formik.handleChange} // Bind formik's onChange
                 name='fullName' // Add the name attribute
               />
@@ -76,7 +76,7 @@ function AccountBasicInfo({ user }: { user: UserDetail }) {
               <TextField
                 variant='outlined'
                 fullWidth
-                value={formik.values.email || user.email}
+                value={formik.values.email || staff?.email}
                 onChange={formik.handleChange}
                 name='email'
                 disabled
@@ -89,7 +89,7 @@ function AccountBasicInfo({ user }: { user: UserDetail }) {
               <TextField
                 variant='outlined'
                 fullWidth
-                value={formik.values.phoneNumber || user.phoneNumber}
+                value={formik.values.phoneNumber || staff?.phoneNumber}
                 onChange={formik.handleChange} // Bind formik's onChange
                 name='phoneNumber' // Add the name attribute
               />
@@ -101,28 +101,16 @@ function AccountBasicInfo({ user }: { user: UserDetail }) {
               <TextField
                 variant='outlined'
                 fullWidth
-                value={formik.values.ssn || user.ssn}
+                value={formik.values.ssn || staff?.ssn}
                 onChange={formik.handleChange}
                 name='ssn' // Add the name attribute
               />
             </Stack>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <Stack spacing={1}>
-              <Typography variant='body2'>Occupation</Typography>
-              <TextField variant='outlined' fullWidth value={user?.occupation} />
-            </Stack>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Stack spacing={1}>
-              <Typography variant='body2'>Marital status</Typography>
-              <TextField variant='outlined' fullWidth value={user?.maritalStatus} />
-            </Stack>
-          </Grid>
           <Grid item xs={12}>
             <Stack spacing={1}>
               <Typography variant='body2'>Address</Typography>
-              <TextField variant='outlined' fullWidth value={user?.address} />
+              <TextField variant='outlined' fullWidth value={staff?.address} />
             </Stack>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -131,7 +119,7 @@ function AccountBasicInfo({ user }: { user: UserDetail }) {
               <TextField
                 variant='outlined'
                 fullWidth
-                value={formatStandardDate(user?.dob as string)}
+                value={formatStandardDate(staff?.dateOfBirth as string)}
                 disabled
               />
             </Stack>
@@ -139,13 +127,13 @@ function AccountBasicInfo({ user }: { user: UserDetail }) {
           <Grid item xs={12} md={6}>
             <Stack spacing={1}>
               <Typography variant='body2'>Sex</Typography>
-              <TextField variant='outlined' fullWidth value={user?.gender} disabled />
+              <TextField variant='outlined' fullWidth value={staff?.sex} disabled />
             </Stack>
           </Grid>
           <Grid item xs={12}>
             <Stack spacing={1}>
               <Typography variant='body2'>Nationality</Typography>
-              <TextField variant='outlined' fullWidth value={user?.nationality} disabled />
+              <TextField variant='outlined' fullWidth value={staff?.nationality} disabled />
             </Stack>
           </Grid>
 
@@ -155,7 +143,7 @@ function AccountBasicInfo({ user }: { user: UserDetail }) {
               <TextField
                 variant='outlined'
                 fullWidth
-                value={formatStandardDate(user?.createdAt as string)}
+                value={formatStandardDate(staff?.createdAt as string)}
                 disabled
               />
             </Stack>

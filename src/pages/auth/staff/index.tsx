@@ -37,10 +37,10 @@ const Page: PageType = () => {
         router.push(paths.index);
       }
     } catch (error: any) {
-      if (error.response?.status === 401) {
-        formik.setFieldError('general', 'Email hoặc mật khẩu không chính xác');
+      if (error.response?.statusCode === 401) {
+        formik.setFieldError('general', 'Email or Password is incorrect');
       } else {
-        formik.setFieldError('general', 'Đã có lỗi xảy ra, vui lòng thử lại sau');
+        formik.setFieldError('general', 'Something went wrong. Please try again later.');
       }
     }
   }, []);

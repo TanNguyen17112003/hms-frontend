@@ -17,27 +17,12 @@ import useFunction from 'src/hooks/use-function';
 import { useUserContext } from 'src/contexts/user/user-context';
 import { UpdatePassworRequest } from 'src/api/user';
 import useAppSnackbar from 'src/hooks/use-app-snackbar';
+import { UsersApi } from 'src/api/user';
 
 function AccountPasswordDialog({ ...props }: DialogProps) {
   const [viewRawOldPassword, setViewRawOldPassword] = useState(false);
   const [viewRawNewPassword, setViewRawNewPassword] = useState(false);
   const [viewRawRetypePassword, setViewRawRetypePassword] = useState(false);
-
-  const { changePassword } = useUserContext();
-  const { showSnackbarSuccess } = useAppSnackbar();
-
-  const handleUpdatePassword = useCallback(
-    async (payload: UpdatePassworRequest) => {
-      const response = await changePassword(payload);
-      if (response) {
-        showSnackbarSuccess('Update password successfully!');
-      }
-    },
-    [changePassword, showSnackbarSuccess]
-  );
-
-  const handleUpdatePasswordHelper = useFunction(handleUpdatePassword);
-
   const formik = useFormik({
     initialValues: {
       currentPassword: '',
@@ -48,7 +33,7 @@ function AccountPasswordDialog({ ...props }: DialogProps) {
       if (values.newPassword != values.newPasswordConfirm) {
         formik.setFieldError('newPasswordConfirm', 'Mật khẩu không khớp');
       }
-      const { error } = await handleUpdatePasswordHelper.call({
+      const { error } = await changePasswordHelper.call({
         currentPassword: values.currentPassword,
         newPassword: values.newPassword,
         confirmPassword: values.newPasswordConfirm
@@ -63,6 +48,19 @@ function AccountPasswordDialog({ ...props }: DialogProps) {
       }
     }
   });
+  const { showSnackbarSuccess } = useAppSnackbar();
+  const changePassword = useCallback(async () => {
+    const response = await UsersApi.updateStaffPassword({
+      currentPassword: formik.values.currentPassword,
+      newPassword: formik.values.newPassword,
+      confirmPassword: formik.values.newPasswordConfirm
+    });
+    if (response) {
+      showSnackbarSuccess('Update password successfully!');
+    }
+  }, [formik.values, showSnackbarSuccess]);
+
+  const changePasswordHelper = useFunction(changePassword);
 
   return (
     <Dialog
