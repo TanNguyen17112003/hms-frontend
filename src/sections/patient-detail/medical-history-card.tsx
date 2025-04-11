@@ -26,6 +26,7 @@ import {
   Plus,
   ShieldPlus,
   Syringe,
+  Trash,
   Users
 } from 'lucide-react';
 
@@ -40,22 +41,37 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
     console.log('delete');
   };
 
-  const createData = (name: string, howMuch: string, howOften: string) => {
-    return { name, howMuch, howOften };
+  const createData = (
+    name: string,
+    dosage: string,
+    frequency: string,
+    startDate: string,
+    endDate: string,
+    action: any
+  ) => {
+    return { name, dosage, frequency, startDate, endDate, action };
   };
 
   const rows = [
     {
+      id: 1,
       name: 'Metformin',
-      howMuch: '500 mg',
-      howOften: '2 times/day'
+      dosage: '500 mg',
+      frequency: '2 times/day',
+      startDate: '1/1/2021',
+      endDate: '2/2/2021'
     },
     {
+      id: 2,
       name: 'Amlodipine',
-      howMuch: '5 mg',
-      howOften: '1 time/day'
+      dosage: '5 mg',
+      frequency: '1 time/day',
+      startDate: '1/1/2021',
+      endDate: '2/2/2021'
     }
-  ].map((item: any) => createData(item.name, item.howMuch, item.howOften));
+  ].map((item: any) =>
+    createData(item.name, item.dosage, item.frequency, item.startDate, item.endDate, item.id)
+  );
 
   return (
     <Card className='w-full lg:p-5 '>
@@ -66,9 +82,9 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
               <ClipboardPlus />
               <div className='font-semibold text-lg'>Medical History</div>
             </Box>
-            <button className='rounded-full bg-[#0E1680] text-white p-2 hover:opacity-90'>
+            {/* <button className='rounded-full bg-[#0E1680] text-white p-2 hover:opacity-90'>
               <Pencil className='size-5' />
-            </button>
+            </button> */}
           </Box>
           <Divider style={{ marginBottom: 10 }} color='gray' />
           <div className='grid grid-cols-2 gap-5'>
@@ -139,31 +155,64 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
                       <Table aria-label='relative table'>
                         <TableHead>
                           <TableRow>
-                            <TableCell className='!bg-[#0E1680] !text-white !border-white'>
+                            <TableCell className='!bg-[#0E1680] !text-white !border-white !text-sm'>
                               Medicine or Supplement
                             </TableCell>
                             <TableCell
-                              className='!bg-[#0E1680] !text-white !border-white'
+                              className='!bg-[#0E1680] !text-white !border-white !text-sm'
                               align='right'
                             >
                               How much?
                             </TableCell>
                             <TableCell
-                              className='!bg-[#0E1680] !text-white !border-white'
+                              className='!bg-[#0E1680] !text-white !border-white !text-sm'
                               align='right'
                             >
                               How often?
+                            </TableCell>
+                            <TableCell
+                              className='!bg-[#0E1680] !text-white !border-white !text-sm'
+                              align='right'
+                            >
+                              Start date
+                            </TableCell>
+                            <TableCell
+                              className='!bg-[#0E1680] !text-white !border-white !text-sm'
+                              align='right'
+                            >
+                              End date
+                            </TableCell>
+                            <TableCell
+                              className='!bg-[#0E1680] !text-white !border-white !text-sm'
+                              align='right'
+                            >
+                              Actions
                             </TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
                           {rows.map((row: any) => (
                             <TableRow key={row.name}>
-                              <TableCell component='th' scope='row'>
+                              <TableCell component='th' scope='row' className='!text-sm'>
                                 {row.name}
                               </TableCell>
-                              <TableCell align='right'>{row.howMuch}</TableCell>
-                              <TableCell align='right'>{row.howOften}</TableCell>
+                              <TableCell className='!text-sm' align='right'>
+                                {row.dosage}
+                              </TableCell>
+                              <TableCell className='!text-sm' align='right'>
+                                {row.frequency}
+                              </TableCell>
+                              <TableCell className='!text-sm' align='right'>
+                                {row.startDate}
+                              </TableCell>
+                              <TableCell className='!text-sm' align='right'>
+                                {row.endDate}
+                              </TableCell>
+                              <TableCell className='!text-sm' align='right'>
+                                <button>
+                                  <Trash className='size-4 text-red-500' />
+                                </button>
+                              </TableCell>
                             </TableRow>
                           ))}
                         </TableBody>
@@ -183,14 +232,17 @@ const MedicalHistoryCard: React.FC<MedicalHistoryCardProps> = (props) => {
                     <Box className='w-full flex gap-3 justify-start items-center text-[#0E1680]'>
                       <ShieldPlus className='w-5 h-5' />
                       <div className='font-semibold'>Allergies</div>
+                      <Tooltip title='Allergen (Severity)'>
+                        <Info className='hover: opacity-80 size-4' />
+                      </Tooltip>
                     </Box>
                     <Button variant='outlined' size='small' startIcon={<Plus />}>
                       Add
                     </Button>
                   </div>
                   <Box className='flex gap-3'>
-                    <Chip label='Penicillin' onDelete={handleDelete} />
-                    <Chip label='Aspirin' onDelete={handleDelete} />
+                    <Chip label='Penicillin (Low)' onDelete={handleDelete} />
+                    <Chip label='Aspirin (High)' onDelete={handleDelete} />
                   </Box>
                 </Box>
               </CardContent>

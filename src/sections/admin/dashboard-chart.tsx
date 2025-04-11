@@ -85,7 +85,7 @@ function DashboardChart() {
       spacing={2}
       alignItems={isMobile ? '' : 'center'}
     >
-      <Box flex={isTablet ? 0.55 : 0.6} className='px-5 py-3 border rounded-lg shadow-lg'>
+      <Box flex={isTablet ? 0.55 : 0.6} className='px-5 py-3 border rounded-lg shadow-lg bg-white'>
         <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
           <Typography variant={'h6'}>Doctor appointment</Typography>
           <FormControl variant='filled' size='small' className='w-1/5'>
@@ -104,7 +104,7 @@ function DashboardChart() {
         </Stack>
         <Chart options={configbarChartOptions} series={barChartSeries} type='bar' height={250} />
       </Box>
-      <Box flex={isTablet ? 0.45 : 0.4} className='px-5 py-3 border rounded-lg shadow-lg'>
+      <Box flex={isTablet ? 0.45 : 0.4} className='px-5 py-3 border rounded-lg shadow-lg bg-white'>
         <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
           <Typography variant='h6'>Appointment Status</Typography>
           <FormControl variant='filled' size='small' className='w-1/5'>

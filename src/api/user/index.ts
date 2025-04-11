@@ -18,8 +18,8 @@ export type SignUpRequest = {
   email: string;
   password: string;
   ssn: string;
-  phoneNumber: string
-}
+  phoneNumber: string;
+};
 
 export type SignUpResponse = SignUpRequest & {
   id: string;
@@ -32,23 +32,20 @@ export type UpdateInfoRequest = {
   fullName: string;
   ssn: string;
   phoneNumber: string;
-}
+};
 
 export type UpdatePassworRequest = {
   currentPassword: string;
   newPassword: string;
   confirmPassword: string;
-}
+};
 
 export type UpdatePasswordResponse = {
   messsage: string;
-}
+};
 
 export type UpdateProfileRequest = Partial<
-  Pick<
-    SignUpRequest,
-    'fullName' | 'email' | 'ssn' | 'phoneNumber'
-  >
+  Pick<SignUpRequest, 'fullName' | 'email' | 'ssn' | 'phoneNumber'>
 >;
 
 export type UpdateProfileResponse = Partial<SignUpResponse>;
@@ -67,6 +64,10 @@ export class UsersApi {
     return await apiPost('/api/v1/patients/auth/signin', request);
   }
 
+  static async signInAsStaff(request: SignInRequest): Promise<SignInResponse> {
+    return await apiPost('/api/v1/staff/auth/signin', request);
+  }
+
   static async signUp(request: SignUpRequest): Promise<SignUpResponse> {
     return await apiPost('/api/v1/patients/auth/signup', request);
   }
@@ -83,7 +84,6 @@ export class UsersApi {
     return await apiPut('/api/v1/patients/account', payload);
   }
 
-
   static async deleteUser(id: User['id']) {
     return await apiDelete(`/users/${id}`, {});
   }
@@ -91,5 +91,4 @@ export class UsersApi {
   static async refreshToken(refreshToken: string): Promise<Partial<SignInResponse>> {
     return await apiPost('/auth/refresh', { refreshToken });
   }
-
 }

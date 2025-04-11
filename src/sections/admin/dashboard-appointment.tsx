@@ -42,7 +42,7 @@ function DashboardAppointment() {
           {filteredAppointments.map((appointment, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <Box
-                className='border p-3 border-gray-200 rounded-md shadow-sm'
+                className='border p-3 border-gray-200 rounded-md shadow-sm bg-white'
                 display={'flex'}
                 flexDirection={'column'}
                 gap={2}

@@ -3,49 +3,42 @@ import React from 'react';
 import { DashboardLayout } from 'src/layouts';
 import { ArrowLeft, Calendar, ChevronRight } from 'lucide-react';
 import { Breadcrumbs, Button, Link, Typography } from '@mui/material';
-import GeneralInfoCard from './GeneralInfoCard';
-import MedicalInfoCard from './MedicalInfoCard';
+import GeneralInfoCard from './general-info-card';
+import MedicalInfoCard from './medical-info-card';
 import { Box } from '@mui/system';
-import RelativeInfoCard from './RelativeInfoCard';
-import MedicalHistoryCard from './MedicalHistoryCard';
-
-function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
-  event.preventDefault();
-  console.info('You clicked a breadcrumb.');
-}
-
-const breadcrumbs = [
-  <Link
-    underline='hover'
-    key='1'
-    color='#0E1680'
-    href='/'
-    onClick={handleClick}
-    className='!font-semibold'
-  >
-    Doctor Appointment
-  </Link>,
-  <Link
-    underline='hover'
-    key='2'
-    color='#0E1680'
-    href='/material-ui/getting-started/installation/'
-    onClick={handleClick}
-    className='!font-semibold'
-  >
-    Patients Details
-  </Link>,
-  <Typography key='3' sx={{ color: '#0E1680' }} className='!font-semibold'>
-    Morshed Ali
-  </Typography>
-];
+import RelativeInfoCard from './relative-info-card';
+import MedicalHistoryCard from './medical-history-card';
+import MedicalRecordCard from './medical-record-card';
+import { useRouter } from 'next/router';
 
 const PatientDetail: PageType = () => {
+  const router = useRouter();
+
+  function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+    event.preventDefault();
+    router.push('/patient');
+  }
+
+  const breadcrumbs = [
+    <Link
+      underline='hover'
+      key='1'
+      color='#0E1680'
+      onClick={handleClick}
+      className='!font-semibold cursor-pointer'
+    >
+      Patient Management
+    </Link>,
+    <Typography key='3' sx={{ color: '#0E1680' }} className='!font-semibold'>
+      Morshed Ali
+    </Typography>
+  ];
+
   return (
     <div className='ml-4'>
       <div className='w-full flex justify-between items-center mb-5'>
         <div className='flex gap-5'>
-          <button className='text-[#0E1680]'>
+          <button className='text-[#0E1680]' onClick={() => router.push('/patient')}>
             <ArrowLeft />
           </button>
           <Breadcrumbs separator={<ChevronRight />} aria-label='breadcrumb'>
@@ -74,6 +67,7 @@ const PatientDetail: PageType = () => {
             phone: '(704) 555-0127',
             address: '123 Le Dinh Huy, Ho Chi Minh City',
             job: 'Developer',
+            maritalStatus: 'MARRIED',
             nationality: 'Viet Nam'
           }}
         />
@@ -108,17 +102,7 @@ const PatientDetail: PageType = () => {
               },
               {
                 fullName: 'Lisa',
-                relationship: 'Mother',
-                phone: '0357677243'
-              },
-              {
-                fullName: 'Rose',
-                relationship: 'Sister',
-                phone: '0357677243'
-              },
-              {
-                fullName: 'Lisa',
-                relationship: 'Mother',
+                relationship: 'Wife',
                 phone: '0357677243'
               },
               {
@@ -130,6 +114,22 @@ const PatientDetail: PageType = () => {
           />
         </Box>
         <MedicalHistoryCard
+          medicalInfo={{
+            weight: 65,
+            height: 170,
+            bloodPressure: '124/80',
+            bloodType: 'O+',
+            allergies: 'Penicillin, Aspirin',
+            vaccination: [
+              { name: 'Adacel', date: '1/2/2023' },
+              { name: 'Gardasil', date: '1/2/2024' }
+            ],
+            insuranceType: 'Student',
+            insuranceCardNumber: '012345678910',
+            insurancePeriod: '02/02/2030'
+          }}
+        />
+        <MedicalRecordCard
           medicalInfo={{
             weight: 65,
             height: 170,
