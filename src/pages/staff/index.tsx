@@ -8,6 +8,7 @@ import ContentHeader from 'src/components/content-header';
 import { useRouter } from 'next/router';
 import StaffDetail from 'src/sections/admin/staff-management/staff-detail';
 import { StaffManagement } from 'src/sections/admin/staff-management';
+import StaffProvider from 'src/contexts/staff/staff-context';
 
 const Page: PageType = () => {
   const { user } = useAuth();
@@ -40,7 +41,7 @@ const Page: PageType = () => {
 Page.getLayout = (page) => (
   <DashboardLayout>
     <UserProvider>
-      <AppointmentProvider>{page}</AppointmentProvider>
+      <StaffProvider>{page}</StaffProvider>
     </UserProvider>
   </DashboardLayout>
 );

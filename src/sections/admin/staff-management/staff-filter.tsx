@@ -1,11 +1,63 @@
-import React from 'react';
-import { Stack, Button, TextField, InputAdornment, Box, Typography } from '@mui/material';
-import { PlusIcon, SearchIcon } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import {
+  Stack,
+  Button,
+  TextField,
+  InputAdornment,
+  Box,
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  FormControl,
+  InputLabel,
+  Select,
+  OutlinedInput,
+  MenuItem,
+  Autocomplete
+} from '@mui/material';
+import { FilterIcon, PlusIcon, SearchIcon } from 'lucide-react';
 import AdvancedFilter from 'src/components/advanced-filter/advanced-filter';
 import { useResponsive } from 'src/utils/use-responsive';
+import { useDialog } from '@hooks';
+import AdvancedFilterDialog from 'src/components/advanced-filter/advanced-filter-dialog';
 
-function StaffFilter() {
+const departments = [
+  'Emergency Department',
+  'Internal Medicine',
+  'Surgery',
+  'Pediatrics',
+  'Obstetrics and Gynecology',
+  'Cardiology',
+  'Neurology',
+  'Oncology',
+  'Radiology',
+  'Pathology',
+  'Psychiatry',
+  'Anesthesiology',
+  'Pharmacy',
+  'Rehabilitation Services',
+  'Dermatology',
+  'Ophthalmology',
+  'Otolaryngology',
+  'Urology',
+  'Geriatrics',
+  'Dental Department'
+];
+
+const statuses = ['ACTIVE', 'INACTIVE'];
+
+const sexes = ['MALE', 'FEMALE'];
+
+const roles = ['ADMIN', 'DOCTOR', 'NURSE'];
+
+function StaffFilter({ filters, setFilters, search, setSearch, defaultFilters }: any) {
   const { isTablet, isMobile } = useResponsive();
+  const advancedFilterDialog = useDialog();
+  const [filterStates, setFilterStates] = useState<any>(filters);
+  useEffect(() => console.log(filterStates), [filterStates]);
+
   return isMobile ? (
     <Stack direction={'column'} spacing={2} marginBottom={2}>
       <TextField
@@ -18,6 +70,10 @@ function StaffFilter() {
               <SearchIcon />
             </InputAdornment>
           )
+        }}
+        value={search}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          setSearch(e.target.value);
         }}
       />
       <Box display={'flex'} alignItems={'center'} gap={1}>
@@ -44,7 +100,7 @@ function StaffFilter() {
     </Stack>
   ) : (
     <Stack my={2} direction={'row'} alignItems={'center'} justifyContent={'space-between'} gap={1}>
-      <Box display='flex' alignItems='center' gap={0.5}>
+      <Box display='flex' alignItems='center' gap={2}>
         <TextField
           variant='outlined'
           placeholder='Enter the doctor name'
@@ -56,8 +112,127 @@ function StaffFilter() {
               </InputAdornment>
             )
           }}
+          value={search}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setSearch(e.target.value);
+          }}
         />
-        <AdvancedFilter filters={[]} />
+        <Button
+          variant='outlined'
+          onClick={advancedFilterDialog.handleOpen}
+          endIcon={<FilterIcon size={16} />}
+        >
+          Filter
+        </Button>
+        <Dialog
+          open={advancedFilterDialog.open}
+          onClose={advancedFilterDialog.handleClose}
+          maxWidth='sm'
+          fullWidth
+        >
+          <DialogTitle>Filter</DialogTitle>
+          <DialogContent>
+            <div className='w-full grid grid-cols-2 gap-3'>
+              <FormControl variant='filled' size='small' className='w-full !mt-2'>
+                <InputLabel id='status-select-label'>Status</InputLabel>
+                <Select
+                  labelId='status-select-label'
+                  value={filterStates.status ? filterStates.status : 'ALL'}
+                  onChange={(event: any) =>
+                    setFilterStates({
+                      ...filterStates,
+                      status: event.target.value !== 'ALL' ? event.target.value : ''
+                    })
+                  }
+                  label='Status'
+                >
+                  <MenuItem value='ALL'>ALL</MenuItem>
+                  {statuses.map((item: string) => (
+                    <MenuItem value={item} key={item}>
+                      {item}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl variant='filled' size='small' className='w-full !mt-2'>
+                <InputLabel id='role-select-label'>Role</InputLabel>
+                <Select
+                  labelId='role-select-label'
+                  value={filterStates.role ? filterStates.role : 'ALL'}
+                  onChange={(event: any) =>
+                    setFilterStates({
+                      ...filterStates,
+                      role: event.target.value !== 'ALL' ? event.target.value : ''
+                    })
+                  }
+                  label='role'
+                >
+                  <MenuItem value='ALL'>ALL</MenuItem>
+                  {roles.map((item: string) => (
+                    <MenuItem value={item} key={item}>
+                      {item}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl variant='filled' size='small' className='w-full !mt-2'>
+                <InputLabel id='sex-select-label'>Sex</InputLabel>
+                <Select
+                  labelId='sex-select-label'
+                  value={filterStates.sex ? filterStates.sex : 'ALL'}
+                  onChange={(event: any) =>
+                    setFilterStates({
+                      ...filterStates,
+                      sex: event.target.value !== 'ALL' ? event.target.value : ''
+                    })
+                  }
+                  label='Sex'
+                >
+                  <MenuItem value='ALL'>ALL</MenuItem>
+                  {sexes.map((item: string) => (
+                    <MenuItem value={item} key={item}>
+                      {item}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl variant='filled' size='small' className='w-full !mt-2'>
+                <Autocomplete
+                  options={departments}
+                  renderInput={(params) => <TextField {...params} label='Department' />}
+                  value={filterStates.department}
+                  onChange={(_, newValue) =>
+                    setFilterStates({
+                      ...filterStates,
+                      department: newValue ?? ''
+                    })
+                  }
+                />
+              </FormControl>
+            </div>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                setFilters(defaultFilters);
+                setFilterStates(defaultFilters);
+                advancedFilterDialog.handleClose();
+              }}
+              color='secondary'
+            >
+              Remove filter
+            </Button>
+            <Button
+              onClick={() => {
+                setFilters(filterStates);
+                advancedFilterDialog.handleClose();
+              }}
+              color='primary'
+            >
+              Apply
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
       <Box display='flex' alignItems='center' gap={1}>
         <Button
