@@ -22,37 +22,9 @@ import AdvancedFilter from 'src/components/advanced-filter/advanced-filter';
 import { useResponsive } from 'src/utils/use-responsive';
 import { useDialog } from '@hooks';
 import AdvancedFilterDialog from 'src/components/advanced-filter/advanced-filter-dialog';
+import { defaultStaffFilters, departments, roles, sexes, statuses } from 'src/constants/staff';
 
-const departments = [
-  'Emergency Department',
-  'Internal Medicine',
-  'Surgery',
-  'Pediatrics',
-  'Obstetrics and Gynecology',
-  'Cardiology',
-  'Neurology',
-  'Oncology',
-  'Radiology',
-  'Pathology',
-  'Psychiatry',
-  'Anesthesiology',
-  'Pharmacy',
-  'Rehabilitation Services',
-  'Dermatology',
-  'Ophthalmology',
-  'Otolaryngology',
-  'Urology',
-  'Geriatrics',
-  'Dental Department'
-];
-
-const statuses = ['ACTIVE', 'INACTIVE'];
-
-const sexes = ['MALE', 'FEMALE'];
-
-const roles = ['ADMIN', 'DOCTOR', 'NURSE'];
-
-function StaffFilter({ filters, setFilters, search, setSearch, defaultFilters }: any) {
+function StaffFilter({ filters, setFilters, search, setSearch }: any) {
   const { isTablet, isMobile } = useResponsive();
   const advancedFilterDialog = useDialog();
   const [filterStates, setFilterStates] = useState<any>(filters);
@@ -214,8 +186,8 @@ function StaffFilter({ filters, setFilters, search, setSearch, defaultFilters }:
           <DialogActions>
             <Button
               onClick={() => {
-                setFilters(defaultFilters);
-                setFilterStates(defaultFilters);
+                setFilters(defaultStaffFilters);
+                setFilterStates(defaultStaffFilters);
                 advancedFilterDialog.handleClose();
               }}
               color='secondary'

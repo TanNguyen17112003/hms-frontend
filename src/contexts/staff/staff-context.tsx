@@ -4,18 +4,21 @@ import useFunction, {
   DEFAULT_FUNCTION_RETURN,
   UseFunctionReturnType
 } from 'src/hooks/use-function';
-import { StaffListResponse } from 'src/types/staff';
+import { Staff, StaffListResponse } from 'src/types/staff';
 import { useAuth } from '@hooks';
 
 interface ContextValue {
   getListStaffsApi: UseFunctionReturnType<Record<string, any>, StaffListResponse>;
+  getStaffDetail: UseFunctionReturnType<string, Staff>;
 }
 export const StaffContext = createContext<ContextValue>({
-  getListStaffsApi: DEFAULT_FUNCTION_RETURN
+  getListStaffsApi: DEFAULT_FUNCTION_RETURN,
+  getStaffDetail: DEFAULT_FUNCTION_RETURN
 });
 
 const StaffProvider = ({ children }: { children: ReactNode }) => {
   const getListStaffsApi = useFunction(StaffManagementApi.getStaffs);
+  const getStaffDetail = useFunction(StaffManagementApi.getStaffDetail);
 
   const { user } = useAuth();
 
@@ -28,7 +31,8 @@ const StaffProvider = ({ children }: { children: ReactNode }) => {
   return (
     <StaffContext.Provider
       value={{
-        getListStaffsApi
+        getListStaffsApi,
+        getStaffDetail
       }}
     >
       {children}

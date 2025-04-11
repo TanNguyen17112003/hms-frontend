@@ -12,6 +12,7 @@ import { useStaffContext } from 'src/contexts/staff/staff-context';
 import { Staff } from 'src/types/staff';
 import { Hospital } from 'iconsax-react';
 import { useDebounce } from 'src/hooks/use-debounce';
+import { defaultStaffFilters } from 'src/constants/staff';
 
 interface DoctorCardProps {
   doctor: Staff;
@@ -156,19 +157,12 @@ const InfoItem: React.FC<InfoItemProps> = ({ icon, text }) => (
   </Box>
 );
 
-const defaultFilters = {
-  status: '',
-  role: '',
-  sex: '',
-  department: ''
-};
-
 export const StaffManagement: React.FC = () => {
   const [page, setPage] = useState<number>(1);
   const router = useRouter();
   const rowsPerPage = 10;
   const { getListStaffsApi } = useStaffContext();
-  const [filters, setFilters] = useState<any>(defaultFilters);
+  const [filters, setFilters] = useState<any>(defaultStaffFilters);
   const [search, setSearch] = useState<string>('');
   const debouncedSearchInput = useDebounce(search, 500);
 
@@ -182,7 +176,6 @@ export const StaffManagement: React.FC = () => {
       ...(filters.role ? { role: filters.role } : {}),
       ...(filters.department ? { department: filters.department } : {})
     });
-    console.log(8, getListStaffsApi);
   }, [page, filters, debouncedSearchInput]);
 
   const handlePageChange = (event: any, newPage: number) => {
@@ -196,7 +189,6 @@ export const StaffManagement: React.FC = () => {
         setFilters={setFilters}
         search={search}
         setSearch={setSearch}
-        defaultFilters={defaultFilters}
       />
       <Box display={'flex'} flexDirection={'column'} gap={2}>
         {getListStaffsApi?.data?.content?.map((doctor: any) => (
