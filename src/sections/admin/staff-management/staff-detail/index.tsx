@@ -25,7 +25,9 @@ import {
   ShieldCheck,
   ThumbsUp,
   ArrowLeft,
-  User
+  User,
+  PlusIcon,
+  Pencil
 } from 'lucide-react';
 import Grid from '@mui/material/Grid2';
 import {
@@ -40,12 +42,8 @@ import { useRouter } from 'next/router';
 import { useSearchParams } from 'next/navigation';
 import { useStaffContext } from 'src/contexts/staff/staff-context';
 import { FaMars, FaVenus } from 'react-icons/fa6';
-
-// department: 'Orthopedics';
-// licenseNumber: 'MD567899';
-// qualification: 'MD, Boston University';
-// services: ['Joint Replacement'];
-// specializations: ['Orthopedics'];
+import { useDialog } from '@hooks';
+import StaffDialog from '../staff-dialog';
 
 const StaffDetail = () => {
   const [selectedDate, setSelectedDate] = useState<number>(4);
@@ -54,9 +52,14 @@ const StaffDetail = () => {
   const searchParams = useSearchParams();
   const staffId = searchParams.get('staffId');
   const { getStaffDetail } = useStaffContext();
+  const editDialog = useDialog();
+
+  const handleGetStaffDetail = async () => {
+    await getStaffDetail.call(staffId ? staffId : '');
+  };
 
   useEffect(() => {
-    getStaffDetail.call(staffId ? staffId : '');
+    handleGetStaffDetail();
     console.log(89, getStaffDetail);
   }, []);
 
@@ -82,6 +85,12 @@ const StaffDetail = () => {
 
   return (
     <div>
+      <StaffDialog
+        dialog={editDialog}
+        type='edit'
+        staffDetail={getStaffDetail.data}
+        refetch={handleGetStaffDetail}
+      />
       <div className='w-full flex justify-between items-center mb-5'>
         <div className='flex gap-5'>
           <button className='text-[#0E1680]' onClick={() => router.push('/staff')}>
@@ -91,6 +100,14 @@ const StaffDetail = () => {
             {breadcrumbs}
           </Breadcrumbs>
         </div>
+        <Button
+          variant='contained'
+          startIcon={<Pencil size={20} />}
+          sx={{ backgroundColor: '#0E1680', ':hover': { backgroundColor: 'orange' } }}
+          onClick={editDialog.handleOpen}
+        >
+          <Typography variant={'body1'}>Edit</Typography>
+        </Button>
       </div>
       <div className='h-auto flex flex-col md:flex-row gap-8'>
         <Box className='w-full md:w-2/5 lg:w-1/3 flex flex-col gap-y-6'>
@@ -400,7 +417,7 @@ const StaffDetail = () => {
               </>
             )}
           </div>
-          {getStaffDetail?.data?.role !== 'ADMIN' && (
+          {getStaffDetail?.data?.role === 'DOCTOR' && (
             <>
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                 {/* Specializations Section */}

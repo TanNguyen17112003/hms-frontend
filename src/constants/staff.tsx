@@ -1,3 +1,5 @@
+import { Staff } from 'src/types/staff';
+
 export const departments = [
   'Emergency Department',
   'Internal Medicine',
@@ -32,4 +34,27 @@ export const defaultStaffFilters = {
   role: '',
   sex: '',
   department: ''
+};
+
+export const defaultStaff: Staff = {
+  fullName: '',
+  email: '',
+  ssn: '',
+  dateOfBirth: '',
+  sex: '',
+  phoneNumber: '',
+  nationality: '',
+  address: '',
+  biography: '',
+  role: 'DOCTOR',
+  startWorkingDate: '',
+  status: 'ACTIVE',
+  licenseNumber: '',
+  qualification: '',
+  department: '',
+  specializations: [],
+  services: [],
+  id: '',
+  createdAt: null,
+  lastLoginAt: null
 };

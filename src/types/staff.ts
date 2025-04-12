@@ -12,8 +12,8 @@ export interface Staff {
   role: string;
   startWorkingDate: string;
   status: string;
-  createdAt: Date;
-  lastLoginAt: Date;
+  createdAt: Date | null;
+  lastLoginAt: Date | null;
   licenseNumber: string;
   qualification: string;
   department: string;

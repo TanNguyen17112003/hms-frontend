@@ -86,12 +86,14 @@ const DoctorCard: React.FC<DoctorCardProps> = ({ doctor, onClick }) => {
                     {doctor.department}
                   </Typography>
                 </Stack>
-                <Stack direction={'row'} spacing={1}>
-                  <Stethoscope size={16} />
-                  <Typography variant='body2' fontWeight={'light'}>
-                    {doctor?.specializations?.join(', ')}
-                  </Typography>
-                </Stack>
+                {doctor.role !== 'NURSE' && (
+                  <Stack direction={'row'} spacing={1}>
+                    <Stethoscope size={16} />
+                    <Typography variant='body2' fontWeight={'light'}>
+                      {doctor?.specializations?.join(', ')}
+                    </Typography>
+                  </Stack>
+                )}
                 <Stack direction={'row'} spacing={1}>
                   <FileText size={16} />
                   <Typography variant='body2' fontWeight={'light'}>
@@ -166,8 +168,8 @@ export const StaffManagement: React.FC = () => {
   const [search, setSearch] = useState<string>('');
   const debouncedSearchInput = useDebounce(search, 500);
 
-  useEffect(() => {
-    getListStaffsApi.call({
+  const handleGetListStaff = async () => {
+    await getListStaffsApi.call({
       page: page,
       size: rowsPerPage,
       ...(debouncedSearchInput ? { search: debouncedSearchInput } : {}),
@@ -176,6 +178,10 @@ export const StaffManagement: React.FC = () => {
       ...(filters.role ? { role: filters.role } : {}),
       ...(filters.department ? { department: filters.department } : {})
     });
+  };
+
+  useEffect(() => {
+    handleGetListStaff();
   }, [page, filters, debouncedSearchInput]);
 
   const handlePageChange = (event: any, newPage: number) => {
@@ -189,7 +195,11 @@ export const StaffManagement: React.FC = () => {
         setFilters={setFilters}
         search={search}
         setSearch={setSearch}
+        refetch={handleGetListStaff}
       />
+      <div className='text-[#02053D] w-full text-end mb-3'>
+        Total number of staffs: {getListStaffsApi?.data?.totalElements}
+      </div>
       <Box display={'flex'} flexDirection={'column'} gap={2}>
         {getListStaffsApi?.data?.content?.map((doctor: any) => (
           <DoctorCard

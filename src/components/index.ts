@@ -47,3 +47,4 @@ export * from './ui/Logo';
 export * from './ui/SplashScreen';
 export * from './ui/Pagination/index';
 export * from './ui/Pagination/Pagination';
+export { ChipInput } from './chip-input';
