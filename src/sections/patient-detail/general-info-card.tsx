@@ -36,7 +36,7 @@ const GeneralInfoCard: React.FC<GeneralInfoCardProps> = (props) => {
                   {generalInfo.name}
                 </Typography>
                 <Typography variant='subtitle1' sx={{ color: '#475467' }}>
-                  {`${generalInfo.age} Years, ${generalInfo.gender}`}
+                  {`${generalInfo.age} Years, ${generalInfo.sex}`}
                 </Typography>
               </Box>
             </Box>

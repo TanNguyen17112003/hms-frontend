@@ -34,7 +34,7 @@ interface AddPatientFormProps {
   ssn: string;
   email: string;
   phone: string;
-  dob: string;
+  dateOfBirth: string;
   nationality: string;
   occupation: string;
   address: string;
@@ -53,7 +53,7 @@ function AddPatientDialog({ type = 'add', ...DialogProps }: AddPatientDialogProp
       ssn: '',
       email: '',
       phone: '',
-      dob: '',
+      dateOfBirth: '',
       sex: 'Female',
       nationality: '',
       occupation: '',
@@ -116,7 +116,7 @@ function AddPatientDialog({ type = 'add', ...DialogProps }: AddPatientDialogProp
             lg={4}
             xs={6}
             onChange={formik.handleChange}
-            value={formik.values.dob}
+            value={formik.values.dateOfBirth}
             name='date'
             placeholder='Enter date of birth'
           />

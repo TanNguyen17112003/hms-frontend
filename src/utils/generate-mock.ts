@@ -39,12 +39,12 @@ const generatePatients = (): PatientDetail[] => {
       photoUrl:
         'https://static.vecteezy.com/system/resources/previews/027/245/520/original/male-3d-avatar-free-png.png',
       phoneNumber: `123456789${i}`,
-      dob: generateRandomDate(new Date(1970, 0, 1), new Date(2000, 0, 1)).toISOString(),
+      dateOfBirth: generateRandomDate(new Date(1970, 0, 1), new Date(2000, 0, 1)).toISOString(),
       address: `Address ${i + 1}`,
       email: `patient${i + 1}@gmail.com`,
       role: 'PATIENT',
       ssn: `SSN${i + 1}`,
-      gender: i % 2 === 0 ? 'MALE' : 'FEMALE',
+      sex: i % 2 === 0 ? 'MALE' : 'FEMALE',
       job: `Job ${i + 1}`
     });
   }
@@ -69,14 +69,14 @@ const generateDoctors = (patients: PatientDetail[]): StaffDetail[] => {
       phoneNumber: `987654321${i}`,
       photoUrl:
         'https://static.vecteezy.com/system/resources/previews/027/245/520/original/male-3d-avatar-free-png.png',
-      dob: generateRandomDate(new Date(1960, 0, 1), new Date(1990, 0, 1)).toISOString(),
+      dateOfBirth: generateRandomDate(new Date(1960, 0, 1), new Date(1990, 0, 1)).toISOString(),
       address: `Address ${i + 1}`,
       role: 'STAFF',
       email: `doctor${i + 1}@gmail.com`,
       ssn: `SSN${i + 1}`,
-      gender: i % 2 === 0 ? 'MALE' : 'FEMALE',
+      sex: i % 2 === 0 ? 'MALE' : 'FEMALE',
       speciality: `Speciality ${i + 1}`,
-      workStatus: i % 2 === 0 ? 'FULL_TIME' : 'PART_TIME',
+      status: i % 2 === 0 ? 'FULL_TIME' : 'PART_TIME',
       qualification: `Qualification ${i + 1}`,
       licenseNumber: `License${i + 1}`,
       patients: patients.slice(0, Math.floor(Math.random() * patients.length)),

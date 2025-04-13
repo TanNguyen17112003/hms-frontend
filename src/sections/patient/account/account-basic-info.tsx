@@ -130,7 +130,7 @@ function AccountBasicInfo({ user }: { user: UserDetail }) {
               <TextField
                 variant='outlined'
                 fullWidth
-                value={formatStandardDate(user?.dob as string)}
+                value={formatStandardDate(user?.dateOfBirth as string)}
                 disabled
               />
             </Stack>
@@ -138,7 +138,7 @@ function AccountBasicInfo({ user }: { user: UserDetail }) {
           <Grid item xs={12} md={6}>
             <Stack spacing={1}>
               <Typography variant='body2'>Sex</Typography>
-              <TextField variant='outlined' fullWidth value={user?.gender} disabled />
+              <TextField variant='outlined' fullWidth value={user?.sex} disabled />
             </Stack>
           </Grid>
           <Grid item xs={12}>

@@ -28,7 +28,7 @@ const AppointmentDetailPatient: React.FC<AppointmentDetailPatientProps> = ({ app
       },
       {
         title: 'Date of Birth',
-        value: formatStandardDate(appointment.patient?.dob as string)
+        value: formatStandardDate(appointment.patient?.dateOfBirth as string)
       },
       {
         title: 'Role',
@@ -45,8 +45,8 @@ const AppointmentDetailPatient: React.FC<AppointmentDetailPatientProps> = ({ app
             {appointment.patient?.fullName}
           </Typography>
           <Typography variant='body2'>
-            {calculateAge(appointment.patient?.dob as string)} Years,{' '}
-            {appointment.patient?.gender === 'MALE' ? 'Male' : 'Female'}
+            {calculateAge(appointment.patient?.dateOfBirth as string)} Years,{' '}
+            {appointment.patient?.sex === 'MALE' ? 'Male' : 'Female'}
           </Typography>
         </Stack>
       </Box>

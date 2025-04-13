@@ -62,7 +62,7 @@ const PatientDetail: PageType = () => {
             age: '22',
             ssn: '067703000000',
             dateOfBirth: '14 February 2001',
-            gender: 'Male',
+            sex: 'Male',
             email: 'jubead435@gmail.com',
             phone: '(704) 555-0127',
             address: '123 Le Dinh Huy, Ho Chi Minh City',
