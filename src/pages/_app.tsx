@@ -20,6 +20,7 @@ import { Header } from 'src/sections/header';
 import { Stack } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
+import { Toaster } from 'react-hot-toast';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -40,6 +41,8 @@ const App = (props: AppProps) => {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <SnackbarProvider>
           <AuthProvider>
+            <Toaster />
+
             <AuthConsumer>
               {(auth) => {
                 const theme = createTheme(initialSettings);

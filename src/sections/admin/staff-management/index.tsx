@@ -13,6 +13,7 @@ import { Staff } from 'src/types/staff';
 import { Hospital } from 'iconsax-react';
 import { useDebounce } from 'src/hooks/use-debounce';
 import { defaultStaffFilters } from 'src/constants/staff';
+import { LoadingProcess } from '@components';
 
 interface DoctorCardProps {
   doctor: Staff;
@@ -112,13 +113,13 @@ const DoctorCard: React.FC<DoctorCardProps> = ({ doctor, onClick }) => {
           </IconButton>
           <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
             <MenuItem onClick={handleMenuClose}>
-              <Button
+              {/* <Button
                 variant='contained'
                 sx={{ backgroundColor: '#0E1680', ':hover': { backgroundColor: 'orange' } }}
                 endIcon={<ChevronRight size={16} />}
               >
                 View Appointments
-              </Button>
+              </Button> */}
             </MenuItem>
             <MenuItem onClick={handleMenuClose}>
               <Button variant='outlined' sx={{ color: '#0E1680' }}>
@@ -129,13 +130,13 @@ const DoctorCard: React.FC<DoctorCardProps> = ({ doctor, onClick }) => {
         </>
       ) : (
         <Stack spacing={1}>
-          <Button
+          {/* <Button
             variant='contained'
             sx={{ backgroundColor: '#0E1680', ':hover': { backgroundColor: 'orange' } }}
             endIcon={<ChevronRight size={16} />}
           >
             View Appointments
-          </Button>
+          </Button> */}
           <Button variant='outlined' sx={{ color: '#0E1680' }}>
             View Details
           </Button>
@@ -167,17 +168,29 @@ export const StaffManagement: React.FC = () => {
   const [filters, setFilters] = useState<any>(defaultStaffFilters);
   const [search, setSearch] = useState<string>('');
   const debouncedSearchInput = useDebounce(search, 500);
+  const [staffListInfo, setStaffListInfo] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleGetListStaff = async () => {
-    await getListStaffsApi.call({
-      page: page,
-      size: rowsPerPage,
-      ...(debouncedSearchInput ? { search: debouncedSearchInput } : {}),
-      ...(filters.status ? { status: filters.status } : {}),
-      ...(filters.sex ? { sex: filters.sex } : {}),
-      ...(filters.role ? { role: filters.role } : {}),
-      ...(filters.department ? { department: filters.department } : {})
-    });
+    setIsLoading(true);
+    try {
+      const res = await getListStaffsApi.call({
+        page: page,
+        size: rowsPerPage,
+        ...(debouncedSearchInput ? { search: debouncedSearchInput } : {}),
+        ...(filters.status ? { status: filters.status } : {}),
+        ...(filters.sex ? { sex: filters.sex } : {}),
+        ...(filters.role ? { role: filters.role } : {}),
+        ...(filters.department ? { department: filters.department } : {})
+      });
+      console.log(33, res);
+      if (res.data) {
+        setStaffListInfo(res.data);
+      }
+    } catch (err: any) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -197,11 +210,12 @@ export const StaffManagement: React.FC = () => {
         setSearch={setSearch}
         refetch={handleGetListStaff}
       />
+      {isLoading && <LoadingProcess />}
       <div className='text-[#02053D] w-full text-end mb-3'>
-        Total number of staffs: {getListStaffsApi?.data?.totalElements}
+        Total number of staffs: {staffListInfo?.totalElements}
       </div>
       <Box display={'flex'} flexDirection={'column'} gap={2}>
-        {getListStaffsApi?.data?.content?.map((doctor: any) => (
+        {staffListInfo?.content?.map((doctor: any) => (
           <DoctorCard
             key={doctor.id}
             doctor={doctor}
@@ -217,7 +231,7 @@ export const StaffManagement: React.FC = () => {
       <Box className='pt-5'>
         <Pagination
           page={page - 1}
-          count={getListStaffsApi?.data?.totalElements ? getListStaffsApi?.data?.totalElements : 0}
+          count={staffListInfo?.totalElements ? staffListInfo?.totalElements : 0}
           rowsPerPage={rowsPerPage}
           onChange={handlePageChange}
         />

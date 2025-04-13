@@ -30,7 +30,6 @@ function StaffFilter({ filters, setFilters, search, setSearch, refetch }: any) {
   const advancedFilterDialog = useDialog();
   const addDialog = useDialog();
   const [filterStates, setFilterStates] = useState<any>(filters);
-  useEffect(() => console.log(filterStates), [filterStates]);
 
   return isMobile ? (
     <Stack direction={'column'} spacing={2} marginBottom={2}>
@@ -170,7 +169,7 @@ function StaffFilter({ filters, setFilters, search, setSearch, refetch }: any) {
             </DialogActions>
           </Dialog>
         </Box>
-        <Button
+        {/* <Button
           variant='contained'
           startIcon={<PlusIcon size={20} />}
           sx={{ backgroundColor: '#0E1680', ':hover': { backgroundColor: 'orange' } }}
@@ -178,7 +177,7 @@ function StaffFilter({ filters, setFilters, search, setSearch, refetch }: any) {
           <Typography variant={isMobile ? 'subtitle2' : isTablet ? 'subtitle1' : 'body1'}>
             Add Appointment
           </Typography>
-        </Button>
+        </Button> */}
         <Button
           variant='contained'
           startIcon={<PlusIcon size={20} />}
@@ -186,7 +185,7 @@ function StaffFilter({ filters, setFilters, search, setSearch, refetch }: any) {
           onClick={addDialog.handleOpen}
         >
           <Typography variant={isMobile ? 'subtitle2' : isTablet ? 'subtitle1' : 'body1'}>
-            Add Doctor
+            Add Staff
           </Typography>
         </Button>
       </Box>
@@ -329,7 +328,7 @@ function StaffFilter({ filters, setFilters, search, setSearch, refetch }: any) {
         </Dialog>
       </Box>
       <Box display='flex' alignItems='center' gap={1}>
-        <Button
+        {/* <Button
           variant='contained'
           startIcon={<PlusIcon size={20} />}
           sx={{ backgroundColor: '#0E1680', ':hover': { backgroundColor: 'orange' } }}
@@ -337,7 +336,7 @@ function StaffFilter({ filters, setFilters, search, setSearch, refetch }: any) {
           <Typography variant={isMobile ? 'subtitle2' : isTablet ? 'subtitle1' : 'body1'}>
             Add Appointment
           </Typography>
-        </Button>
+        </Button> */}
         <Button
           variant='contained'
           startIcon={<PlusIcon size={20} />}

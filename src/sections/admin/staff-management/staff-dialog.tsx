@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Dialog,
@@ -15,10 +15,11 @@ import { Controller, useForm } from 'react-hook-form';
 import { defaultStaff, departments } from 'src/constants/staff';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import dayjs from 'dayjs';
-import { ChipInput } from '@components';
+import { ChipInput, LoadingProcess } from '@components';
 import { useStaffContext } from 'src/contexts/staff/staff-context';
 import StaffDetail from './staff-detail';
 import { Staff } from 'src/types/staff';
+import toast from 'react-hot-toast';
 
 interface StaffDialogProps {
   type: string;
@@ -29,6 +30,7 @@ interface StaffDialogProps {
 
 function StaffDialog({ type, dialog, staffDetail, refetch }: StaffDialogProps) {
   const { addStaff, editStaff } = useStaffContext();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
     control,
@@ -42,25 +44,39 @@ function StaffDialog({ type, dialog, staffDetail, refetch }: StaffDialogProps) {
     defaultValues: type === 'edit' && staffDetail ? staffDetail : defaultStaff
   });
 
-  useEffect(() => reset(staffDetail), [staffDetail, dialog.open]);
+  useEffect(() => reset(staffDetail), [dialog.open]);
 
-  const handleAddStaff = async (data: any) => {
-    console.log(89, data);
-    const { id, createdAt, lastLoginAt, ...staffForm } = data;
-    if (type === 'edit' && staffDetail) {
-      await editStaff.call({
-        id: staffDetail.id,
-        body: staffForm
-      });
-    } else {
-      await addStaff.call(staffForm);
+  const handleSubmitForm = async (data: any) => {
+    setIsLoading(true);
+    try {
+      const { id, createdAt, lastLoginAt, ...staffForm } = data;
+      if (type === 'edit' && staffDetail) {
+        const res = await editStaff.call({
+          id: staffDetail.id,
+          body: staffForm
+        });
+        if (res.data) {
+          refetch();
+          dialog.handleClose();
+          toast.success('Edit successfully');
+        }
+      } else {
+        const res = await addStaff.call(staffForm);
+        if (res.data) {
+          refetch();
+          dialog.handleClose();
+          toast.success('Add successfully');
+        }
+      }
+    } catch (err: any) {
+    } finally {
+      setIsLoading(false);
     }
-    refetch();
-    dialog.handleClose();
   };
 
   return (
     <Dialog open={dialog.open} onClose={dialog.handleClose} maxWidth='lg' fullWidth>
+      {isLoading && <LoadingProcess />}
       <DialogTitle>{type === 'add' ? 'Add Staff' : 'Edit Staff'}</DialogTitle>
       <DialogContent className='grid grid-cols-3 gap-3'>
         <Controller
@@ -363,7 +379,7 @@ function StaffDialog({ type, dialog, staffDetail, refetch }: StaffDialogProps) {
         >
           Cancel
         </Button>
-        <Button onClick={handleSubmit(handleAddStaff)} color='primary'>
+        <Button onClick={handleSubmit(handleSubmitForm)} color='primary'>
           {type === 'add' ? 'Add' : 'Save'}
         </Button>
       </DialogActions>

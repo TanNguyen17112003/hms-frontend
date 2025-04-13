@@ -12,7 +12,9 @@ import {
   Button,
   Stack,
   Breadcrumbs,
-  TextField
+  TextField,
+  Switch,
+  FormControlLabel
 } from '@mui/material';
 import {
   Star,
@@ -44,6 +46,10 @@ import { useStaffContext } from 'src/contexts/staff/staff-context';
 import { FaMars, FaVenus } from 'react-icons/fa6';
 import { useDialog } from '@hooks';
 import StaffDialog from '../staff-dialog';
+import { Staff } from 'src/types/staff';
+import { defaultStaff } from 'src/constants/staff';
+import { LoadingProcess } from '@components';
+import toast from 'react-hot-toast';
 
 const StaffDetail = () => {
   const [selectedDate, setSelectedDate] = useState<number>(4);
@@ -51,16 +57,46 @@ const StaffDetail = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const staffId = searchParams.get('staffId');
-  const { getStaffDetail } = useStaffContext();
+  const { getStaffDetail, editStaff } = useStaffContext();
   const editDialog = useDialog();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [staffDetail, setStaffDetail] = useState<Staff>(defaultStaff);
 
   const handleGetStaffDetail = async () => {
-    await getStaffDetail.call(staffId ? staffId : '');
+    setIsLoading(true);
+    try {
+      const res = await getStaffDetail.call(staffId ?? '');
+      console.log(333, res);
+      if (res.data) {
+        setStaffDetail(res.data);
+      }
+    } catch (err: any) {
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleChangeStatus = async (status: string) => {
+    setIsLoading(true);
+    try {
+      const res = await editStaff.call({
+        id: staffDetail.id,
+        body: {
+          status: status
+        }
+      });
+      if (res.data) {
+        await handleGetStaffDetail();
+        toast.success('Change successfully');
+      }
+    } catch (err: any) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
     handleGetStaffDetail();
-    console.log(89, getStaffDetail);
   }, []);
 
   function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
@@ -79,12 +115,13 @@ const StaffDetail = () => {
       Staff Management
     </Link>,
     <Typography key='3' sx={{ color: '#0E1680' }} className='!font-semibold'>
-      {getStaffDetail?.data?.fullName}
+      {staffDetail.fullName}
     </Typography>
   ];
 
   return (
     <div>
+      {isLoading && <LoadingProcess />}
       <StaffDialog
         dialog={editDialog}
         type='edit'
@@ -92,7 +129,7 @@ const StaffDetail = () => {
         refetch={handleGetStaffDetail}
       />
       <div className='w-full flex justify-between items-center mb-5'>
-        <div className='flex gap-5'>
+        <div className='flex gap-5 items-center'>
           <button className='text-[#0E1680]' onClick={() => router.push('/staff')}>
             <ArrowLeft />
           </button>
@@ -100,28 +137,47 @@ const StaffDetail = () => {
             {breadcrumbs}
           </Breadcrumbs>
         </div>
-        <Button
-          variant='contained'
-          startIcon={<Pencil size={20} />}
-          sx={{ backgroundColor: '#0E1680', ':hover': { backgroundColor: 'orange' } }}
-          onClick={editDialog.handleOpen}
-        >
-          <Typography variant={'body1'}>Edit</Typography>
-        </Button>
+        {staffDetail.role !== 'ADMIN' && (
+          <div className='flex gap-5 items-center'>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={staffDetail.status === 'ACTIVE'}
+                  onChange={(e: any) => {
+                    handleChangeStatus(staffDetail.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE');
+                  }}
+                  inputProps={{ 'aria-label': 'status' }}
+                  color='success'
+                />
+              }
+              label='Status'
+              labelPlacement='start'
+            />
+
+            <Button
+              variant='contained'
+              startIcon={<Pencil size={20} />}
+              sx={{ backgroundColor: '#0E1680', ':hover': { backgroundColor: 'orange' } }}
+              onClick={editDialog.handleOpen}
+            >
+              <Typography variant={'body1'}>Edit</Typography>
+            </Button>
+          </div>
+        )}
       </div>
       <div className='h-auto flex flex-col md:flex-row gap-8'>
         <Box className='w-full md:w-2/5 lg:w-1/3 flex flex-col gap-y-6'>
           <Card className='shadow-lg border rounded-lg' sx={{ borderRadius: '10px' }}>
             <CardContent className='flex flex-col items-center text-center gap-2 relative'>
               <div
-                className={`absolute right-5 top-5 w-3 h-3 rounded-full ${getStaffDetail?.data?.status === 'ACTIVE' ? 'bg-green-500' : 'bg-red-500'}`}
+                className={`absolute right-5 top-5 w-3 h-3 rounded-full ${staffDetail.status === 'ACTIVE' ? 'bg-green-500' : 'bg-red-500'}`}
               ></div>
               <Stack spacing={2} alignItems='center'>
                 {/* Avatar và Tên */}
                 <Stack spacing={2} alignItems='center'>
                   <Avatar
                     src=''
-                    alt={getStaffDetail?.data?.fullName}
+                    alt={staffDetail.fullName}
                     sx={{
                       width: 128,
                       height: 128,
@@ -132,7 +188,7 @@ const StaffDetail = () => {
                     }}
                   />
                   <Typography variant='h6' fontWeight='600'>
-                    {getStaffDetail?.data?.fullName}
+                    {staffDetail.fullName}
                   </Typography>
                   {/* <Stack direction='row' alignItems='center' spacing={1}>
                     <Star className='text-yellow-500' />
@@ -140,9 +196,9 @@ const StaffDetail = () => {
                   </Stack> */}
                   <Stack direction={'row'} spacing={1}>
                     <Typography variant='body2' fontWeight={'light'}>
-                      {getStaffDetail?.data?.role}
+                      {staffDetail.role}
                     </Typography>
-                    {getStaffDetail?.data?.sex === 'MALE' ? (
+                    {staffDetail.sex === 'MALE' ? (
                       <FaMars size={16} className='text-blue-500' />
                     ) : (
                       <FaVenus size={16} className='text-pink-500' />
@@ -166,7 +222,7 @@ const StaffDetail = () => {
                 {/* <Stack direction={'row'} spacing={1}>
                   <Hospital size={16} />
                   <Typography variant='body2' fontWeight={'light'}>
-                    <strong>Department: </strong>{getStaffDetail?.data?.department}
+                    <strong>Department: </strong>{staffDetail.department}
                   </Typography>
                 </Stack> */}
 
@@ -328,33 +384,33 @@ const StaffDetail = () => {
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             <Typography variant='h6'>Biography</Typography>
             <Typography variant='body2' sx={{ color: 'text.secondary' }}>
-              {getStaffDetail?.data?.biography}
+              {staffDetail.biography}
             </Typography>
           </Box>
           <div className='grid grid-cols-2 gap-5'>
             <div className='flex items-center gap-3'>
               <div className='font-semibold'>SSN:</div>
-              <div>{getStaffDetail?.data?.ssn}</div>
+              <div>{staffDetail.ssn}</div>
             </div>
             <div className='flex items-center gap-3'>
               <div className='font-semibold'>Date of Birth:</div>
-              <div>{getStaffDetail?.data?.dateOfBirth}</div>
+              <div>{staffDetail.dateOfBirth}</div>
             </div>
             <div className='flex items-center gap-3'>
               <div className='font-semibold'>Email:</div>
-              <div>{getStaffDetail?.data?.email}</div>
+              <div>{staffDetail.email}</div>
             </div>
             <div className='flex items-center gap-3'>
               <div className='font-semibold'>Phone number:</div>
-              <div>{getStaffDetail?.data?.phoneNumber}</div>
+              <div>{staffDetail.phoneNumber}</div>
             </div>
             <div className='flex items-center gap-3'>
               <div className='font-semibold'>Address:</div>
-              <div>{getStaffDetail?.data?.address}</div>
+              <div>{staffDetail.address}</div>
             </div>
             <div className='flex items-center gap-3'>
               <div className='font-semibold'>Nationality:</div>
-              <div>{getStaffDetail?.data?.nationality}</div>
+              <div>{staffDetail.nationality}</div>
             </div>
           </div>
           <div className='w-full flex flex-col gap-3'>
@@ -363,7 +419,7 @@ const StaffDetail = () => {
               <TextField
                 variant='outlined'
                 disabled
-                value={getStaffDetail?.data?.address}
+                value={staffDetail.address}
                 className='w-full'
               />
             </div>
@@ -372,7 +428,7 @@ const StaffDetail = () => {
               <TextField
                 variant='outlined'
                 disabled
-                value={getStaffDetail?.data?.nationality}
+                value={staffDetail.nationality}
                 className='w-full'
               />
             </div> */}
@@ -381,18 +437,18 @@ const StaffDetail = () => {
               <TextField
                 variant='outlined'
                 disabled
-                value={getStaffDetail?.data?.startWorkingDate}
+                value={staffDetail.startWorkingDate}
                 className='w-full'
               />
             </div>
-            {getStaffDetail?.data?.role !== 'ADMIN' && (
+            {staffDetail.role !== 'ADMIN' && (
               <>
                 <div className='flex flex-col gap-2'>
                   <div className='font-semibold'>Department:</div>
                   <TextField
                     variant='outlined'
                     disabled
-                    value={getStaffDetail?.data?.department}
+                    value={staffDetail.department}
                     className='w-full'
                   />
                 </div>
@@ -401,7 +457,7 @@ const StaffDetail = () => {
                   <TextField
                     variant='outlined'
                     disabled
-                    value={getStaffDetail?.data?.qualification}
+                    value={staffDetail.qualification}
                     className='w-full'
                   />
                 </div>
@@ -410,21 +466,21 @@ const StaffDetail = () => {
                   <TextField
                     variant='outlined'
                     disabled
-                    value={getStaffDetail?.data?.licenseNumber}
+                    value={staffDetail.licenseNumber}
                     className='w-full'
                   />
                 </div>
               </>
             )}
           </div>
-          {getStaffDetail?.data?.role === 'DOCTOR' && (
+          {staffDetail.role === 'DOCTOR' && (
             <>
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                 {/* Specializations Section */}
                 <Typography variant='h6'>Specializations</Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
-                  {getStaffDetail?.data?.specializations?.map((specialization, index) => (
-                    <Chip key={index} label={specialization} variant='outlined' />
+                  {staffDetail.specializations?.map((specialization, index) => (
+                    <Chip key={index} label={specialization} color='default' />
                   ))}
                 </Box>
               </Box>
@@ -432,8 +488,8 @@ const StaffDetail = () => {
                 {/* Services Section */}
                 <Typography variant='h6'>Services</Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-                  {getStaffDetail?.data?.services?.map((service, index) => (
-                    <Chip key={index} label={service} variant='outlined' />
+                  {staffDetail.services?.map((service, index) => (
+                    <Chip key={index} label={service} color='default' />
                   ))}
                 </Box>
               </Box>
