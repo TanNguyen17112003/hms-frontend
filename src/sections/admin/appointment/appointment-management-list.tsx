@@ -14,18 +14,26 @@ import { useRouter } from 'next/router';
 import { useAuth } from '@hooks';
 import { UserDetail } from 'src/types/user';
 
-
 interface AppointmentManagementListProps {
-  appointments: AppointmentDetail[];
+  appointments: any;
   searchInput: string;
+  page: number;
+  setPage: any;
+  rowsPerPage: number;
 }
 const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
   appointments,
-  searchInput
+  searchInput,
+  page,
+  setPage,
+  rowsPerPage
 }) => {
+  const handlePageChange = (event: any, newPage: number) => {
+    setPage(newPage + 1);
+  };
   const { user } = useAuth();
   const configAppointments = useMemo(() => {
-    return appointments.map((appointment) => {
+    return appointments?.content.map((appointment: any) => {
       const patient = patients.find((patient) => patient.id === appointment.userId);
       const doctor = doctors.find((doctor) => doctor.id === appointment.staffId);
       return { ...appointment, patient, doctor };
@@ -35,15 +43,20 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
   const declineDialog = useDialog<AppointmentDetailConfig>();
   const approveDialog = useDialog<AppointmentDetailConfig>();
   const editDrawer = useDrawer<AppointmentDetailConfig>();
-  const pagination = usePagination({
-    count: appointments.length
-  });
+  const pagination = {
+    count: appointments?.totalElements,
+    page: page,
+    rowsPerPage: rowsPerPage,
+    totalPages: appointments?.totalPages,
+    onPageChange: handlePageChange,
+    onRowsPerPageChange: () => {}
+  };
   const router = useRouter();
 
-  const filteredAppointments = configAppointments.filter((appointment) => {
+  const filteredAppointments = configAppointments?.filter((appointment: any) => {
     return appointment?.staffId?.toLowerCase().includes(searchInput.toLowerCase());
   });
-  const results = filteredAppointments.map((appointment, index) => ({
+  const results = filteredAppointments?.map((appointment: any, index: number) => ({
     ...appointment,
     index: index + 1
   }));
@@ -72,14 +85,14 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
         <Stack direction='row' spacing={2} alignItems='center'>
           <Typography variant='h6'>Appointment List</Typography>
           <Chip
-            label={`${results.length} appointments`}
+            label={`${results?.length} appointments`}
             sx={{ backgroundColor: 'rgba(229, 231, 251, 1)', color: 'rgba(7, 11, 92, 1)' }}
           />
         </Stack>
       </Stack>
       <CustomTable
         className='mt-5'
-        rows={results}
+        rows={results ? results : []}
         configs={AppointmentManagementListConfig}
         onClickRow={(data) => handleGoAppointment(data.id)}
         pagination={pagination}

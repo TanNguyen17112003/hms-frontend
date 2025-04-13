@@ -9,17 +9,17 @@ import { useAuth } from '@hooks';
 
 interface ContextValue {
   // getListAppointmentsApi: UseFunctionReturnType<FormData, AppointmentDetail[]>;
-  getAppointmentListApi: UseFunctionReturnType<Record<string, any>, any>;
+  getListAppointmentsApi: UseFunctionReturnType<Record<string, any>, any>;
 }
 
 export const AppointmentContext = createContext<ContextValue>({
   // getListAppointmentsApi: DEFAULT_FUNCTION_RETURN,
-  getAppointmentListApi: DEFAULT_FUNCTION_RETURN
+  getListAppointmentsApi: DEFAULT_FUNCTION_RETURN
 });
 
 const AppointmentProvider = ({ children }: { children: ReactNode }) => {
   // const getListAppointmentsApi = useFunction(AppointmentApi.getAppointments);
-  const getAppointmentListApi = useFunction(AppointmentApi.getAppointments);
+  const getListAppointmentsApi = useFunction(AppointmentApi.getAppointments);
 
   // const { user } = useAuth();
 
@@ -33,7 +33,7 @@ const AppointmentProvider = ({ children }: { children: ReactNode }) => {
     <AppointmentContext.Provider
       value={{
         // getListAppointmentsApi,
-        getAppointmentListApi
+        getListAppointmentsApi
       }}
     >
       {children}
