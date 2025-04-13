@@ -19,7 +19,7 @@ import { ChipInput, LoadingProcess } from '@components';
 import { useStaffContext } from 'src/contexts/staff/staff-context';
 import StaffDetail from './staff-detail';
 import { Staff } from 'src/types/staff';
-import toast from 'react-hot-toast';
+import useAppSnackbar from 'src/hooks/use-app-snackbar';
 
 interface StaffDialogProps {
   type: string;
@@ -31,6 +31,7 @@ interface StaffDialogProps {
 function StaffDialog({ type, dialog, staffDetail, refetch }: StaffDialogProps) {
   const { addStaff, editStaff } = useStaffContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { showSnackbarSuccess } = useAppSnackbar();
 
   const {
     control,
@@ -58,14 +59,14 @@ function StaffDialog({ type, dialog, staffDetail, refetch }: StaffDialogProps) {
         if (res.data) {
           refetch();
           dialog.handleClose();
-          toast.success('Edit successfully');
+          showSnackbarSuccess('Edit successfully');
         }
       } else {
         const res = await addStaff.call(staffForm);
         if (res.data) {
           refetch();
           dialog.handleClose();
-          toast.success('Add successfully');
+          showSnackbarSuccess('Add successfully');
         }
       }
     } catch (err: any) {

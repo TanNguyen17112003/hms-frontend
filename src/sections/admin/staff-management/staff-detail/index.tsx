@@ -49,7 +49,7 @@ import StaffDialog from '../staff-dialog';
 import { Staff } from 'src/types/staff';
 import { defaultStaff } from 'src/constants/staff';
 import { LoadingProcess } from '@components';
-import toast from 'react-hot-toast';
+import useAppSnackbar from 'src/hooks/use-app-snackbar';
 
 const StaffDetail = () => {
   const [selectedDate, setSelectedDate] = useState<number>(4);
@@ -61,6 +61,7 @@ const StaffDetail = () => {
   const editDialog = useDialog();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [staffDetail, setStaffDetail] = useState<Staff>(defaultStaff);
+  const { showSnackbarSuccess } = useAppSnackbar();
 
   const handleGetStaffDetail = async () => {
     setIsLoading(true);
@@ -87,7 +88,7 @@ const StaffDetail = () => {
       });
       if (res.data) {
         await handleGetStaffDetail();
-        toast.success('Change successfully');
+        showSnackbarSuccess('Change successfully');
       }
     } catch (err: any) {
     } finally {
