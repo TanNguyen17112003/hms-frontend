@@ -1,4 +1,4 @@
-import { createContext, FC, ReactNode, useCallback, useEffect, useReducer } from 'react';
+import { createContext, FC, ReactNode, useCallback, useEffect, useReducer, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Issuer } from 'src/utils/auth';
 import CookieHelper, { CookieKeys } from 'src/utils/cookie-helper';
@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { paths } from 'src/paths';
 import { initialUser, UserDetail } from 'src/types/user';
 import { UpdateProfileRequest, UpdateProfileResponse, UsersApi } from 'src/api/user';
+import useAppSnackbar from 'src/hooks/use-app-snackbar';
 
 interface State {
   isInitialized: boolean;
@@ -133,7 +134,9 @@ interface AuthProviderProps {
 export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [lastActionType, setLastActionType] = useState<ActionType | null>(null);
   const router = useRouter();
+  const { showSnackbarError } = useAppSnackbar();
 
   const initialize = useCallback(async (): Promise<void> => {
     try {
@@ -181,6 +184,11 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     }
   }, [dispatch]);
 
+  const enhancedDispatch = (action: Action) => {
+    setLastActionType(action.type);
+    dispatch(action);
+  };
+
   useEffect(
     () => {
       initialize();
@@ -205,7 +213,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
       CookieHelper.setItem(CookieKeys.TOKEN, response.accessToken);
       CookieHelper.setItem('user_data', JSON.stringify(responseData));
 
-      dispatch({
+      enhancedDispatch({
         type: ActionType.SIGN_IN,
         payload: {
           user: responseData
@@ -268,6 +276,26 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     [CookieHelper]
     // eslint-disable-next-line react-hooks/exhaustive-deps
   );
+
+  useEffect(() => {
+    if (lastActionType === ActionType.SIGN_IN && state.user?.id === undefined) {
+      const forceSignOut = async () => {
+        setTimeout(async () => {
+          await signOut();
+          await CookieHelper.removeItem('user_data');
+          await setLastActionType(null);
+          window.location.href = paths.landing.index;
+        }, 1000);
+        showSnackbarError('Your session has expired. Please sign in again.');
+      };
+      const timeout = setTimeout(() => {
+        forceSignOut();
+      }, 2000);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [lastActionType, state.user?.id, signOut, showSnackbarError, setLastActionType]);
 
   return (
     <AuthContext.Provider

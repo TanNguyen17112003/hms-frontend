@@ -18,6 +18,8 @@ import { createTheme } from 'src/theme';
 import { initialSettings } from 'src/contexts/settings-context';
 import { Header } from 'src/sections/header';
 import { Stack } from '@mui/material';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -35,34 +37,35 @@ const App = (props: AppProps) => {
         <link rel='icon' type='image/png' href='/ui/HEALTH360 LIGHT ONLY.png' />
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
-
-      <SnackbarProvider>
-        <AuthProvider>
-          <AuthConsumer>
-            {(auth) => {
-              const theme = createTheme(initialSettings);
-              const showSplashScreen = !auth.isInitialized;
-              return (
-                <ThemeProvider theme={theme}>
-                  <Head>
-                    <meta name='color-scheme' content={initialSettings.paletteMode} />
-                    <meta name='theme-color' content={theme.palette.primary.main} />
-                  </Head>
-                  <CssBaseline />
-                  {showSplashScreen ? (
-                    <SplashScreen />
-                  ) : (
-                    <Stack direction={'column'}>
-                      <Header />
-                      {getLayout(<Component {...pageProps} />)}
-                    </Stack>
-                  )}
-                </ThemeProvider>
-              );
-            }}
-          </AuthConsumer>
-        </AuthProvider>
-      </SnackbarProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <SnackbarProvider>
+          <AuthProvider>
+            <AuthConsumer>
+              {(auth) => {
+                const theme = createTheme(initialSettings);
+                const showSplashScreen = !auth.isInitialized;
+                return (
+                  <ThemeProvider theme={theme}>
+                    <Head>
+                      <meta name='color-scheme' content={initialSettings.paletteMode} />
+                      <meta name='theme-color' content={theme.palette.primary.main} />
+                    </Head>
+                    <CssBaseline />
+                    {showSplashScreen ? (
+                      <SplashScreen />
+                    ) : (
+                      <Stack direction={'column'}>
+                        <Header />
+                        {getLayout(<Component {...pageProps} />)}
+                      </Stack>
+                    )}
+                  </ThemeProvider>
+                );
+              }}
+            </AuthConsumer>
+          </AuthProvider>
+        </SnackbarProvider>
+      </LocalizationProvider>
     </CacheProvider>
   );
 };

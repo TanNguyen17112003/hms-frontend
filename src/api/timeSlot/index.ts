@@ -1,6 +1,6 @@
 import { apiDelete, apiGet, apiPatch, apiPost, apiPut, getFormData } from 'src/utils/api-request';
 import CookieHelper, { CookieKeys } from 'src/utils/cookie-helper';
-import { Appointment, AppointmentDetail, AppointmentType } from 'src/types/appointment';
+import { Appointment, AppointmentDetail, AppointmentType, TimeSlot } from 'src/types/appointment';
 
 // Interface related to TimeSlot
 export interface CreateTimeSlotRequest {
@@ -45,9 +45,16 @@ export interface CreateDoctorTimeSlotRequest {
   doctorIds: string[];
 }
 
+export interface TimeSlotResponse {
+  week: number;
+  date: string;
+  availableTimeSlots: TimeSlot[];
+  unavailableTimeSlots: TimeSlot[];
+}
+
 export class TimeSlotApi {
   // api related to appointment
-  static async getTimeSlots(week: number, date: string) {
+  static async getTimeSlots(week: number, date: string): Promise<TimeSlotResponse> {
     return await apiGet(`/api/v1/timeslots?week=${week}&date=${date}`);
   }
 }

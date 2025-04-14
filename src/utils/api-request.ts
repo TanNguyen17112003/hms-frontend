@@ -39,11 +39,11 @@ function reviver(key: any, value: any) {
 }
 
 // Attach body as search params
-const getRequestUrl = (query: string, body?: any) => {
+export const getRequestUrl = (query: string, body?: any) => {
   return API_HOST + query + (body ? '?' + new URLSearchParams(body) : '');
 };
 
-const apiFetch = async (input: RequestInfo | URL, init?: RequestInit | undefined) => {
+export const apiFetch = async (input: RequestInfo | URL, init?: RequestInit | undefined) => {
   try {
     const response = await fetch(input, init);
     const result = await response.json();
@@ -60,7 +60,7 @@ const apiFetch = async (input: RequestInfo | URL, init?: RequestInit | undefined
 
 const refreshToken = async () => {
   const refreshToken = CookieHelper.getItem(CookieKeys.REFRESH_TOKEN);
-  return "test";
+  return 'test';
 };
 
 const apiFetchWithRetry = async (input: RequestInfo | URL, init?: RequestInit | undefined) => {

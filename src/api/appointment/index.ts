@@ -17,11 +17,38 @@ export interface AppointmentAssignRequest {
   doctorId: string;
 }
 
+interface FileUploadRequest {
+  file: File;
+}
+
+interface FileUploadResponse {
+  url: string;
+}
+
+interface MultipleFileUploadRequest {
+  files: File[];
+}
+
+interface MultipleFileUploadResponse {
+  urls: string[];
+}
+
 export class AppointmentApi {
-  // api related to appointment
-  static async getAppointments(request: {}): Promise<AppointmentDetail[]> {
-    const response = await apiGet('/appointments', getFormData(request));
-    return response;
+  // static async getAppointments(request: {}): Promise<AppointmentDetail[]> {
+  //   const response = await apiGet('/appointments', getFormData(request));
+  //   return response;
+  // }
+  static async uploadFile(request: FileUploadRequest): Promise<FileUploadResponse> {
+    return await apiPost('/api/v1/files/upload/single', getFormData(request));
+  }
+
+  static async uploadMultipleFiles(
+    request: MultipleFileUploadRequest
+  ): Promise<MultipleFileUploadResponse> {
+    return await apiPost('/api/v1/files/upload/many', getFormData(request));
+  }
+  static async getAppointments(params: Record<string, any>): Promise<any> {
+    return await apiGet('/api/v1/appointments', params);
   }
 
   static async createAppointment(request: AppointmentRequest): Promise<any> {

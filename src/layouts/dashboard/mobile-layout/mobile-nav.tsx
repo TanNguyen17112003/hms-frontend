@@ -24,7 +24,7 @@ import type { NavColor } from 'src/types/settings';
 import { Section } from '../config/config';
 import { MobileNavSection } from './mobile-nav-section';
 import Image from 'next/image';
-import logo from 'public/logo.png';
+import logo from 'public/logo-black.png';
 
 const useCssVars = (color: NavColor): Record<string, string> => {
   const theme = useTheme();

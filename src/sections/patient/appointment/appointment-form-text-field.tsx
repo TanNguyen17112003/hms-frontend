@@ -4,7 +4,7 @@ import { TextField } from '@mui/material';
 import AutocompleteTextFieldMultiple from 'src/components/autocomplete-textfield-multiple';
 
 interface AppointmentFormTextFieldProps {
-  type: 'text' | 'autoComplete' | 'dateTime' | 'number';
+  type: 'text' | 'autoComplete' | 'dateTime' | 'number' | 'date';
   title: string;
   lg: number;
   xs: number;
@@ -16,7 +16,6 @@ interface AppointmentFormTextFieldProps {
   select?: boolean;
   children?: React.ReactNode;
   isMultiple?: boolean;
-  isMultiLine?: boolean;
 }
 
 export const AppointmentFormTextField: FC<AppointmentFormTextFieldProps> = ({
@@ -31,8 +30,7 @@ export const AppointmentFormTextField: FC<AppointmentFormTextFieldProps> = ({
   placeholder,
   select,
   children,
-  isMultiple,
-  isMultiLine = false
+  isMultiple
 }) => {
   if (type === 'autoComplete' && options) {
     const formattedValue = isMultiple
@@ -78,7 +76,15 @@ export const AppointmentFormTextField: FC<AppointmentFormTextFieldProps> = ({
   return (
     <AppointmentFormField title={title} lg={lg} xs={xs}>
       <TextField
-        type={type === 'dateTime' ? 'datetime-local' : type === 'text' ? 'text' : 'number'}
+        type={
+          type === 'dateTime'
+            ? 'datetime-local'
+            : type === 'date'
+              ? 'date'
+              : type === 'text'
+                ? 'text'
+                : 'number'
+        }
         fullWidth
         variant='outlined'
         onChange={onChange}
@@ -86,8 +92,6 @@ export const AppointmentFormTextField: FC<AppointmentFormTextFieldProps> = ({
         name={name}
         placeholder={placeholder}
         select={select}
-        multiline={isMultiLine}
-        rows={isMultiLine ? 6 : 1}
       >
         {select && children}
       </TextField>

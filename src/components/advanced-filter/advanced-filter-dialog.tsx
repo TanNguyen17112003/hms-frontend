@@ -53,7 +53,7 @@ const AdvancedFilterDialog: React.FC<AdvancedFilterDialogProps> = ({ open, onClo
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth='sm' fullWidth>
-      <DialogTitle>Advanced Filter</DialogTitle>
+      <DialogTitle>Filter</DialogTitle>
       <DialogContent>
         <Stack spacing={3}>
           {localFilters.map((filter, index) => (
@@ -87,10 +87,10 @@ const AdvancedFilterDialog: React.FC<AdvancedFilterDialogProps> = ({ open, onClo
       </DialogContent>
       <DialogActions>
         <Button onClick={handleResetFilters} color='secondary'>
-          Xóa lọc
+          Remove filter
         </Button>
         <Button onClick={handleApplyFilters} color='primary'>
-          Áp dụng
+          Apply
         </Button>
       </DialogActions>
     </Dialog>

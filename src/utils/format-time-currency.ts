@@ -65,3 +65,28 @@ export function calculateAge(date: string): number {
   const ageDate = new Date(ageDifMs);
   return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
+
+export const getWeekAndDay = (dateString: string) => {
+  const date = new Date(dateString);
+  const startOfYear = new Date(date.getFullYear(), 0, 1);
+  const dayOfYear =
+    Math.floor((date.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+  const week = Math.ceil(dayOfYear / 7);
+
+  const daysOfWeek = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+  const day = daysOfWeek[date.getDay()];
+
+  return {
+    week,
+    date: day
+  };
+};
+
+export const extractDate = (date: string) => {
+  // I want to conver to "yyyy:mm:dd" form
+  const dateObj = new Date(date);
+  const year = dateObj.getFullYear();
+  const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+  const day = dateObj.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};

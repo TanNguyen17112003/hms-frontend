@@ -21,7 +21,7 @@ export interface AppointmentFormProps {
   notes?: File;
   reason?: string;
   type: AppointmentType;
-  timeSlot: TimeSlot;
+  timeSlotId: string;
   date: string;
 }
 
@@ -29,25 +29,8 @@ export const initialAppointmentFormValues: AppointmentFormProps = {
   notes: undefined,
   reason: '',
   type: 'FIRST_VISIT',
-  timeSlot: {
-    id: '',
-    week: 0,
-    startTime: {
-      hour: 0,
-      minute: 0,
-      second: 0,
-      nano: 0
-    },
-    endTime: {
-      hour: 0,
-      minute: 0,
-      second: 0,
-      nano: 0
-    },
-    totalMaxAppointment: 0,
-    date: ''
-  },
-  date: String(new Date())
+  timeSlotId: '',
+  date: ''
 };
 
 interface TimeDetails {
@@ -60,8 +43,8 @@ interface TimeDetails {
 export interface TimeSlot {
   id: string;
   week: number;
-  startTime: TimeDetails;
-  endTime: TimeDetails;
+  startTime: string;
+  endTime: string;
   totalMaxAppointment: number;
   date: string;
 }
