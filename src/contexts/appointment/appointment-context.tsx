@@ -1,10 +1,15 @@
 import { createContext, ReactNode, useCallback, useEffect, useContext, useState } from 'react';
-import { AppointmentApi, AppointmentRequest, AppointmentResponse } from 'src/api/appointment';
+import {
+  AppointmentApi,
+  AppointmentAssignRequest,
+  AppointmentRequest,
+  AppointmentResponse
+} from 'src/api/appointment';
 import useFunction, {
   DEFAULT_FUNCTION_RETURN,
   UseFunctionReturnType
 } from 'src/hooks/use-function';
-import { AppointmentDetail, AppointmentFilter } from 'src/types/appointment';
+import { AppointmentDetail, AppointmentFilter, AppointmentStatus } from 'src/types/appointment';
 import { useAuth } from '@hooks';
 import { ChangeEvent } from 'react';
 import { UsePaginationResult } from '@hooks';
@@ -15,6 +20,12 @@ interface ContextValue {
   appointmentPagination: UsePaginationResult;
   appointmentFilter: AppointmentFilter;
   setAppointmentFilter: (filter: AppointmentFilter) => void;
+  rejectAppointment: (id: string) => Promise<void>;
+  approveAppointment: (id: string) => Promise<void>;
+  cancelAppointment: (id: string) => Promise<void>;
+  completeAppointment: (id: string) => Promise<void>;
+  rescheduleAppointment: (id: string, timeslotId: string) => Promise<void>;
+  assignAppointment: (request: AppointmentAssignRequest) => Promise<void>;
 }
 
 export const AppointmentContext = createContext<ContextValue>({
@@ -34,7 +45,13 @@ export const AppointmentContext = createContext<ContextValue>({
     }
   },
   appointmentFilter: {},
-  setAppointmentFilter: () => {}
+  setAppointmentFilter: () => {},
+  rejectAppointment: async () => {},
+  approveAppointment: async () => {},
+  cancelAppointment: async () => {},
+  completeAppointment: async () => {},
+  rescheduleAppointment: async () => {},
+  assignAppointment: async () => {}
 });
 
 const AppointmentProvider = ({ children }: { children: ReactNode }) => {
@@ -43,6 +60,142 @@ const AppointmentProvider = ({ children }: { children: ReactNode }) => {
   const appointmentPagination = usePagination({
     count: getAppointmentListApi.data?.totalElements || 0
   });
+
+  const rejectAppointment = useCallback(
+    async (id: string) => {
+      try {
+        const response = await AppointmentApi.rejectAppointment(id);
+        if (response) {
+          getAppointmentListApi.setData({
+            ...getAppointmentListApi.data,
+            content: (getAppointmentListApi.data?.content || []).map((appointment) => {
+              if (appointment.id === id) {
+                return { ...appointment, status: 'REJECTED' as AppointmentStatus };
+              }
+              return appointment;
+            })
+          });
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+    [getAppointmentListApi]
+  );
+
+  const approveAppointment = useCallback(
+    async (id: string) => {
+      try {
+        const response = await AppointmentApi.acceptAppointment(id);
+        if (response) {
+          getAppointmentListApi.setData({
+            ...getAppointmentListApi.data,
+            content: (getAppointmentListApi.data?.content || []).map((appointment) => {
+              if (appointment.id === id) {
+                return { ...appointment, status: 'ACCEPTED' as AppointmentStatus };
+              }
+              return appointment;
+            })
+          });
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+    [getAppointmentListApi]
+  );
+
+  const cancelAppointment = useCallback(
+    async (id: string) => {
+      try {
+        const response = await AppointmentApi.cancelAppointment(id);
+        if (response) {
+          getAppointmentListApi.setData({
+            ...getAppointmentListApi.data,
+            content: (getAppointmentListApi.data?.content || []).map((appointment) => {
+              if (appointment.id === id) {
+                return { ...appointment, status: 'CANCELLED' as AppointmentStatus };
+              }
+              return appointment;
+            })
+          });
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+    [getAppointmentListApi]
+  );
+
+  const completeAppointment = useCallback(
+    async (id: string) => {
+      try {
+        const response = await AppointmentApi.completeAppointment(id);
+        if (response) {
+          getAppointmentListApi.setData({
+            ...getAppointmentListApi.data,
+            content: (getAppointmentListApi.data?.content || []).map((appointment) => {
+              if (appointment.id === id) {
+                return { ...appointment, status: 'COMPLETED' as AppointmentStatus };
+              }
+              return appointment;
+            })
+          });
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+    [getAppointmentListApi]
+  );
+
+  const rescheduleAppointment = useCallback(
+    async (id: string, timeslotId: string) => {
+      try {
+        const response = await AppointmentApi.rescheduleAppointment(id, timeslotId);
+        if (response) {
+          getAppointmentListApi.setData({
+            ...getAppointmentListApi.data,
+            content: (getAppointmentListApi.data?.content || []).map((appointment) => {
+              if (appointment.id === id) {
+                return { ...appointment, status: 'RESCHEDULED' as AppointmentStatus };
+              }
+              return appointment;
+            })
+          });
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+    [getAppointmentListApi]
+  );
+
+  const assignAppointment = useCallback(
+    async (request: AppointmentAssignRequest) => {
+      try {
+        const response = await AppointmentApi.assignAppointment(request);
+        if (response) {
+          getAppointmentListApi.setData({
+            ...getAppointmentListApi.data,
+            content: (getAppointmentListApi.data?.content || []).map((appointment) => {
+              if (appointment.id === request.appointmentId) {
+                return {
+                  ...appointment,
+                  status: 'PENDING' as AppointmentStatus,
+                  doctor: response.doctor
+                };
+              }
+              return appointment;
+            })
+          });
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
+    [getAppointmentListApi]
+  );
 
   useEffect(() => {
     const formData = new FormData();
@@ -71,7 +224,13 @@ const AppointmentProvider = ({ children }: { children: ReactNode }) => {
         getAppointmentListApi,
         appointmentPagination,
         appointmentFilter,
-        setAppointmentFilter
+        setAppointmentFilter,
+        rejectAppointment,
+        approveAppointment,
+        cancelAppointment,
+        completeAppointment,
+        rescheduleAppointment,
+        assignAppointment
       }}
     >
       {children}

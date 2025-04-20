@@ -42,7 +42,7 @@ function DeleteUserDialog({
             dialogProps.onClose?.(e, 'escapeKeyDown');
           }}
         >
-          Hủy
+          Cancel
         </Button>
         <Button
           variant='contained'

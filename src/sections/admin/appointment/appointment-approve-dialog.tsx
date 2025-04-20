@@ -10,12 +10,8 @@ function ApproveAppointmentDialog({
   ...dialogProps
 }: DialogProps & {
   appointment: AppointmentDetailConfig;
-  onConfirm?: () => Promise<void>;
+  onConfirm?: () => void;
 }) {
-  const onConfirmHelper = useFunction(onConfirm!, {
-    successMessage: `Đã chấp nhận lịch hẹn từ bệnh nhân ${appointment?.patient?.fullName}!`
-  });
-
   return (
     <Dialog fullWidth maxWidth='xs' {...dialogProps}>
       <DialogTitle>
@@ -28,7 +24,7 @@ function ApproveAppointmentDialog({
           }}
         >
           <Typography variant='h6'>
-            Chấp nhận lịch hẹn từ bệnh nhân {appointment?.patient?.fullName}?
+            Approve this appointment {appointment?.patient?.fullName}?
           </Typography>
         </Box>
       </DialogTitle>
@@ -41,17 +37,17 @@ function ApproveAppointmentDialog({
             dialogProps.onClose?.(e, 'escapeKeyDown');
           }}
         >
-          Hủy
+          Cancel
         </Button>
         <Button
           variant='contained'
           color='success'
-          onClick={async (e) => {
+          onClick={(e) => {
             dialogProps.onClose?.(e, 'escapeKeyDown');
-            await onConfirmHelper.call({});
+            onConfirm?.();
           }}
         >
-          Chấp nhận
+          Accept
         </Button>
       </DialogActions>
     </Dialog>

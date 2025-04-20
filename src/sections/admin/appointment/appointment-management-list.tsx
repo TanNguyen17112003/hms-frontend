@@ -14,6 +14,8 @@ import { useAuth } from '@hooks';
 import { UserDetail } from 'src/types/user';
 import { useUserContext } from 'src/contexts/user/user-context';
 import Pagination from 'src/components/ui/Pagination';
+import { useAppointmentContext } from 'src/contexts/appointment/appointment-context';
+import AppointmentAssignDialog from './appointment-assign-dialog';
 
 interface AppointmentManagementListProps {
   appointments: AppointmentDetail[];
@@ -27,8 +29,10 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
 }) => {
   const { user } = useAuth();
   const { getListUsersApi } = useUserContext();
+  const { approveAppointment, rejectAppointment } = useAppointmentContext();
+  const assignDialog = useDialog<AppointmentDetailConfig>();
   const select = useSelection<AppointmentDetailConfig>(appointments);
-  const declineDialog = useDialog<AppointmentDetailConfig>();
+  const rejectDialog = useDialog<AppointmentDetailConfig>();
   const approveDialog = useDialog<AppointmentDetailConfig>();
   const editDrawer = useDrawer<AppointmentDetailConfig>();
   const router = useRouter();
@@ -43,7 +47,7 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
 
   const AppointmentManagementListConfig = useMemo(() => {
     return getAppointmentManangementTableConfig({
-      onClickDecline: (data) => declineDialog.handleOpen(data),
+      onClickDecline: (data) => rejectDialog.handleOpen(data),
       onClickApprove: (data) => approveDialog.handleOpen(data),
       user: user as UserDetail
     });
@@ -88,13 +92,18 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
         open={approveDialog.open}
         onClose={approveDialog.handleClose}
         appointment={approveDialog.data as AppointmentDetailConfig}
-        onConfirm={() => new Promise<void>((resolve) => setTimeout(resolve, 1000))}
+        onConfirm={() => assignDialog.handleOpen(approveDialog?.data as AppointmentDetailConfig)}
       />
       <DeclineAppointmentDialog
-        open={declineDialog.open}
-        onClose={declineDialog.handleClose}
-        appointment={declineDialog.data as AppointmentDetailConfig}
-        onConfirm={() => new Promise<void>((resolve) => setTimeout(resolve, 1000))}
+        open={rejectDialog.open}
+        onClose={rejectDialog.handleClose}
+        appointment={rejectDialog.data as AppointmentDetailConfig}
+        onConfirm={() => rejectAppointment(rejectDialog?.data?.id as string)}
+      />
+      <AppointmentAssignDialog
+        open={assignDialog.open}
+        onClose={assignDialog.handleClose}
+        appointment={assignDialog.data as AppointmentDetailConfig}
       />
     </Box>
   );

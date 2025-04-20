@@ -16,12 +16,8 @@ function AppointmentDetail() {
     const foundAppointment = appointments.find(
       (appointment) => appointment.id === router.query.appointmentId
     );
-    const patient = patients.find((patient) => patient.id === foundAppointment?.userId);
-    const doctor = doctors.find((doctor) => doctor.id === foundAppointment?.staffId);
     return {
-      ...foundAppointment,
-      patient,
-      doctor
+      ...foundAppointment
     };
   }, [router.query.appointmentId, appointments, patients, doctors]);
   return (
@@ -33,7 +29,7 @@ function AppointmentDetail() {
         justifyContent={!isMobile ? 'space-between' : ''}
         gap={2}
       >
-        <AppointmentDetailHeader patientName={filteredAppointment.patient?.fullName as string} />
+        <AppointmentDetailHeader patientName={filteredAppointment.doctor?.fullName as string} />
         {filteredAppointment.status === 'PENDING' && (
           <Stack direction={'row'} spacing={1.5} alignItems={'center'}>
             <Button variant='outlined' startIcon={<Ban size={16} />} color='inherit'>

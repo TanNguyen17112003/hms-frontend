@@ -14,12 +14,12 @@ export interface AppointmentRequest {
 
 export interface AppointmentResponse {
   content: Appointment[];
-  empty: boolean;
-  first: boolean;
-  last: boolean;
-  number: number;
-  numberOfElements: number;
-  pageable: {
+  empty?: boolean;
+  first?: boolean;
+  last?: boolean;
+  number?: number;
+  numberOfElements?: number;
+  pageable?: {
     offset: number;
     pageNumber: number;
     pageSize: number;
@@ -30,14 +30,14 @@ export interface AppointmentResponse {
       unsorted: boolean;
     };
   };
-  size: number;
-  sort: {
+  size?: number;
+  sort?: {
     empty: boolean;
     sorted: boolean;
     unsorted: boolean;
   };
-  totalElements: number;
-  totalPages: number;
+  totalElements?: number;
+  totalPages?: number;
 }
 
 export interface AppointmentAssignRequest {
@@ -79,7 +79,7 @@ export class AppointmentApi {
     return await apiPost('/api/v1/appointments', request);
   }
 
-  static async assignAppointment(request: AppointmentAssignRequest): Promise<any> {
+  static async assignAppointment(request: AppointmentAssignRequest): Promise<AppointmentDetail> {
     return await apiPost('/api/v1/appointments/assign', request);
   }
 
@@ -87,23 +87,23 @@ export class AppointmentApi {
     return await apiGet(`/api/v1/appointments/${id}`);
   }
 
-  static async rescheduleAppointment(id: string): Promise<any> {
-    return await apiGet(`/api/v1/appointments/reschedule/${id}`);
+  static async rescheduleAppointment(id: string, timeSlotId: string): Promise<any> {
+    return await apiPatch(`/api/v1/appointments/${id}/reschedule?timeslot=${timeSlotId}`, {});
   }
 
   static async cancelAppointment(id: string): Promise<any> {
-    return await apiGet(`/api/v1/appointments/cancel/${id}`);
+    return await apiPatch(`/api/v1/appointments/${id}/cancel`, {});
   }
 
   static async completeAppointment(id: string): Promise<any> {
-    return await apiGet(`/api/v1/appointments/complete/${id}`);
+    return await apiPatch(`/api/v1/appointments/${id}/complete`, {});
   }
 
-  static async declineAppointment(id: string): Promise<any> {
-    return await apiGet(`/api/v1/appointments/decline/${id}`);
+  static async rejectAppointment(id: string): Promise<any> {
+    return await apiPatch(`/api/v1/appointments/${id}/reject`, {});
   }
 
   static async acceptAppointment(id: string): Promise<any> {
-    return await apiGet(`/api/v1/appointments/accept/${id}`);
+    return await apiPatch(`/api/v1/appointments/${id}/accept`, {});
   }
 }

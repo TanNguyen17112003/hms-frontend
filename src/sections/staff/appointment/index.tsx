@@ -26,7 +26,7 @@ export const AppointmentManagement: React.FC = () => {
     useAppointmentContext();
   const appointments = useMemo(() => {
     return (getAppointmentListApi.data?.content || []).filter(
-      (appointment) => appointment.doctor.id === user?.id
+      (appointment) => appointment?.doctor?.id === user?.id
     );
   }, [getAppointmentListApi]);
 
@@ -38,10 +38,12 @@ export const AppointmentManagement: React.FC = () => {
       onChange: (value: string) => {
         setSelectedStatus(value);
       },
-      options: ['PENDING', 'CANCELLED', 'COMPLETED'].map((status) => ({
-        label: status,
-        value: status
-      }))
+      options: ['PENDING', 'ACCEPTED', 'REJECTED', 'RESCHEDULED', 'COMPLETED', 'CANCELLED'].map(
+        (status) => ({
+          label: status,
+          value: status
+        })
+      )
     },
     {
       type: 'select',

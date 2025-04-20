@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Box, InputAdornment, Stack, TextField } from '@mui/material';
 import ContentHeader from 'src/components/content-header';
 import AdvancedFilter from 'src/components/advanced-filter/advanced-filter';
@@ -7,6 +7,7 @@ import { SearchIcon } from 'lucide-react';
 import { useAppointmentContext } from 'src/contexts/appointment/appointment-context';
 import AppointmentManagementList from 'src/sections/admin/appointment/appointment-management-list';
 import { Filter } from 'src/types/filter';
+import { LoadingProcess } from '@components';
 
 export const AppointmentManagement: React.FC = () => {
   const [searchInput, setSearchInput] = useState<string>('');
@@ -20,6 +21,13 @@ export const AppointmentManagement: React.FC = () => {
   const handleSearch = () => {
     console.log(searchInput);
   };
+
+  const handleResetFilter = useCallback(() => {
+    setSelectedStatus('');
+    setSelectedType('');
+    setSearchInput('');
+  }, []);
+
   const filters: Filter[] = [
     {
       type: 'select',
@@ -28,10 +36,12 @@ export const AppointmentManagement: React.FC = () => {
       onChange: (value: string) => {
         setSelectedStatus(value);
       },
-      options: ['PENDING', 'CANCELLED', 'COMPLETED'].map((status) => ({
-        label: status,
-        value: status
-      }))
+      options: ['PENDING', 'ACCEPTED', 'REJECTED', 'RESCHEDULED', 'COMPLETED', 'CANCELLED'].map(
+        (status) => ({
+          label: status,
+          value: status
+        })
+      )
     },
     {
       type: 'select',
@@ -46,6 +56,7 @@ export const AppointmentManagement: React.FC = () => {
       }))
     }
   ];
+
   useEffect(() => {
     const filterList = [];
     if (selectedStatus !== '') {
@@ -97,8 +108,13 @@ export const AppointmentManagement: React.FC = () => {
         }
       />
       <Box className='px-6 py-4'>
-        <AppointmentManagementList appointments={appointments} searchInput={searchInput} />
+        <AppointmentManagementList
+          appointments={appointments}
+          searchInput={searchInput}
+          pagination={appointmentPagination}
+        />
       </Box>
+      {getAppointmentListApi.loading && <LoadingProcess />}
     </>
   );
 };
