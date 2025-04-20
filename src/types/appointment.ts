@@ -49,4 +49,15 @@ export interface TimeSlot {
   date: string;
 }
 
+export interface AppointmentFilter {
+  filters?: {
+    property: string;
+    rule: string;
+    value: string;
+  }[];
+  sort?: string[];
+  page?: number;
+  size?: number;
+}
+
 export interface AppointmentDetail extends Appointment {}

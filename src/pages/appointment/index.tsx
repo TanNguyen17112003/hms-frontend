@@ -5,7 +5,11 @@ import { useAuth } from '@hooks';
 import { Box } from '@mui/material';
 import AppointmentDetail from 'src/sections/admin/appointment/appointment-detail';
 import { useRouter } from 'next/router';
-import { AppointmentManagement } from 'src/sections/admin/appointment';
+import { AppointmentManagement as AdminAppointmentManagement } from 'src/sections/admin/appointment';
+import { AppointmentManagement as StaffAppointmentManagement } from 'src/sections/staff/appointment';
+import { AppointmentManagement as PatientAppointmentManagement } from 'src/sections/patient/appointment';
+import UserProvider from 'src/contexts/user/user-context';
+
 const Page: PageType = () => {
   const { user } = useAuth();
   const router = useRouter();
@@ -21,15 +25,23 @@ const Page: PageType = () => {
         <Box className='px-6 py-4'>
           <AppointmentDetail />
         </Box>
+      ) : user?.role === 'ADMIN' ? (
+        <AdminAppointmentManagement />
+      ) : user?.role === 'PATIENT' ? (
+        <PatientAppointmentManagement />
       ) : (
-        <AppointmentManagement />
-      )}
+        <StaffAppointmentManagement />
+      )
+      // <Box className='px-6 py-4'>
+      }
     </Box>
   );
 };
 Page.getLayout = (page) => (
   <DashboardLayout>
-    <AppointmentProvider>{page}</AppointmentProvider>
+    <AppointmentProvider>
+      <UserProvider>{page}</UserProvider>
+    </AppointmentProvider>
   </DashboardLayout>
 );
 

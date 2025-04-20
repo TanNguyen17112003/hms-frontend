@@ -6,20 +6,30 @@ import { SearchIcon } from 'lucide-react';
 // import { appointments } from 'src/utils/generate-mock';
 import { useAppointmentContext } from 'src/contexts/appointment/appointment-context';
 import AppointmentManagementList from 'src/sections/admin/appointment/appointment-management-list';
+import { LoadingProcess } from '@components';
 import { Filter } from 'src/types/filter';
+import { useAuth } from '@hooks';
 
 export const AppointmentManagement: React.FC = () => {
   const [searchInput, setSearchInput] = useState<string>('');
-  const { getAppointmentListApi, appointmentFilter, setAppointmentFilter, appointmentPagination } =
-    useAppointmentContext();
+  const { user } = useAuth();
   const [selectedStatus, setSelectedStatus] = useState<string>('');
   const [selectedType, setSelectedType] = useState<string>('');
+  const [dateRange, setDateRange] = useState<{
+    startDate: Date | null;
+    endDate: Date | null;
+  }>({
+    startDate: null,
+    endDate: null
+  });
+  const { getAppointmentListApi, appointmentFilter, setAppointmentFilter, appointmentPagination } =
+    useAppointmentContext();
   const appointments = useMemo(() => {
-    return getAppointmentListApi.data?.content || [];
-  }, [getAppointmentListApi.data]);
-  const handleSearch = () => {
-    console.log(searchInput);
-  };
+    return (getAppointmentListApi.data?.content || []).filter(
+      (appointment) => appointment.doctor.id === user?.id
+    );
+  }, [getAppointmentListApi]);
+
   const filters: Filter[] = [
     {
       type: 'select',
@@ -46,6 +56,7 @@ export const AppointmentManagement: React.FC = () => {
       }))
     }
   ];
+
   useEffect(() => {
     const filterList = [];
     if (selectedStatus !== '') {
@@ -69,6 +80,7 @@ export const AppointmentManagement: React.FC = () => {
       filters: filterList
     });
   }, [appointmentPagination.page, selectedStatus, selectedType]);
+
   return (
     <>
       <ContentHeader
@@ -84,7 +96,7 @@ export const AppointmentManagement: React.FC = () => {
               onChange={(e) => setSearchInput(e.target.value)}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position='end' className='cursor-pointer' onClick={handleSearch}>
+                  <InputAdornment position='end' className='cursor-pointer' onClick={() => {}}>
                     <SearchIcon />
                   </InputAdornment>
                 )
@@ -97,8 +109,13 @@ export const AppointmentManagement: React.FC = () => {
         }
       />
       <Box className='px-6 py-4'>
-        <AppointmentManagementList appointments={appointments} searchInput={searchInput} />
+        <AppointmentManagementList
+          appointments={appointments}
+          searchInput={searchInput}
+          pagination={appointmentPagination}
+        />
       </Box>
+      {getAppointmentListApi.loading && <LoadingProcess />}
     </>
   );
 };

@@ -12,6 +12,34 @@ export interface AppointmentRequest {
   patientAccountId: string;
 }
 
+export interface AppointmentResponse {
+  content: Appointment[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: {
+    offset: number;
+    pageNumber: number;
+    pageSize: number;
+    paged: boolean;
+    sort: {
+      empty: boolean;
+      sorted: boolean;
+      unsorted: boolean;
+    };
+  };
+  size: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  totalElements: number;
+  totalPages: number;
+}
+
 export interface AppointmentAssignRequest {
   appointmentId: string;
   doctorId: string;
@@ -34,10 +62,6 @@ interface MultipleFileUploadResponse {
 }
 
 export class AppointmentApi {
-  // static async getAppointments(request: {}): Promise<AppointmentDetail[]> {
-  //   const response = await apiGet('/appointments', getFormData(request));
-  //   return response;
-  // }
   static async uploadFile(request: FileUploadRequest): Promise<FileUploadResponse> {
     return await apiPost('/api/v1/files/upload/single', getFormData(request));
   }
@@ -47,7 +71,7 @@ export class AppointmentApi {
   ): Promise<MultipleFileUploadResponse> {
     return await apiPost('/api/v1/files/upload/many', getFormData(request));
   }
-  static async getAppointments(params: Record<string, any>): Promise<any> {
+  static async getAppointments(params: Record<string, any>): Promise<AppointmentResponse> {
     return await apiGet('/api/v1/appointments', params);
   }
 

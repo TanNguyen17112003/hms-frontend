@@ -4,11 +4,8 @@ import usePagination, { UsePaginationResult } from 'src/hooks/use-pagination';
 import { useDialog, useDrawer, useSelection } from '@hooks';
 import { CustomTable } from '@components';
 import { Stack } from '@mui/system';
-import { AppointmentDetailConfig } from './appointment-management-table-config';
-import getAppointmentManangementTableConfig from './appointment-management-table-config';
+import getAppointmentManangementTableConfig from 'src/sections/admin/appointment/appointment-management-table-config';
 import { AppointmentDetail } from 'src/types/appointment';
-import ApproveAppointmentDialog from './appointment-approve-dialog';
-import DeclineAppointmentDialog from './appointment-decline-dialog';
 import { useRouter } from 'next/router';
 import { useAuth } from '@hooks';
 import { UserDetail } from 'src/types/user';
@@ -26,11 +23,6 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
   pagination
 }) => {
   const { user } = useAuth();
-  const { getListUsersApi } = useUserContext();
-  const select = useSelection<AppointmentDetailConfig>(appointments);
-  const declineDialog = useDialog<AppointmentDetailConfig>();
-  const approveDialog = useDialog<AppointmentDetailConfig>();
-  const editDrawer = useDrawer<AppointmentDetailConfig>();
   const router = useRouter();
 
   const filteredAppointments = appointments.filter((appointment) => {
@@ -43,8 +35,6 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
 
   const AppointmentManagementListConfig = useMemo(() => {
     return getAppointmentManangementTableConfig({
-      onClickDecline: (data) => declineDialog.handleOpen(data),
-      onClickApprove: (data) => approveDialog.handleOpen(data),
       user: user as UserDetail
     });
   }, [getAppointmentManangementTableConfig]);
@@ -76,25 +66,12 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
         configs={AppointmentManagementListConfig}
         onClickRow={(data) => handleGoAppointment(data.id)}
         cellClassName='bg-white'
-        select={select}
       />
       <Pagination
-        page={pagination?.page as number}
         count={pagination?.count as number}
+        page={pagination?.page as number}
         onChange={pagination?.onPageChange || (() => {})}
         rowsPerPage={pagination?.rowsPerPage as number}
-      />
-      <ApproveAppointmentDialog
-        open={approveDialog.open}
-        onClose={approveDialog.handleClose}
-        appointment={approveDialog.data as AppointmentDetailConfig}
-        onConfirm={() => new Promise<void>((resolve) => setTimeout(resolve, 1000))}
-      />
-      <DeclineAppointmentDialog
-        open={declineDialog.open}
-        onClose={declineDialog.handleClose}
-        appointment={declineDialog.data as AppointmentDetailConfig}
-        onConfirm={() => new Promise<void>((resolve) => setTimeout(resolve, 1000))}
       />
     </Box>
   );

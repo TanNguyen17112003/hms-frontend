@@ -47,11 +47,11 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (user?.role === 'ADMIN') {
-  //     getListUsersApi.call(new FormData());
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (user?.role === 'ADMIN') {
+      getListUsersApi.call(new FormData());
+    }
+  }, [user]);
 
   return (
     <UserContext.Provider

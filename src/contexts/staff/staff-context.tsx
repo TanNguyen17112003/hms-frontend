@@ -26,13 +26,13 @@ const StaffProvider = ({ children }: { children: ReactNode }) => {
   const addStaff = useFunction(StaffManagementApi.addStaff);
   const editStaff = useFunction(StaffManagementApi.editStaff);
 
-  // const { user } = useAuth();
+  const { user } = useAuth();
 
-  // useEffect(() => {
-  //   if (user?.role === 'ADMIN') {
-  //     getListStaffsApi.call({ page: 1, size: 100 });
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (user?.role === 'ADMIN') {
+      getListStaffsApi.call({ page: 1, size: 100 });
+    }
+  }, [user]);
 
   return (
     <StaffContext.Provider
