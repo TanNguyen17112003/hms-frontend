@@ -350,8 +350,8 @@ export class MedicalRecordsApi {
 
   // Api related to allergy management
 
-  static async getAllergies(patientId: string): Promise<AllergyResponse> {
-    return await apiGet(`/api/v1/patients/${patientId}/allergies`);
+  static async getAllergies(patientId: string, params: FormData): Promise<AllergyResponse> {
+    return await apiGet(`/api/v1/patients/${patientId}/allergies`, params);
   }
 
   static async getAllergy(patientId: string, allergyId: string): Promise<Allergy> {
@@ -376,8 +376,11 @@ export class MedicalRecordsApi {
 
   // Api related to family history management
 
-  static async ggetFamilyHistories(patientId: string): Promise<FamilyHistoryResponse> {
-    return await apiGet(`/api/v1/patients/${patientId}/family-histories`);
+  static async getFamilyHistories(
+    patientId: string,
+    params: FormData
+  ): Promise<FamilyHistoryResponse> {
+    return await apiGet(`/api/v1/patients/${patientId}/family-histories`, params);
   }
 
   static async getFamilyHistory(
@@ -410,8 +413,11 @@ export class MedicalRecordsApi {
   }
 
   // Api related to patient relative management
-  static async getPatientRelatives(patientId: string): Promise<PatientRelativeResponse> {
-    return await apiGet(`/api/v1/patients/${patientId}/relatives`);
+  static async getPatientRelatives(
+    patientId: string,
+    params: FormData
+  ): Promise<PatientRelativeResponse> {
+    return await apiGet(`/api/v1/patients/${patientId}/relatives`, params);
   }
 
   static async getPatientRelative(patientId: string, relativeId: string): Promise<PatientRelative> {
@@ -453,14 +459,17 @@ export class MedicalRecordsApi {
     return await apiPost(`/api/v1/patients`, request);
   }
 
-  static async getPatients(): Promise<PatientResponse> {
-    return await apiGet(`/api/v1/patients`);
+  static async getPatients(params: FormData): Promise<PatientResponse> {
+    return await apiGet(`/api/v1/patients`, params);
   }
 
   // Api related to medical history management
 
-  static async getMedicalHistories(patientId: string): Promise<MedicalHistoryResponse> {
-    return await apiGet(`/api/v1/patients/${patientId}/medical-histories`);
+  static async getMedicalHistories(
+    patientId: string,
+    params: FormData
+  ): Promise<MedicalHistoryResponse> {
+    return await apiGet(`/api/v1/patients/${patientId}/medical-histories`, params);
   }
 
   static async getMedicalHistory(
@@ -496,8 +505,11 @@ export class MedicalRecordsApi {
   }
 
   // Api related to medical record management
-  static async getMedicalRecords(patientId: string): Promise<MedicalRecordResponse> {
-    return await apiGet(`/api/v1/patients/${patientId}/medical-records`);
+  static async getMedicalRecords(
+    patientId: string,
+    params: FormData
+  ): Promise<MedicalRecordResponse> {
+    return await apiGet(`/api/v1/patients/${patientId}/medical-records`, params);
   }
 
   static async getMedicalRecord(
@@ -530,8 +542,8 @@ export class MedicalRecordsApi {
   }
 
   // Api related to vaccination management
-  static async getVaccinations(patientId: string): Promise<VaccinationResponse> {
-    return await apiGet(`/api/v1/patients/${patientId}/vaccinations`);
+  static async getVaccinations(patientId: string, params: FormData): Promise<VaccinationResponse> {
+    return await apiGet(`/api/v1/patients/${patientId}/vaccinations`, params);
   }
 
   static async getVaccination(patientId: string, vaccinationId: string): Promise<Vaccination> {
@@ -558,8 +570,8 @@ export class MedicalRecordsApi {
   }
 
   // Api related to past disease management
-  static async getPastDiseases(patientId: string): Promise<PastDiseaseResponse> {
-    return await apiGet(`/api/v1/patients/${patientId}/past-diseases`);
+  static async getPastDiseases(patientId: string, params: FormData): Promise<PastDiseaseResponse> {
+    return await apiGet(`/api/v1/patients/${patientId}/past-diseases`, params);
   }
 
   static async getPastDisease(patientId: string, pastDiseaseId: string): Promise<PastDisease> {
@@ -586,8 +598,11 @@ export class MedicalRecordsApi {
   }
 
   // Api related to surgical history management
-  static async getSurgicalHistories(patientId: string): Promise<SurgicalHistoryResponse> {
-    return await apiGet(`/api/v1/patients/${patientId}/surgical-history`);
+  static async getSurgicalHistories(
+    patientId: string,
+    params: FormData
+  ): Promise<SurgicalHistoryResponse> {
+    return await apiGet(`/api/v1/patients/${patientId}/surgical-history`, params);
   }
 
   static async getSurgicalHistory(
