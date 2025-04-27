@@ -76,6 +76,8 @@ export class UsersApi {
     return await apiGet('/api/v1/patients/account');
   }
 
+  // Api related to staff
+
   static async getStaffProfile() {
     return await apiGet('/api/v1/staff/auth/account');
   }

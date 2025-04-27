@@ -1,5 +1,3 @@
-import { Schedule } from './appointment';
-
 type UserRole = 'ADMIN' | 'STAFF' | 'PATIENT';
 type UserGender = 'MALE' | 'FEMALE';
 type StaffStatus = 'ACTIVE' | 'INACTIVE';
@@ -50,7 +48,6 @@ export interface StaffDetail extends UserDetail {
   qualification: string;
   licenseNumber: string;
   patients?: PatientDetail[];
-  schedule: Schedule[];
 }
 
 export interface PatientData {
