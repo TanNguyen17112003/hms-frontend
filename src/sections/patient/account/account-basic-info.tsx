@@ -32,26 +32,26 @@ function AccountBasicInfo({ user }: { user: UserDetail }) {
       fullName: user.fullName,
       email: user.email,
       phoneNumber: user.phoneNumber,
-      ssn: user.ssn,
+      ssn: user.ssn
     },
     onSubmit: async (values) => {
       const { error } = await handleSubmitHelper.call({
         fullName: values.fullName,
         email: values.email,
         phoneNumber: values.phoneNumber,
-        ssn: values.ssn,
+        ssn: values.ssn
       });
       if (!error) {
         formik.setValues({
           fullName: values.fullName,
           email: values.email,
           phoneNumber: values.phoneNumber,
-          ssn: values.ssn,
+          ssn: values.ssn
         });
         formik.setTouched({});
         formik.setSubmitting(false);
       }
-    },
+    }
   });
 
   return (
@@ -60,99 +60,99 @@ function AccountBasicInfo({ user }: { user: UserDetail }) {
         <Grid container spacing={1.5} alignItems={'center'} justifyContent={'center'}>
           <Grid item xs={12} md={6}>
             <Stack spacing={1}>
-              <Typography variant="body2">Full name</Typography>
+              <Typography variant='body2'>Full name</Typography>
               <TextField
-                variant="outlined"
+                variant='outlined'
                 fullWidth
                 value={formik.values.fullName || user.fullName}
                 onChange={formik.handleChange} // Bind formik's onChange
-                name="fullName" // Add the name attribute
+                name='fullName' // Add the name attribute
               />
             </Stack>
           </Grid>
           <Grid item xs={12} md={6}>
             <Stack spacing={1}>
-              <Typography variant="body2">Email</Typography>
+              <Typography variant='body2'>Email</Typography>
               <TextField
-                variant="outlined"
+                variant='outlined'
                 fullWidth
                 value={formik.values.email || user.email}
                 onChange={formik.handleChange} // Bind formik's onChange
-                name="email" // Add the name attribute
+                name='email' // Add the name attribute
               />
             </Stack>
           </Grid>
           <Grid item xs={12} md={6}>
             <Stack spacing={1}>
-              <Typography variant="body2">Phone number</Typography>
+              <Typography variant='body2'>Phone number</Typography>
               <TextField
-                variant="outlined"
+                variant='outlined'
                 fullWidth
                 value={formik.values.phoneNumber || user.phoneNumber}
                 onChange={formik.handleChange} // Bind formik's onChange
-                name="phoneNumber" // Add the name attribute
+                name='phoneNumber' // Add the name attribute
               />
             </Stack>
           </Grid>
           <Grid item xs={12} md={6}>
             <Stack spacing={1}>
-              <Typography variant="body2">SSN</Typography>
+              <Typography variant='body2'>SSN</Typography>
               <TextField
-                variant="outlined"
+                variant='outlined'
                 fullWidth
                 value={formik.values.ssn || user.ssn}
-                onChange={formik.handleChange} 
-                name="ssn" // Add the name attribute
+                onChange={formik.handleChange}
+                name='ssn' // Add the name attribute
               />
             </Stack>
           </Grid>
           <Grid item xs={12} md={6}>
             <Stack spacing={1}>
-              <Typography variant="body2">Occupation</Typography>
-              <TextField variant="outlined" fullWidth value={user?.occupation} />
+              <Typography variant='body2'>Occupation</Typography>
+              <TextField variant='outlined' fullWidth value={user?.occupation} />
             </Stack>
           </Grid>
           <Grid item xs={12} md={6}>
             <Stack spacing={1}>
-              <Typography variant="body2">Marital status</Typography>
-              <TextField variant="outlined" fullWidth value={user?.maritalStatus} />
+              <Typography variant='body2'>Marital status</Typography>
+              <TextField variant='outlined' fullWidth value={user?.maritalStatus} />
             </Stack>
           </Grid>
           <Grid item xs={12}>
             <Stack spacing={1}>
-              <Typography variant="body2">Address</Typography>
-              <TextField variant="outlined" fullWidth value={user?.address} />
+              <Typography variant='body2'>Address</Typography>
+              <TextField variant='outlined' fullWidth value={user?.address} />
             </Stack>
           </Grid>
           <Grid item xs={12} md={6}>
             <Stack spacing={1}>
-              <Typography variant="body2">Date of birth</Typography>
+              <Typography variant='body2'>Date of birth</Typography>
               <TextField
-                variant="outlined"
+                variant='outlined'
                 fullWidth
-                value={formatStandardDate(user?.dob as string)}
+                value={formatStandardDate(user?.dateOfBirth as string)}
                 disabled
               />
             </Stack>
           </Grid>
           <Grid item xs={12} md={6}>
             <Stack spacing={1}>
-              <Typography variant="body2">Sex</Typography>
-              <TextField variant="outlined" fullWidth value={user?.gender} disabled />
+              <Typography variant='body2'>Sex</Typography>
+              <TextField variant='outlined' fullWidth value={user?.sex} disabled />
             </Stack>
           </Grid>
           <Grid item xs={12}>
             <Stack spacing={1}>
-              <Typography variant="body2">Nationality</Typography>
-              <TextField variant="outlined" fullWidth value={user?.nationality} disabled />
+              <Typography variant='body2'>Nationality</Typography>
+              <TextField variant='outlined' fullWidth value={user?.nationality} disabled />
             </Stack>
           </Grid>
 
           <Grid item xs={12} md={12}>
             <Stack spacing={1}>
-              <Typography variant="body2">Join date</Typography>
+              <Typography variant='body2'>Join date</Typography>
               <TextField
-                variant="outlined"
+                variant='outlined'
                 fullWidth
                 value={formatStandardDate(user?.createdAt as string)}
                 disabled
@@ -161,13 +161,13 @@ function AccountBasicInfo({ user }: { user: UserDetail }) {
           </Grid>
         </Grid>
         <Button
-          type="submit"
+          type='submit'
           sx={{
-            width: 'fit-content',
+            width: 'fit-content'
           }}
-          variant="contained"
-          disabled={formik.isSubmitting} 
-          startIcon={formik.isSubmitting && <CircularProgress size={20} />} 
+          variant='contained'
+          disabled={formik.isSubmitting}
+          startIcon={formik.isSubmitting && <CircularProgress size={20} />}
         >
           {formik.isSubmitting ? 'Saving...' : 'Save Changes'}
         </Button>

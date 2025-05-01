@@ -1,47 +1,49 @@
 import { Box, Chip, Typography } from '@mui/material';
-import { useCallback, useMemo } from 'react';
-import usePagination from 'src/hooks/use-pagination';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import usePagination, { UsePaginationResult } from 'src/hooks/use-pagination';
 import { useDialog, useDrawer, useSelection } from '@hooks';
 import { CustomTable } from '@components';
 import { Stack } from '@mui/system';
 import { AppointmentDetailConfig } from './appointment-management-table-config';
-import { patients, doctors } from 'src/utils/generate-mock';
 import getAppointmentManangementTableConfig from './appointment-management-table-config';
 import { AppointmentDetail } from 'src/types/appointment';
 import ApproveAppointmentDialog from './appointment-approve-dialog';
 import DeclineAppointmentDialog from './appointment-decline-dialog';
 import { useRouter } from 'next/router';
 import { useAuth } from '@hooks';
-import { UserDetail } from 'src/types/user';
-
+import { PatientDetail, UserDetail } from 'src/types/user';
+import { useUserContext } from 'src/contexts/user/user-context';
+import Pagination from 'src/components/ui/Pagination';
+import { useAppointmentContext } from 'src/contexts/appointment/appointment-context';
+import AppointmentAssignDialog from './appointment-assign-dialog';
+import { MedicalRecordsApi } from 'src/api/medical-record';
+import useFunction from 'src/hooks/use-function';
 
 interface AppointmentManagementListProps {
   appointments: AppointmentDetail[];
   searchInput: string;
+  pagination?: UsePaginationResult;
 }
 const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
   appointments,
-  searchInput
+  searchInput,
+  pagination
 }) => {
+  // const getPatientApi = useFunction(MedicalRecordsApi.getPatient);
   const { user } = useAuth();
-  const configAppointments = useMemo(() => {
-    return appointments.map((appointment) => {
-      const patient = patients.find((patient) => patient.id === appointment.userId);
-      const doctor = doctors.find((doctor) => doctor.id === appointment.staffId);
-      return { ...appointment, patient, doctor };
-    });
-  }, [appointments]);
-  const select = useSelection<AppointmentDetailConfig>(configAppointments);
-  const declineDialog = useDialog<AppointmentDetailConfig>();
+  const [patients, setPatients] = useState<PatientDetail[]>([]);
+
+  const { getListUsersApi } = useUserContext();
+  const { approveAppointment, rejectAppointment } = useAppointmentContext();
+  const assignDialog = useDialog<AppointmentDetailConfig>();
+  const select = useSelection<AppointmentDetailConfig>(appointments);
+  const rejectDialog = useDialog<AppointmentDetailConfig>();
   const approveDialog = useDialog<AppointmentDetailConfig>();
   const editDrawer = useDrawer<AppointmentDetailConfig>();
-  const pagination = usePagination({
-    count: appointments.length
-  });
   const router = useRouter();
 
-  const filteredAppointments = configAppointments.filter((appointment) => {
-    return appointment?.staffId?.toLowerCase().includes(searchInput.toLowerCase());
+  const filteredAppointments = appointments.map((appointment) => {
+    return appointment;
   });
   const results = filteredAppointments.map((appointment, index) => ({
     ...appointment,
@@ -50,7 +52,7 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
 
   const AppointmentManagementListConfig = useMemo(() => {
     return getAppointmentManangementTableConfig({
-      onClickDecline: (data) => declineDialog.handleOpen(data),
+      onClickDecline: (data) => rejectDialog.handleOpen(data),
       onClickApprove: (data) => approveDialog.handleOpen(data),
       user: user as UserDetail
     });
@@ -63,6 +65,30 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
     });
   }, []);
 
+  useEffect(() => {
+    const fetchPatients = async () => {
+      const fetchedPatients: PatientDetail[] = [];
+
+      for (const appointment of appointments) {
+        if (appointment.patientAccountId) {
+          try {
+            const patient = await MedicalRecordsApi.getPatient(appointment.patientAccountId);
+            fetchedPatients.push(patient);
+          } catch (error) {
+            console.error(
+              `Failed to fetch patient with ID ${appointment.patientAccountId}:`,
+              error
+            );
+          }
+        }
+      }
+
+      setPatients(fetchedPatients);
+    };
+
+    fetchPatients();
+  }, [appointments]);
+
   return (
     <Box
       className='px-6 mt-8 py-4 border-2 rounded-xl bg-white'
@@ -71,6 +97,7 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
       <Stack direction='row' justifyContent='space-between' alignItems='center'>
         <Stack direction='row' spacing={2} alignItems='center'>
           <Typography variant='h6'>Appointment List</Typography>
+          <>{JSON.stringify(patients[9])}</>
           <Chip
             label={`${results.length} appointments`}
             sx={{ backgroundColor: 'rgba(229, 231, 251, 1)', color: 'rgba(7, 11, 92, 1)' }}
@@ -82,21 +109,31 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
         rows={results}
         configs={AppointmentManagementListConfig}
         onClickRow={(data) => handleGoAppointment(data.id)}
-        pagination={pagination}
         cellClassName='bg-white'
         select={select}
+      />
+      <Pagination
+        page={pagination?.page as number}
+        count={pagination?.count as number}
+        onChange={pagination?.onPageChange || (() => {})}
+        rowsPerPage={pagination?.rowsPerPage as number}
       />
       <ApproveAppointmentDialog
         open={approveDialog.open}
         onClose={approveDialog.handleClose}
         appointment={approveDialog.data as AppointmentDetailConfig}
-        onConfirm={() => new Promise<void>((resolve) => setTimeout(resolve, 1000))}
+        onConfirm={() => assignDialog.handleOpen(approveDialog?.data as AppointmentDetailConfig)}
       />
       <DeclineAppointmentDialog
-        open={declineDialog.open}
-        onClose={declineDialog.handleClose}
-        appointment={declineDialog.data as AppointmentDetailConfig}
-        onConfirm={() => new Promise<void>((resolve) => setTimeout(resolve, 1000))}
+        open={rejectDialog.open}
+        onClose={rejectDialog.handleClose}
+        appointment={rejectDialog.data as AppointmentDetailConfig}
+        onConfirm={() => rejectAppointment(rejectDialog?.data?.id as string)}
+      />
+      <AppointmentAssignDialog
+        open={assignDialog.open}
+        onClose={assignDialog.handleClose}
+        appointment={assignDialog.data as AppointmentDetailConfig}
       />
     </Box>
   );

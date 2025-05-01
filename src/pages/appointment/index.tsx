@@ -1,23 +1,19 @@
 import { Layout as DashboardLayout } from 'src/layouts/dashboard';
 import type { Page as PageType } from 'src/types/page';
 import AppointmentProvider from 'src/contexts/appointment/appointment-context';
-import { useAuth, useDialog } from '@hooks';
-import { useState } from 'react';
-import { Box, Button, InputAdornment, Stack, TextField, Typography } from '@mui/material';
-import ContentHeader from 'src/components/content-header';
-import AdvancedFilter from 'src/components/advanced-filter/advanced-filter';
-import { SearchIcon } from 'lucide-react';
-import { appointments } from 'src/utils/generate-mock';
-import AppointmentManagementList from 'src/sections/admin/appointment/appointment-management-list';
+import { useAuth } from '@hooks';
+import { Box } from '@mui/material';
 import AppointmentDetail from 'src/sections/admin/appointment/appointment-detail';
 import { useRouter } from 'next/router';
+import { AppointmentManagement as AdminAppointmentManagement } from 'src/sections/admin/appointment';
+import { AppointmentManagement as StaffAppointmentManagement } from 'src/sections/staff/appointment';
+import { AppointmentManagement as PatientAppointmentManagement } from 'src/sections/patient/appointment';
+import UserProvider from 'src/contexts/user/user-context';
+
 const Page: PageType = () => {
   const { user } = useAuth();
   const router = useRouter();
-  const [searchInput, setSearchInput] = useState<string>('');
-  const handleSearch = () => {
-    console.log(searchInput);
-  };
+
   return (
     <Box
       sx={{
@@ -29,54 +25,23 @@ const Page: PageType = () => {
         <Box className='px-6 py-4'>
           <AppointmentDetail />
         </Box>
+      ) : user?.role === 'ADMIN' ? (
+        <AdminAppointmentManagement />
+      ) : user?.role === 'PATIENT' ? (
+        <PatientAppointmentManagement />
       ) : (
-        <>
-          <ContentHeader
-            title='Manage Appointments'
-            description='Showing: All Consultations of All Healthcare Providers'
-            rightSection={
-              <Stack
-                direction={'row'}
-                alignItems={'center'}
-                gap={3}
-                className='mt-4'
-                flexWrap={'wrap'}
-              >
-                <TextField
-                  variant='outlined'
-                  placeholder='t1faker@gmail.com'
-                  className='max-sm:w-full w-[300px]'
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment
-                        position='end'
-                        className='cursor-pointer'
-                        onClick={handleSearch}
-                      >
-                        <SearchIcon />
-                      </InputAdornment>
-                    )
-                  }}
-                />
-                <Stack className='max-sm:ml-auto' direction={'row'} gap={1} alignItems={'center'}>
-                  <AdvancedFilter filters={[]} />
-                </Stack>
-              </Stack>
-            }
-          />
-          <Box className='px-6 py-4'>
-            <AppointmentManagementList appointments={appointments} searchInput={searchInput} />
-          </Box>
-        </>
-      )}
+        <StaffAppointmentManagement />
+      )
+      // <Box className='px-6 py-4'>
+      }
     </Box>
   );
 };
 Page.getLayout = (page) => (
   <DashboardLayout>
-    <AppointmentProvider>{page}</AppointmentProvider>
+    <AppointmentProvider>
+      <UserProvider>{page}</UserProvider>
+    </AppointmentProvider>
   </DashboardLayout>
 );
 

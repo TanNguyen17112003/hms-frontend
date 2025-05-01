@@ -13,7 +13,7 @@ function DeclineAppointmentDialog({
   onConfirm?: () => Promise<void>;
 }) {
   const onConfirmHelper = useFunction(onConfirm!, {
-    successMessage: `Đã từ chối lịch hẹn từ bệnh nhân ${appointment?.patient?.fullName}!`
+    successMessage: `You have recently rejectd the appointment ${appointment?.patient?.fullName}!`
   });
 
   return (
@@ -28,7 +28,7 @@ function DeclineAppointmentDialog({
           }}
         >
           <Typography variant='h6'>
-            Từ chối lịch hẹn từ bệnh nhân {appointment?.patient?.fullName}?
+            Do you want to delete this appointment {appointment?.patient?.fullName}?
           </Typography>
         </Box>
       </DialogTitle>
@@ -41,7 +41,7 @@ function DeclineAppointmentDialog({
             dialogProps.onClose?.(e, 'escapeKeyDown');
           }}
         >
-          Hủy
+          Cancel
         </Button>
         <Button
           variant='contained'
@@ -51,7 +51,7 @@ function DeclineAppointmentDialog({
             await onConfirmHelper.call({});
           }}
         >
-          Từ chối
+          Reject
         </Button>
       </DialogActions>
     </Dialog>

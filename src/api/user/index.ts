@@ -1,4 +1,4 @@
-import type { User, UserDetail } from 'src/types/user';
+import type { StaffDetail, User, UserDetail } from 'src/types/user';
 import { apiDelete, apiGet, apiPatch, apiPost, apiPut, getFormData } from 'src/utils/api-request';
 import CookieHelper, { CookieKeys } from 'src/utils/cookie-helper';
 
@@ -18,8 +18,8 @@ export type SignUpRequest = {
   email: string;
   password: string;
   ssn: string;
-  phoneNumber: string
-}
+  phoneNumber: string;
+};
 
 export type SignUpResponse = SignUpRequest & {
   id: string;
@@ -32,23 +32,20 @@ export type UpdateInfoRequest = {
   fullName: string;
   ssn: string;
   phoneNumber: string;
-}
+};
 
 export type UpdatePassworRequest = {
   currentPassword: string;
   newPassword: string;
   confirmPassword: string;
-}
+};
 
 export type UpdatePasswordResponse = {
   messsage: string;
-}
+};
 
 export type UpdateProfileRequest = Partial<
-  Pick<
-    SignUpRequest,
-    'fullName' | 'email' | 'ssn' | 'phoneNumber'
-  >
+  Pick<SignUpRequest, 'fullName' | 'email' | 'ssn' | 'phoneNumber'>
 >;
 
 export type UpdateProfileResponse = Partial<SignUpResponse>;
@@ -67,6 +64,10 @@ export class UsersApi {
     return await apiPost('/api/v1/patients/auth/signin', request);
   }
 
+  static async signInAsStaff(request: SignInRequest): Promise<SignInResponse> {
+    return await apiPost('/api/v1/staff/auth/signin', request);
+  }
+
   static async signUp(request: SignUpRequest): Promise<SignUpResponse> {
     return await apiPost('/api/v1/patients/auth/signup', request);
   }
@@ -75,14 +76,30 @@ export class UsersApi {
     return await apiGet('/api/v1/patients/account');
   }
 
+  // Api related to staff
+
+  static async getStaffProfile() {
+    return await apiGet('/api/v1/staff/auth/account');
+  }
+
   static async updatePassword(payload: UpdatePassworRequest): Promise<UpdatePasswordResponse> {
     return await apiPut('/api/v1/patients/account/password', payload);
+  }
+
+  static async updateStaffPassword(payload: UpdatePassworRequest): Promise<UpdatePasswordResponse> {
+    return await apiPut('/api/v1/staff/auth/account/password', payload);
   }
 
   static async updateProfile(payload: UpdateProfileRequest): Promise<User> {
     return await apiPut('/api/v1/patients/account', payload);
   }
 
+  static async updateStaffInfo(
+    id: string,
+    payload: Partial<StaffDetail>
+  ): Promise<Partial<StaffDetail>> {
+    return await apiPatch(`/api/v1/staff/${id}`, payload);
+  }
 
   static async deleteUser(id: User['id']) {
     return await apiDelete(`/users/${id}`, {});
@@ -91,5 +108,4 @@ export class UsersApi {
   static async refreshToken(refreshToken: string): Promise<Partial<SignInResponse>> {
     return await apiPost('/auth/refresh', { refreshToken });
   }
-
 }

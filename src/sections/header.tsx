@@ -1,7 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
-import { CircleUserRound, UserPlus, MessageSquareDot, MessageSquareWarning, UserRoundCheck } from 'lucide-react';
-import logo from 'public/logo-black.png';
+import {
+  CircleUserRound,
+  UserPlus,
+  MessageSquareDot,
+  MessageSquareWarning,
+  UserRoundCheck
+} from 'lucide-react';
+import logo from 'public/logo.png';
 import {
   AppBar,
   Toolbar,
@@ -15,7 +21,7 @@ import {
   Button,
   Avatar,
   Menu,
-  MenuItem,
+  MenuItem
 } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -74,18 +80,18 @@ export const Header = () => {
   const drawerList = (
     <Box
       sx={{ width: 250 }}
-      role="presentation"
+      role='presentation'
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
       {user ? (
-        <Stack component="nav" spacing={2} sx={{ px: 2 }} alignItems={'flex-start'}>
+        <Stack component='nav' spacing={2} sx={{ px: 2 }} alignItems={'flex-start'}>
           {sections?.map((section, index) => (
             <MobileNavSection
               key={index}
               items={section.items.map((item) => ({
                 ...item,
-                path: typeof item.path === 'object' ? undefined : item.path,
+                path: typeof item.path === 'object' ? undefined : item.path
               }))}
               pathname={router.pathname}
               subheader={section.subheader}
@@ -99,32 +105,32 @@ export const Header = () => {
           <Divider />
           <Stack
             direction={'row'}
-            className="px-4 py-3 cursor-pointer hover:bg-blue-600 hover:text-white gap-2"
+            className='px-4 py-3 cursor-pointer hover:bg-blue-600 hover:text-white gap-2'
             onClick={() => {
               router.push(paths.auth.staff.index);
             }}
           >
-            <UserRoundCheck size={24} className="hover:bg-white" />
-            <Typography fontWeight={'bold'}>Login with staff</Typography>
+            <UserRoundCheck size={24} className='hover:bg-white' />
+            <Typography fontWeight={'bold'}>Login as staff</Typography>
           </Stack>
           <Stack
             direction={'row'}
-            className="px-4 py-3 cursor-pointer hover:bg-blue-600 hover:text-white gap-2"
+            className='px-4 py-3 cursor-pointer hover:bg-blue-600 hover:text-white gap-2'
             onClick={() => {
               router.push(paths.auth.login);
             }}
           >
-            <CircleUserRound size={24} className="hover:bg-white" />
+            <CircleUserRound size={24} className='hover:bg-white' />
             <Typography fontWeight={'bold'}>Login</Typography>
           </Stack>
           <Stack
             direction={'row'}
-            className="px-4 py-3 cursor-pointer hover:bg-blue-600 hover:text-white gap-2"
+            className='px-4 py-3 cursor-pointer hover:bg-blue-600 hover:text-white gap-2'
             onClick={() => {
               router.push(paths.auth.register.index);
             }}
           >
-            <UserPlus size={24} className="hover:text-white" />
+            <UserPlus size={24} className='hover:text-white' />
             <Typography fontWeight={'bold'}>Register</Typography>
           </Stack>
         </>
@@ -132,103 +138,13 @@ export const Header = () => {
     </Box>
   );
 
-  return (router.pathname !== paths.auth.login &&
+  return (
+    router.pathname !== paths.auth.login &&
     router.pathname !== paths.auth.register.index &&
-    router.pathname !== paths.auth.staff.index &&
-    <AppBar position="sticky" sx={{ backgroundColor: '#02053D', color: 'white', paddingY: 0.5 }}>
-      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', paddingY: 1 }}>
-        {user ? (
-          <>
-            <Box
-              display={'flex'}
-              alignItems={'center'}
-              justifyContent={'space-between'}
-              width={'100%'}
-              gap={4}
-            >
-              {!isDesktop && (
-                <Box
-                  className="p-1 border rounded-lg border-[#3B44B2] cursor-pointer"
-                  onClick={toggleDrawer(true)}
-                >
-                  <MenuIcon className="text-white" />
-                </Box>
-              )}
-              {!isMobile && (
-                <Typography variant={isTablet ? 'h6' : 'h5'}>
-                  Hospital Management System
-                </Typography>
-              )}
-              <Stack direction={'row'} gap={2} alignItems={'center'}>
-                <Box className="p-1 border rounded-lg border-[#3B44B2] cursor-pointer">
-                  <MessageSquareWarning />
-                </Box>
-                <Box className="p-1 border rounded-lg border-[#3B44B2] cursor-pointer">
-                  <MessageSquareDot />
-                </Box>
-                {!isMobile && <Divider orientation="vertical" flexItem />}
-                <Stack direction={'row'} gap={1} alignItems={'center'}>
-                  <Avatar src={user?.photoUrl} sx={{ width: 26, height: 26 }} />
-                  {!isMobile && (
-                    <Box display={'flex'} flexDirection={'column'} gap={0.2}>
-                      <Typography variant={'body1'}>{user?.fullName || 'Chovy'}</Typography>
-                      <Typography variant={'body2'} fontWeight={100}>
-                        {user?.email || 'duytan17112003@gmail.com'}
-                      </Typography>
-                    </Box>
-                  )}
-                </Stack>
-                <Box onClick={handleMenuOpen} className="p-1 border rounded-lg border-[#3B44B2] cursor-pointer">
-                  <FaEllipsis  />
-                </Box>
-              </Stack>
-            </Box>
-            <Menu
-              anchorEl={menuAnchorEl}
-              open={Boolean(menuAnchorEl)}
-              onClose={handleMenuClose}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-            >
-              <MenuItem
-                onClick={() => {
-                  router.push(paths.account.index); // Navigate to profile page
-                  handleMenuClose();
-                }}
-              >
-                Profile
-              </MenuItem>
-              <MenuItem onClick={handleLogout}>Logout</MenuItem>
-            </Menu>
-            <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
-              <Box sx={{ width: 250 }}>
-                <Stack
-                  alignItems="center"
-                  direction="row"
-                  spacing={2}
-                  sx={{ p: 2, justifyContent: 'space-between', alignItems: 'center' }}
-                >
-                  <IconButton onClick={toggleDrawer(false)} color="inherit">
-                    <CloseIcon color="inherit" />
-                  </IconButton>
-                  <Stack direction={'row'} alignContent={'center'} alignItems={'center'} gap={1}>
-                    <Image src={logo} alt="logo" width={20} height={20} />
-                    <Typography>HealthPro</Typography>
-                  </Stack>
-                </Stack>
-                {drawerList}
-              </Box>
-            </Drawer>
-          </>
-        ) : (
-          <>
-          {isMobile ? (
+    router.pathname !== paths.auth.staff.index && (
+      <AppBar position='sticky' sx={{ backgroundColor: '#02053D', color: 'white', paddingY: 0.5 }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', paddingY: 1 }}>
+          {user ? (
             <>
               <Box
                 display={'flex'}
@@ -237,26 +153,69 @@ export const Header = () => {
                 width={'100%'}
                 gap={4}
               >
-                <IconButton
-                  edge='end'
-                  color='inherit'
-                  aria-label='menu'
-                  onClick={toggleDrawer(true)}
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Stack
-                  direction={'row'}
-                  gap={1}
-                  className='flex items-center gap-2 text-white cursor-pointer'
-                  onClick={() => router.push(paths.index)}
-                >
-                  <Image src={logo} alt='logo' width={32} height={32} />
-                  <Typography color='white' fontWeight={'bold'} variant='h5'>
-                    HealthPro
+                {!isDesktop && (
+                  <Box
+                    className='p-1 border rounded-lg border-[#3B44B2] cursor-pointer'
+                    onClick={toggleDrawer(true)}
+                  >
+                    <MenuIcon className='text-white' />
+                  </Box>
+                )}
+                {!isMobile && (
+                  <Typography variant={isTablet ? 'h6' : 'h5'}>
+                    Hospital Management System
                   </Typography>
+                )}
+                <Stack direction={'row'} gap={2} alignItems={'center'}>
+                  <Box className='p-1 border rounded-lg border-[#3B44B2] cursor-pointer'>
+                    <MessageSquareWarning />
+                  </Box>
+                  <Box className='p-1 border rounded-lg border-[#3B44B2] cursor-pointer'>
+                    <MessageSquareDot />
+                  </Box>
+                  {!isMobile && <Divider orientation='vertical' flexItem />}
+                  <Stack direction={'row'} gap={1} alignItems={'center'}>
+                    <Avatar src={user?.photoUrl} sx={{ width: 26, height: 26 }} />
+                    {!isMobile && (
+                      <Box display={'flex'} flexDirection={'column'} gap={0.2}>
+                        <Typography variant={'body1'}>{user?.fullName || 'Chovy'}</Typography>
+                        <Typography variant={'body2'} fontWeight={100}>
+                          {user?.email || 'duytan17112003@gmail.com'}
+                        </Typography>
+                      </Box>
+                    )}
+                  </Stack>
+                  <Box
+                    onClick={handleMenuOpen}
+                    className='p-1 border rounded-lg border-[#3B44B2] cursor-pointer'
+                  >
+                    <FaEllipsis />
+                  </Box>
                 </Stack>
               </Box>
+              <Menu
+                anchorEl={menuAnchorEl}
+                open={Boolean(menuAnchorEl)}
+                onClose={handleMenuClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right'
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right'
+                }}
+              >
+                <MenuItem
+                  onClick={() => {
+                    router.push(paths.account.index); // Navigate to profile page
+                    handleMenuClose();
+                  }}
+                >
+                  Profile
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
               <Drawer anchor='right' open={drawerOpen} onClose={toggleDrawer(false)}>
                 <Box sx={{ width: 250 }}>
                   <Stack
@@ -268,12 +227,7 @@ export const Header = () => {
                     <IconButton onClick={toggleDrawer(false)} color='inherit'>
                       <CloseIcon color='inherit' />
                     </IconButton>
-                    <Stack
-                      direction={'row'}
-                      alignContent={'center'}
-                      alignItems={'center'}
-                      gap={1}
-                    >
+                    <Stack direction={'row'} alignContent={'center'} alignItems={'center'} gap={1}>
                       <Image src={logo} alt='logo' width={20} height={20} />
                       <Typography>HealthPro</Typography>
                     </Stack>
@@ -283,63 +237,120 @@ export const Header = () => {
               </Drawer>
             </>
           ) : (
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: 4,
-                width: '100%'
-              }}
-            >
-              <Stack
-                direction={'row'}
-                gap={2}
-                className='flex items-center gap-2 text-white cursor-pointer'
-                onClick={() => router.push(paths.index)}
-              >
-                <Image src={logo} alt='logo' width={40} height={40} />
-                <Typography color='white' fontWeight={'bold'} variant='h4'>
-                  HealthPro
-                </Typography>
-              </Stack>
-              <Stack direction={'row'} gap={2}>
-                <Button
-                  onClick={() => router.push(paths.auth.staff.index)}
-                  variant='outlined'
-                  className='flex items-center gap-2 text-white'
+            <>
+              {isMobile ? (
+                <>
+                  <Box
+                    display={'flex'}
+                    alignItems={'center'}
+                    justifyContent={'space-between'}
+                    width={'100%'}
+                    gap={4}
+                  >
+                    <IconButton
+                      edge='end'
+                      color='inherit'
+                      aria-label='menu'
+                      onClick={toggleDrawer(true)}
+                    >
+                      <MenuIcon />
+                    </IconButton>
+                    <Stack
+                      direction={'row'}
+                      gap={1}
+                      className='flex items-center gap-2 text-white cursor-pointer'
+                      onClick={() => router.push(paths.index)}
+                    >
+                      <Image src={logo} alt='logo' width={32} height={32} />
+                      <Typography color='white' fontWeight={'bold'} variant='h5'>
+                        HealthPro
+                      </Typography>
+                    </Stack>
+                  </Box>
+                  <Drawer anchor='right' open={drawerOpen} onClose={toggleDrawer(false)}>
+                    <Box sx={{ width: 250 }}>
+                      <Stack
+                        alignItems='center'
+                        direction='row'
+                        spacing={2}
+                        sx={{ p: 2, justifyContent: 'space-between', alignItems: 'center' }}
+                      >
+                        <IconButton onClick={toggleDrawer(false)} color='inherit'>
+                          <CloseIcon color='inherit' />
+                        </IconButton>
+                        <Stack
+                          direction={'row'}
+                          alignContent={'center'}
+                          alignItems={'center'}
+                          gap={1}
+                        >
+                          <Image src={logo} alt='logo' width={20} height={20} />
+                          <Typography>HealthPro</Typography>
+                        </Stack>
+                      </Stack>
+                      {drawerList}
+                    </Box>
+                  </Drawer>
+                </>
+              ) : (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: 4,
+                    width: '100%'
+                  }}
                 >
-                  <UserRoundCheck size={24} color='white' fontVariant={'bold'} />
-                  <Typography color='white' fontWeight={'bold'}>
-                    Login with staff account
-                  </Typography>
-                </Button>
-                <Button
-                  onClick={() => router.push(paths.auth.login)}
-                  variant='outlined'
-                  className='flex items-center gap-2 text-white'
-                >
-                  <CircleUserRound size={24} color='white' fontVariant={'bold'} />
-                  <Typography color='white' fontWeight={'bold'}>
-                    Login
-                  </Typography>
-                </Button>
-                <Button
-                  onClick={() => router.push(paths.auth.register.index)}
-                  variant='outlined'
-                  className='flex items-center gap-2 text-white'
-                >
-                  <UserPlus size={24} color='white' fontVariant={'bold'} />
-                  <Typography color='white' fontWeight={'bold'}>
-                    Register
-                  </Typography>
-                </Button>
-              </Stack>
-            </Box>
+                  <Stack
+                    direction={'row'}
+                    gap={2}
+                    className='flex items-center gap-2 text-white cursor-pointer'
+                    onClick={() => router.push(paths.index)}
+                  >
+                    <Image src={logo} alt='logo' width={40} height={40} />
+                    <Typography color='white' fontWeight={'bold'} variant='h4'>
+                      HealthPro
+                    </Typography>
+                  </Stack>
+                  <Stack direction={'row'} gap={2}>
+                    <Button
+                      onClick={() => router.push(paths.auth.staff.index)}
+                      variant='outlined'
+                      className='flex items-center gap-2 text-white'
+                    >
+                      <UserRoundCheck size={24} color='white' fontVariant={'bold'} />
+                      <Typography color='white' fontWeight={'bold'}>
+                        Login as staff
+                      </Typography>
+                    </Button>
+                    <Button
+                      onClick={() => router.push(paths.auth.login)}
+                      variant='outlined'
+                      className='flex items-center gap-2 text-white'
+                    >
+                      <CircleUserRound size={24} color='white' fontVariant={'bold'} />
+                      <Typography color='white' fontWeight={'bold'}>
+                        Login
+                      </Typography>
+                    </Button>
+                    <Button
+                      onClick={() => router.push(paths.auth.register.index)}
+                      variant='outlined'
+                      className='flex items-center gap-2 text-white'
+                    >
+                      <UserPlus size={24} color='white' fontVariant={'bold'} />
+                      <Typography color='white' fontWeight={'bold'}>
+                        Register
+                      </Typography>
+                    </Button>
+                  </Stack>
+                </Box>
+              )}
+            </>
           )}
-        </>
-        )}
-      </Toolbar>
-    </AppBar>
+        </Toolbar>
+      </AppBar>
+    )
   );
 };

@@ -8,8 +8,6 @@ import { UserDetail } from 'src/types/user';
 import { useAuth } from '@hooks';
 import { UpdatePassworRequest, UpdatePasswordResponse, UpdateProfileRequest } from 'src/api/user';
 
-
-
 interface ContextValue {
   getListUsersApi: UseFunctionReturnType<FormData, UserDetail[]>;
   deleteUser: (id: UserDetail['id']) => Promise<void>;
@@ -21,7 +19,7 @@ export const UserContext = createContext<ContextValue>({
   deleteUser: async () => {},
   changePassword: async (request: UpdatePassworRequest) => {
     return {} as UpdatePasswordResponse;
-  },
+  }
 });
 
 const UserProvider = ({ children }: { children: ReactNode }) => {
@@ -43,16 +41,16 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
   const changePassword = useCallback(async (request: UpdatePassworRequest) => {
     try {
       const response: UpdatePasswordResponse = await UsersApi.updatePassword(request);
-      return response; 
+      return response;
     } catch (err) {
       throw err;
     }
   }, []);
 
   useEffect(() => {
-    if (user?.role === 'ADMIN') {
-      getListUsersApi.call(new FormData());
-    }
+    // if (user?.role === 'ADMIN') {
+    //   getListUsersApi.call(new FormData());
+    // }
   }, [user]);
 
   return (
@@ -60,7 +58,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
       value={{
         getListUsersApi,
         deleteUser,
-        changePassword,
+        changePassword
       }}
     >
       {children}

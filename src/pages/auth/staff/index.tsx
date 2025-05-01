@@ -6,7 +6,7 @@ import { useFormik } from 'formik';
 import Image from 'next/image';
 import Link from 'next/link';
 import { default as backgroundAuth } from 'public/background-auth.jpg';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PasswordInput from 'src/components/password-input';
 import FormInput from 'src/components/ui/FormInput';
 import { paths } from 'src/paths';
@@ -16,6 +16,10 @@ import { useRouter } from 'next/router';
 import { useResponsive } from 'src/utils/use-responsive';
 import { ArrowLeft } from 'iconsax-react';
 import logo from 'public/logo-black.png';
+import useFunction from 'src/hooks/use-function';
+import { SignInRequest } from 'src/api/user';
+import { useAuth } from '@hooks';
+import { LoadingProcess } from '@components';
 
 export const loginSchema = Yup.object({
   email: Yup.string().required('Email không được để trống'),
@@ -23,9 +27,25 @@ export const loginSchema = Yup.object({
 });
 
 const Page: PageType = () => {
+  const { signInAsStaff } = useAuth();
   const { isTablet, isMobile } = useResponsive();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const handleLogin = useCallback(async (values: SignInRequest) => {
+    try {
+      const response = await signInAsStaff(values.email, values.password);
+      if (response) {
+        router.push(paths.index);
+      }
+    } catch (error: any) {
+      if (error.response?.statusCode === 401) {
+        formik.setFieldError('general', 'Email or Password is incorrect');
+      } else {
+        formik.setFieldError('general', 'Something went wrong. Please try again later.');
+      }
+    }
+  }, []);
+  const handleLoginHelper = useFunction(handleLogin);
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -34,9 +54,10 @@ const Page: PageType = () => {
     },
     validationSchema: loginSchema,
     onSubmit: async (values, { setSubmitting }) => {
-      console.log('Email:', values.email);
-      console.log('Password:', values.password);
-      console.log('General:', values.general);
+      handleLoginHelper.call({
+        password: values.password,
+        email: values.email
+      });
       setSubmitting(true);
     }
   });
@@ -187,7 +208,6 @@ const Page: PageType = () => {
                 </IconButton>
               ))}
             </Stack>
-
           </Stack>
         </Box>
       </Box>
@@ -201,6 +221,7 @@ const Page: PageType = () => {
           />
         </Box>
       </Box>
+      {formik.isSubmitting && <LoadingProcess />}
     </Box>
   );
 };

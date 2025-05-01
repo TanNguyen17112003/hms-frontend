@@ -5,19 +5,21 @@ function ContentHeader({
   title,
   description,
   rightSection,
-  tabs
+  tabs,
+  isInComponent = false
 }: {
   title: string;
   description?: string;
   rightSection?: React.ReactNode;
   tabs?: React.ReactNode;
+  isInComponent?: boolean;
 }) {
   return (
     <Paper
       elevation={5}
       sx={{
-        paddingLeft: '24px',
-        paddingRight: '24px',
+        paddingLeft: isInComponent ? 0 : '24px',
+        paddingRight: isInComponent ? 0 : '24px',
         borderRadius: 0,
         boxShadow: 'none',
         zIndex: 100,

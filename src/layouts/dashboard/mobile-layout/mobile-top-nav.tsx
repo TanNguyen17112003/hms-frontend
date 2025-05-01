@@ -5,7 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Image from 'next/image';
 import { MobileNav } from './mobile-nav';
 import { Section } from '../config/config';
-import logo from 'public/logo.png';
+import logo from 'public/logo-black.png';
 import { paths } from 'src/paths';
 
 interface MobileTopNavProps {

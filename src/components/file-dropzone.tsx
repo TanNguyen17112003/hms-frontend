@@ -157,7 +157,7 @@ export const FileDropzone: FC<FileDropzoneProps & { sx?: BoxProps['sx'] }> = (pr
                   size='small'
                   type='button'
                 >
-                  Hủy
+                  Cancel
                 </Button>
               </Stack>
             </Box>

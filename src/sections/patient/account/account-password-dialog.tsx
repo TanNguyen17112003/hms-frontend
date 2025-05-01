@@ -26,15 +26,17 @@ function AccountPasswordDialog({ ...props }: DialogProps) {
   const { changePassword } = useUserContext();
   const { showSnackbarSuccess } = useAppSnackbar();
 
-  const handleUpdatePassword = useCallback(async (payload: UpdatePassworRequest) => {
-    const response = await changePassword(payload);
-    if (response)  {
-      showSnackbarSuccess('Update password successfully!');
-    }
-  }, [changePassword, showSnackbarSuccess]);
+  const handleUpdatePassword = useCallback(
+    async (payload: UpdatePassworRequest) => {
+      const response = await changePassword(payload);
+      if (response) {
+        showSnackbarSuccess('Update password successfully!');
+      }
+    },
+    [changePassword, showSnackbarSuccess]
+  );
 
-  const handleUpdatePasswordHelper = useFunction(handleUpdatePassword)
-
+  const handleUpdatePasswordHelper = useFunction(handleUpdatePassword);
 
   const formik = useFormik({
     initialValues: {
@@ -202,4 +204,3 @@ export default AccountPasswordDialog;
 function async(arg0: () => void): (payload: unknown) => Promise<unknown> {
   throw new Error('Function not implemented.');
 }
-

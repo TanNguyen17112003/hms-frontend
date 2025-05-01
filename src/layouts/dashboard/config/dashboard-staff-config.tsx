@@ -7,7 +7,8 @@ import {
   Settings,
   LogOut,
   Bed,
-  Briefcase
+  Briefcase,
+  Timer
 } from 'lucide-react';
 export const getDashboardStaffConfigs = () => {
   return [
@@ -23,6 +24,11 @@ export const getDashboardStaffConfigs = () => {
           title: 'My Appointments',
           path: paths.appointment.index,
           icon: <CalendarPlus2 className='h-6 w-6' />
+        },
+        {
+          title: 'My TimeSlots',
+          path: paths.timeSlot.index,
+          icon: <Timer className='h-6 w-6' />
         },
         {
           title: 'Patient Management',

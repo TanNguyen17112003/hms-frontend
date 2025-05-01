@@ -14,11 +14,11 @@ const Page: PageType = () => {
   const { user } = useAuth();
   const router = useRouter();
   const formik = useFormik<AppointmentFormProps>({
-      initialValues: initialAppointmentFormValues,
-      onSubmit: (values) => {
-        console.log('Form submitted:', values);
-      },
-    })
+    initialValues: initialAppointmentFormValues,
+    onSubmit: (values) => {
+      console.log('Form submitted:', values);
+    }
+  });
   return (
     <Box
       sx={{
@@ -26,24 +26,20 @@ const Page: PageType = () => {
         overflow: 'auto'
       }}
     >
-        <>
-          <ContentHeader
-            title='Add appointment'
-            description='Create your owin appointment and manage it easily'
-            rightSection={
-              <Button
-                startIcon={<Add />}
-                variant='contained'
-                color='primary'
-              >
-                Add
-              </Button>
-            }
-          />
-          <Box className='px-6 py-4'>
-            <AppointmentAdd formik={formik}/>
-          </Box>
-        </>
+      <>
+        <ContentHeader
+          title='Add appointment'
+          description='Create your owin appointment and manage it easily'
+          rightSection={
+            <Button startIcon={<Add />} variant='contained' color='primary'>
+              Add
+            </Button>
+          }
+        />
+        <Box className='px-6 py-4'>
+          <AppointmentAdd formik={formik} />
+        </Box>
+      </>
     </Box>
   );
 };

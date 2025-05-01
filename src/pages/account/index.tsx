@@ -11,34 +11,31 @@ const Page: PageType = () => {
   const { user } = useAuth();
   return (
     <>
-      <ContentHeader 
+      <ContentHeader
         title='My Profile'
         description='This Information will be displayed publicly so be careful what you share.'
       />
-      {
-        user?.role === 'ADMIN' ? (
-          <Box className='px-6 py-4'>
-            <AdminAccount />
-          </Box>
-        ) : user?.role === 'PATIENT' ? (
-          <Box className='px-6 py-4'>
-            <PatientAccount />
-          </Box>
-        ) : (
-          <Box className='px-6 py-4'>
-            <StaffAccount />
-          </Box>
-        )
-      }
+      {user?.role === 'ADMIN' ? (
+        <Box className='px-6 py-4'>
+          <AdminAccount />
+        </Box>
+      ) : user?.role === 'PATIENT' ? (
+        <Box className='px-6 py-4'>
+          <PatientAccount />
+        </Box>
+      ) : (
+        <Box className='px-6 py-4'>
+          <StaffAccount />
+        </Box>
+      )}
     </>
-  )
+  );
 };
 
-Page.getLayout = (page) => 
+Page.getLayout = (page) => (
   <DashboardLayout>
-    <UserProvider>
-      {page}
-    </UserProvider>
-  </DashboardLayout>;
+    <UserProvider>{page}</UserProvider>
+  </DashboardLayout>
+);
 
 export default Page;

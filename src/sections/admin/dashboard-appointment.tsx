@@ -10,8 +10,8 @@ function DashboardAppointment() {
   const { isDesktop } = useResponsive();
   const filteredAppointments = useMemo(() => {
     return appointments.slice(0, 6).map((appointment) => {
-      const patient = patients.find((patient) => patient.id === appointment.userId);
-      const doctor = doctors.find((doctor) => doctor.id === appointment.staffId);
+      const patient = patients.find((patient) => patient.id === appointment.patientAccountId);
+      const doctor = doctors.find((doctor) => doctor.id === appointment.doctor.id);
       return {
         ...appointment,
         patient,
@@ -42,17 +42,16 @@ function DashboardAppointment() {
           {filteredAppointments.map((appointment, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <Box
-                className='border p-3 border-gray-200 rounded-md shadow-sm'
+                className='border p-3 border-gray-200 rounded-md shadow-sm bg-white'
                 display={'flex'}
                 flexDirection={'column'}
                 gap={2}
               >
                 <Stack direction={'row'} spacing={2} alignItems={'center'}>
-                  <Avatar src={appointment.doctor?.photoUrl} />
                   <Box>
                     <Typography variant={'h6'}>{appointment.doctor?.fullName}</Typography>
                     <Typography variant={'body2'} fontWeight={'light'}>
-                      {appointment.doctor?.speciality}
+                      {appointment.doctor?.specializations.join(', ')}
                     </Typography>
                   </Box>
                 </Stack>

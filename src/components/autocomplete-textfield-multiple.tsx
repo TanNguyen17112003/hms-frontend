@@ -44,7 +44,7 @@ const AutocompleteTextFieldMultiple: React.FC<Props> = ({
         const newOptions = (Array.isArray(newValue) ? newValue : [newValue]).map((item) => {
           if (typeof item === 'string') {
             if (freeSolo) {
-              const newOption = { value: item, label: `${item} (mới)` };
+              const newOption = { value: item, label: `${item} (new)` };
               if (!options.some((option) => option.value === item)) {
                 setOptions((prevOptions) => [...prevOptions, newOption]);
               }
@@ -56,7 +56,7 @@ const AutocompleteTextFieldMultiple: React.FC<Props> = ({
         onChange(newOptions as { value: any; label: string }[]);
       } else {
         if (typeof newValue === 'string' && freeSolo) {
-          const newOption = { value: newValue, label: `${newValue} (mới)` };
+          const newOption = { value: newValue, label: `${newValue} (new)` };
           if (!options.some((option) => option.value === newValue)) {
             setOptions((prevOptions) => [...prevOptions, newOption]);
           }
@@ -93,6 +93,7 @@ const AutocompleteTextFieldMultiple: React.FC<Props> = ({
 
   return (
     <Autocomplete
+      className='w-full'
       key={key}
       options={options}
       filterOptions={(options, state) => {
@@ -106,7 +107,7 @@ const AutocompleteTextFieldMultiple: React.FC<Props> = ({
         ) {
           filtered.push({
             value: state.inputValue,
-            label: `${state.inputValue} (mới)`
+            label: `${state.inputValue} (new)`
           });
         }
         return filtered;
@@ -123,9 +124,10 @@ const AutocompleteTextFieldMultiple: React.FC<Props> = ({
       PopperComponent={(props) => (
         <Popper
           {...props}
+          container={document.querySelector('.MuiDialog-root')} // Ensure Popper is rendered inside the dialog
           sx={{
             ...props.sx,
-            zIndex: (theme) => `${theme.zIndex.drawer + 10} !important`
+            zIndex: (theme) => `${theme.zIndex.modal + 1} !important`
           }}
         />
       )}

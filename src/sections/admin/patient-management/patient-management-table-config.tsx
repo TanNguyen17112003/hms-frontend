@@ -30,12 +30,6 @@ const getPatientManangementTableConfig = ({
     )
   },
   {
-    key: 'email',
-    headerLabel: 'Email',
-    type: 'string',
-    renderCell: (data) => <Typography variant='body1'>{data.email}</Typography>
-  },
-  {
     key: 'SSN',
     headerLabel: 'SSN',
     type: 'string',
@@ -45,7 +39,9 @@ const getPatientManangementTableConfig = ({
     key: 'date',
     headerLabel: 'Date of Birth',
     type: 'string',
-    renderCell: (data) => <Typography variant='body1'>{formatStandardDate(data.dob as string)}</Typography>
+    renderCell: (data) => (
+      <Typography variant='body1'>{formatStandardDate(data.dateOfBirth as string)}</Typography>
+    )
   },
   {
     key: 'nationality',
@@ -60,11 +56,11 @@ const getPatientManangementTableConfig = ({
     renderCell: (data) => <Typography variant='body1'>{data.occupation}</Typography>
   },
   {
-    key: 'gender',
+    key: 'sex',
     headerLabel: 'Gender',
     type: 'string',
     renderCell: (data) => (
-      <Chip label={data.gender} color={data.gender === 'MALE' ? 'primary' : 'secondary'} />
+      <Chip label={data.sex} color={data.sex === 'MALE' ? 'primary' : 'secondary'} />
     )
   },
   {

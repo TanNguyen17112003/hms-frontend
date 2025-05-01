@@ -3,13 +3,14 @@ import { Avatar, Box, Button, Chip, Stack, Tooltip, Typography } from '@mui/mate
 import { CustomTableConfig } from 'src/components/custom-table';
 import { formatStandardDate, formatTime } from 'src/utils/format-time-currency';
 import { AppointmentDetail } from 'src/types/appointment';
-import { Check, X } from 'lucide-react';
+import { Check, DownloadIcon, X } from 'lucide-react';
 import { useAuth } from '@hooks';
-import { PatientDetail, StaffDetail, UserDetail } from 'src/types/user';
+import { PatientDetail, UserDetail } from 'src/types/user';
+import { Staff } from 'src/types/staff';
 
 export interface AppointmentDetailConfig extends AppointmentDetail {
-  patient: PatientDetail | undefined;
-  doctor: StaffDetail | undefined;
+  patient?: PatientDetail | undefined;
+  doctor: Staff;
 }
 
 const getAppointmentManangementTableConfig = ({
@@ -17,11 +18,10 @@ const getAppointmentManangementTableConfig = ({
   onClickDecline,
   user
 }: {
-  onClickApprove: (data: AppointmentDetailConfig) => void;
-  onClickDecline: (data: AppointmentDetailConfig) => void;
+  onClickApprove?: (data: AppointmentDetailConfig) => void;
+  onClickDecline?: (data: AppointmentDetailConfig) => void;
   user: UserDetail;
 }): CustomTableConfig<AppointmentDetailConfig['id'], AppointmentDetailConfig>[] => {
-
   const baseConfig: CustomTableConfig<AppointmentDetailConfig['id'], AppointmentDetailConfig>[] = [
     {
       key: 'bookingId',
@@ -33,12 +33,7 @@ const getAppointmentManangementTableConfig = ({
       key: 'Date and Time',
       headerLabel: 'Date',
       type: 'string',
-      renderCell: (data) => (
-        <Typography variant='body1'>
-          {formatTime(data.timeSlot.startTime)} - {formatTime(data.timeSlot.endTime)},{' '}
-          {formatStandardDate(data.timeSlot.date)}
-        </Typography>
-      )
+      renderCell: (data) => <Typography variant='body1'>{data.date}</Typography>
     },
     {
       key: 'Type',
@@ -59,47 +54,37 @@ const getAppointmentManangementTableConfig = ({
             data.status === 'PENDING'
               ? 'warning'
               : data.status === 'COMPLETED'
-              ? 'success'
-              : 'error'
+                ? 'success'
+                : 'error'
           }
         />
       )
     },
     {
-      key: 'action',
-      headerLabel: '',
+      key: 'reason',
+      headerLabel: 'Reason',
       type: 'string',
-      renderCell: (data) =>
-        data.status === 'PENDING' && (
-          <Stack direction='row' spacing={2}>
-            <Tooltip title='Approve Appointment'>
-              <Button
-                startIcon={<Check />}
-                variant='contained'
-                color='success'
-                onClick={(event) => {
-                  event.stopPropagation();
-                  onClickApprove(data);
-                }}
-              >
-                Approve
-              </Button>
-            </Tooltip>
-            <Tooltip title='Decline Appointment'>
-              <Button
-                startIcon={<X />}
-                variant='contained'
-                color='error'
-                onClick={(event) => {
-                  event.stopPropagation();
-                  onClickDecline(data);
-                }}
-              >
-                Decline
-              </Button>
-            </Tooltip>
-          </Stack>
-        )
+      renderCell: (data) => <Typography>{data.reason}</Typography>
+    },
+    {
+      key: 'notes',
+      headerLabel: 'Notes',
+      type: 'string',
+      renderCell: (data) => (
+        <DownloadIcon
+          className='cursor-pointer'
+          onClick={(e) => {
+            e.stopPropagation();
+            const blob = new Blob([data.notes || ''], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `notes-${data.id}.pdf`;
+            a.click();
+            URL.revokeObjectURL(url);
+          }}
+        />
+      )
     }
   ];
 
@@ -129,13 +114,49 @@ const getAppointmentManangementTableConfig = ({
       renderCell: (data) =>
         data.status === 'COMPLETED' && (
           <Stack direction='row' alignItems={'center'} spacing={1}>
-            <Avatar src={data.doctor?.photoUrl} />
             <Box>
               <Typography variant='body1'>{data.doctor?.fullName}</Typography>
               <Typography variant='body2' color='textSecondary'>
                 {data.doctor?.email as string}
               </Typography>
             </Box>
+          </Stack>
+        )
+    });
+
+    baseConfig.push({
+      key: 'action',
+      headerLabel: '',
+      type: 'string',
+      renderCell: (data) =>
+        data.status === 'PENDING' && (
+          <Stack direction='row' spacing={2}>
+            <Tooltip title='Approve Appointment'>
+              <Button
+                startIcon={<Check />}
+                variant='contained'
+                color='success'
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onClickApprove?.(data);
+                }}
+              >
+                Approve
+              </Button>
+            </Tooltip>
+            <Tooltip title='Decline Appointment'>
+              <Button
+                startIcon={<X />}
+                variant='contained'
+                color='error'
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onClickDecline?.(data);
+                }}
+              >
+                Decline
+              </Button>
+            </Tooltip>
           </Stack>
         )
     });
@@ -145,9 +166,8 @@ const getAppointmentManangementTableConfig = ({
       headerLabel: 'Doctor',
       type: 'string',
       renderCell: (data) =>
-        data.status === 'COMPLETED' && (
+        data.doctor ? (
           <Stack direction='row' alignItems={'center'} spacing={1}>
-            <Avatar src={data.doctor?.photoUrl} />
             <Box>
               <Typography variant='body1'>{data.doctor?.fullName}</Typography>
               <Typography variant='body2' color='textSecondary'>
@@ -155,9 +175,11 @@ const getAppointmentManangementTableConfig = ({
               </Typography>
             </Box>
           </Stack>
+        ) : (
+          <Typography variant='body1'>Not Assigned</Typography>
         )
     });
-  } else if (user?.role === 'STAFF') {
+  } else if (user?.role === 'STAFF' || user?.role === 'DOCTOR') {
     baseConfig.splice(1, 0, {
       key: 'patient',
       headerLabel: 'Patient',

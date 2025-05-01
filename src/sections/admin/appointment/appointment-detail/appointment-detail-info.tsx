@@ -20,7 +20,7 @@ const AppointmentDetailInfo: React.FC<AppointmentDetailInfoProps> = ({ appointme
             <TextField
               variant='outlined'
               fullWidth
-              value={appointment.type === 'FIRST_VISIT' ? 'Initial' : 'Follow-up'}
+              value={appointment?.type === 'FIRST_VISIT' ? 'Initial' : 'Follow-up'}
               disabled
             />
           </Stack>
@@ -31,8 +31,8 @@ const AppointmentDetailInfo: React.FC<AppointmentDetailInfoProps> = ({ appointme
             <TextField
               variant='outlined'
               fullWidth
-              value={appointment.doctor?.fullName || ''}
-              disabled={appointment.staffId !== null}
+              value={appointment?.doctor?.fullName || ''}
+              disabled={appointment?.doctor !== null}
             />
           </Stack>
         </Grid>
@@ -42,7 +42,7 @@ const AppointmentDetailInfo: React.FC<AppointmentDetailInfoProps> = ({ appointme
             <TextField
               variant='outlined'
               fullWidth
-              value={`${formatTime(appointment.timeSlot.startTime as string)} - ${formatTime(appointment.timeSlot.endTime)}`}
+              value={`${formatTime(appointment?.timeSlot?.startTime as string)} - ${formatTime(appointment?.timeSlot?.endTime)}`}
               disabled
             />
           </Stack>
@@ -53,7 +53,7 @@ const AppointmentDetailInfo: React.FC<AppointmentDetailInfoProps> = ({ appointme
             <TextField
               variant='outlined'
               fullWidth
-              value={formatStandardDate(appointment.timeSlot.date)}
+              value={formatStandardDate(appointment?.timeSlot?.date)}
               disabled
             />
           </Stack>
@@ -61,13 +61,13 @@ const AppointmentDetailInfo: React.FC<AppointmentDetailInfoProps> = ({ appointme
         <Grid item xs={12}>
           <Stack spacing={1}>
             <Typography variant='body2'>Reason for consultations</Typography>
-            <TextField variant='outlined' fullWidth value={appointment.reason} disabled />
+            <TextField variant='outlined' fullWidth value={appointment?.reason} disabled />
           </Stack>
         </Grid>
         <Grid item xs={12}>
           <Stack spacing={1}>
             <Typography variant='body2'>Review notes</Typography>
-            <TextField variant='outlined' fullWidth value={appointment.notes} disabled />
+            <TextField variant='outlined' fullWidth value={appointment?.notes} disabled />
           </Stack>
         </Grid>
       </Grid>

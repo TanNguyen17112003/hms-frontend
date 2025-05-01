@@ -11,7 +11,8 @@ import {
   Select,
   MenuItem,
   Box,
-  Divider
+  Divider,
+  TextField
 } from '@mui/material';
 import DateRangePickerTextField from 'src/components/date-range-picker-textfield';
 import { Filter } from 'src/types/filter';
@@ -38,10 +39,9 @@ const AdvancedFilterDialog: React.FC<AdvancedFilterDialogProps> = ({ open, onClo
   const handleResetFilters = () => {
     const resetFilters = localFilters.map((filter) => ({
       ...filter,
-      value: filter.type === 'select' ? '' : { startDate: null, endDate: null }
+      value: filter.type === 'dateRange' ? { startDate: null, endDate: null } : null
     }));
     setLocalFilters(resetFilters);
-    onClose();
   };
 
   const handleApplyFilters = () => {
@@ -53,7 +53,7 @@ const AdvancedFilterDialog: React.FC<AdvancedFilterDialogProps> = ({ open, onClo
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth='sm' fullWidth>
-      <DialogTitle>Advanced Filter</DialogTitle>
+      <DialogTitle>Filter</DialogTitle>
       <DialogContent>
         <Stack spacing={3}>
           {localFilters.map((filter, index) => (
@@ -80,6 +80,14 @@ const AdvancedFilterDialog: React.FC<AdvancedFilterDialogProps> = ({ open, onClo
                   labelHolder={filter.title}
                 />
               )}
+              {filter.type === 'number' && (
+                <TextField
+                  type='number'
+                  placeholder='Enter your number value'
+                  onChange={(e) => handleFilterChange(index, e.target.value)}
+                  fullWidth
+                />
+              )}
               {index < localFilters.length - 1 && <Divider />}
             </Box>
           ))}
@@ -87,10 +95,10 @@ const AdvancedFilterDialog: React.FC<AdvancedFilterDialogProps> = ({ open, onClo
       </DialogContent>
       <DialogActions>
         <Button onClick={handleResetFilters} color='secondary'>
-          Xóa lọc
+          Remove filter
         </Button>
         <Button onClick={handleApplyFilters} color='primary'>
-          Áp dụng
+          Apply
         </Button>
       </DialogActions>
     </Dialog>

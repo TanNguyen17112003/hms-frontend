@@ -1,4 +1,4 @@
-import { createContext, FC, ReactNode, useCallback, useEffect, useReducer } from 'react';
+import { createContext, FC, ReactNode, useCallback, useEffect, useReducer, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Issuer } from 'src/utils/auth';
 import CookieHelper, { CookieKeys } from 'src/utils/cookie-helper';
@@ -6,8 +6,7 @@ import { useRouter } from 'next/router';
 import { paths } from 'src/paths';
 import { initialUser, UserDetail } from 'src/types/user';
 import { UpdateProfileRequest, UpdateProfileResponse, UsersApi } from 'src/api/user';
-
-
+import useAppSnackbar from 'src/hooks/use-app-snackbar';
 
 interface State {
   isInitialized: boolean;
@@ -112,6 +111,7 @@ const reducer = (state: State, action: Action): State =>
 export interface AuthContextType extends State {
   issuer: Issuer.JWT;
   signIn: (email: string, password: string) => Promise<UserDetail | undefined>;
+  signInAsStaff: (email: string, password: string) => Promise<UserDetail | undefined>;
   signOut: () => Promise<void>;
   refreshToken: () => Promise<void>;
   updateProfile: (info: UpdateProfileRequest) => Promise<UpdateProfileResponse>;
@@ -121,6 +121,7 @@ export const AuthContext = createContext<AuthContextType>({
   ...initialState,
   issuer: Issuer.JWT,
   signIn: () => Promise.resolve(undefined),
+  signInAsStaff: () => Promise.resolve(undefined),
   signOut: () => Promise.resolve(),
   refreshToken: () => Promise.resolve(),
   updateProfile: () => Promise.resolve({} as UpdateProfileResponse)
@@ -133,7 +134,9 @@ interface AuthProviderProps {
 export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [lastActionType, setLastActionType] = useState<ActionType | null>(null);
   const router = useRouter();
+  const { showSnackbarError } = useAppSnackbar();
 
   const initialize = useCallback(async (): Promise<void> => {
     try {
@@ -181,6 +184,11 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     }
   }, [dispatch]);
 
+  const enhancedDispatch = (action: Action) => {
+    setLastActionType(action.type);
+    dispatch(action);
+  };
+
   useEffect(
     () => {
       initialize();
@@ -200,7 +208,33 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         role: response.userInfo.role,
         ssn: response.userInfo.ssn,
         createdAt: response.userInfo.createdAt,
-        lastLoginAt: response.userInfo.lastLoginAt,
+        lastLoginAt: response.userInfo.lastLoginAt
+      };
+      CookieHelper.setItem(CookieKeys.TOKEN, response.accessToken);
+      CookieHelper.setItem('user_data', JSON.stringify(responseData));
+
+      enhancedDispatch({
+        type: ActionType.SIGN_IN,
+        payload: {
+          user: responseData
+        }
+      });
+      return responseData;
+    },
+    [dispatch]
+  );
+  const signInAsStaff = useCallback(
+    async (email: string, password: string): Promise<UserDetail> => {
+      const response = await UsersApi.signInAsStaff({ email, password });
+      const responseData = {
+        id: response.userInfo.id,
+        email: response.userInfo.email,
+        fullName: response.userInfo.fullName,
+        phoneNumber: response.userInfo.phoneNumber,
+        role: response.userInfo.role,
+        ssn: response.userInfo.ssn,
+        createdAt: response.userInfo.createdAt,
+        lastLoginAt: response.userInfo.lastLoginAt
       };
       CookieHelper.setItem(CookieKeys.TOKEN, response.accessToken);
       CookieHelper.setItem('user_data', JSON.stringify(responseData));
@@ -238,9 +272,30 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         }
       });
       return response;
-    }, [CookieHelper]
+    },
+    [CookieHelper]
     // eslint-disable-next-line react-hooks/exhaustive-deps
   );
+
+  useEffect(() => {
+    if (lastActionType === ActionType.SIGN_IN && state.user?.id === undefined) {
+      const forceSignOut = async () => {
+        setTimeout(async () => {
+          await signOut();
+          await CookieHelper.removeItem('user_data');
+          await setLastActionType(null);
+          window.location.href = paths.landing.index;
+        }, 1000);
+        showSnackbarError('Your session has expired. Please sign in again.');
+      };
+      const timeout = setTimeout(() => {
+        forceSignOut();
+      }, 2000);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [lastActionType, state.user?.id, signOut, showSnackbarError, setLastActionType]);
 
   return (
     <AuthContext.Provider
@@ -248,6 +303,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         ...state,
         issuer: Issuer.JWT,
         signIn,
+        signInAsStaff,
         signOut,
         refreshToken,
         updateProfile
