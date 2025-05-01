@@ -20,7 +20,7 @@ import { Box } from '@mui/system';
 import { useFormik } from 'formik';
 import useFunction from 'src/hooks/use-function';
 import { useCallback } from 'react';
-import { MedicalRecordsApi } from 'src/api/medical-record';
+import { CreatePatientRequest, MedicalRecordsApi } from 'src/api/medical-record';
 
 export const COMMON_DISEASES = [
   { value: 'Hypertension', label: 'Hypertension' },
@@ -48,9 +48,10 @@ interface AddPatientFormProps {
 
 interface AddPatientDialogProps extends DialogProps {
   type?: 'add' | 'edit';
+  onConfirm: (values: CreatePatientRequest) => Promise<void>;
 }
 
-function AddPatientDialog({ type = 'add', ...DialogProps }: AddPatientDialogProps) {
+function AddPatientDialog({ type = 'add', onConfirm, ...DialogProps }: AddPatientDialogProps) {
   const getPatientsApi = useFunction(MedicalRecordsApi.getPatients);
   const formik = useFormik<AddPatientFormProps>({
     initialValues: {
@@ -73,31 +74,35 @@ function AddPatientDialog({ type = 'add', ...DialogProps }: AddPatientDialogProp
       await handleSubmitPatientHelper.call(values);
     }
   });
-  const handleSubmitPatient = useCallback(async (values: AddPatientFormProps) => {
-    try {
-      const newPatient = await MedicalRecordsApi.createPatient({
-        patientInfo: {
-          fullName: values.name,
-          ssn: values.ssn,
-          dateOfBirth: values.dateOfBirth,
-          sex: values.sex,
-          nationality: values.nationality,
-          phoneNumber: values.phone,
-          address: values.address,
-          occupation: values.occupation,
-          maritalStatus: values.maritalStatus
-        },
-        medicalInfo: {
-          height: values.height,
-          weight: values.weight,
-          bloodType: values.bloodType,
-          bloodPressure: values.bloodPressure
-        }
-      });
-    } catch (error) {
-      throw error;
-    }
-  }, []);
+  const handleSubmitPatient = useCallback(
+    async (values: AddPatientFormProps) => {
+      try {
+        const createPatientRelative = {
+          patientInfo: {
+            fullName: values.name,
+            ssn: values.ssn,
+            dateOfBirth: values.dateOfBirth,
+            sex: values.sex,
+            nationality: values.nationality,
+            phoneNumber: values.phone,
+            address: values.address,
+            occupation: values.occupation,
+            maritalStatus: values.maritalStatus
+          },
+          medicalInfo: {
+            height: values.height,
+            weight: values.weight,
+            bloodType: values.bloodType,
+            bloodPressure: values.bloodPressure
+          }
+        };
+        await onConfirm(createPatientRelative);
+      } catch (error) {
+        throw error;
+      }
+    },
+    [onConfirm]
+  );
 
   const handleSubmitPatientHelper = useFunction(handleSubmitPatient, {
     successMessage: 'Add patient successfully!'

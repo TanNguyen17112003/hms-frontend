@@ -823,7 +823,6 @@ const PatientDetail: PageType = () => {
 
   return (
     <div className='ml-4'>
-      <>{relativesPage}</>
       <div className='w-full flex justify-between items-center mb-5'>
         <div className='flex gap-5'>
           <button className='text-[#0E1680]' onClick={() => router.push('/patient')}>

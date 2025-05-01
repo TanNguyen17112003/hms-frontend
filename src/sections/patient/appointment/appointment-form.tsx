@@ -97,10 +97,10 @@ export const AppointmentForm: React.FC<AppointmentFormAttributes> = ({ formik, t
       const calculatedTimeDetail = getWeekAndDay(formik.values.date as string);
 
       try {
-        const returnedTimeSlots = await TimeSlotApi.getTimeSlots(
-          calculatedTimeDetail.week,
-          calculatedTimeDetail.date
-        );
+        const returnedTimeSlots = await TimeSlotApi.getTimeSlots({
+          week: calculatedTimeDetail.week,
+          date: calculatedTimeDetail.date
+        });
 
         const timeSlotsData = returnedTimeSlots.availableTimeSlots.map((option) => ({
           value: option.id,

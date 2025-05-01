@@ -30,12 +30,6 @@ const getPatientManangementTableConfig = ({
     )
   },
   {
-    key: 'email',
-    headerLabel: 'Email',
-    type: 'string',
-    renderCell: (data) => <Typography variant='body1'>{data.email}</Typography>
-  },
-  {
     key: 'SSN',
     headerLabel: 'SSN',
     type: 'string',

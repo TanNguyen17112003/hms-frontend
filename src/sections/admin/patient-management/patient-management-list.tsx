@@ -8,22 +8,39 @@ import { Stack } from '@mui/system';
 import { PatientDetail } from 'src/types/user';
 import DeleteUserDialog from 'src/sections/delete-user-dialog';
 import { useRouter } from 'next/router';
+import Pagination from 'src/components/ui/Pagination';
 
 interface PatientManagementListProps {
   patients: PatientDetail[];
   searchInput: string;
+  pagination: {
+    page: number;
+    rowsPerPage: number;
+    setPage: (page: number) => void;
+    setRowsPerPage: (rowsPerPage: number) => void;
+  };
+  count: number;
 }
-const PatientManagementList: React.FC<PatientManagementListProps> = ({ patients, searchInput }) => {
+const PatientManagementList: React.FC<PatientManagementListProps> = ({
+  patients,
+  searchInput,
+  pagination,
+  count
+}) => {
   const select = useSelection<PatientDetail>(patients);
   const router = useRouter();
   const deleteDialog = useDialog<PatientDetail>();
   const editDrawer = useDrawer<PatientDetail>();
-  const pagination = usePagination({
-    count: patients.length
-  });
   const filteredUsers = patients.filter((user) => {
     return user.fullName.toLowerCase().includes(searchInput.toLowerCase());
   });
+
+  const handlePageChange = useCallback(
+    (event: React.ChangeEvent<unknown>, page: number) => {
+      pagination.setPage(page);
+    },
+    [pagination]
+  );
   const results = filteredUsers.map((patient, index) => ({ ...patient, index: index + 1 }));
 
   const PatientManagementListConfig = useMemo(() => {
@@ -49,7 +66,7 @@ const PatientManagementList: React.FC<PatientManagementListProps> = ({ patients,
         <Stack direction='row' spacing={2} alignItems='center'>
           <Typography variant='h6'>Patient List</Typography>
           <Chip
-            label={`${results.length} patients`}
+            label={`${count} patients`}
             sx={{ backgroundColor: 'rgba(229, 231, 251, 1)', color: 'rgba(7, 11, 92, 1)' }}
           />
         </Stack>
@@ -58,10 +75,16 @@ const PatientManagementList: React.FC<PatientManagementListProps> = ({ patients,
         className='mt-5'
         rows={results}
         configs={PatientManagementListConfig}
-        pagination={pagination}
+        // pagination={pagination}
         cellClassName='bg-white'
         select={select}
         onClickRow={(data) => handleGoPatient(data as PatientDetail)}
+      />
+      <Pagination
+        count={count}
+        page={pagination.page}
+        rowsPerPage={pagination.rowsPerPage}
+        onChange={handlePageChange}
       />
       <DeleteUserDialog
         open={deleteDialog.open}
