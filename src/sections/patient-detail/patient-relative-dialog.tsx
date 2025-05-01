@@ -15,11 +15,11 @@ import useFunction from 'src/hooks/use-function';
 import { useCallback } from 'react';
 import { MedicalInformationRequest } from 'src/api/medical-record';
 
-interface EditMedicalInfoModalProps extends DialogProps {
+interface PatienProps extends DialogProps {
   onConfirm: (values: MedicalInformationRequest) => Promise<void>;
 }
 
-function EditMedicalInfoModal({ onConfirm, ...DialogProps }: EditMedicalInfoModalProps) {
+function Patien({ onConfirm, ...DialogProps }: PatienProps) {
   const formik = useFormik<MedicalInformationRequest>({
     initialValues: {
       height: 0,
@@ -113,4 +113,4 @@ function EditMedicalInfoModal({ onConfirm, ...DialogProps }: EditMedicalInfoModa
     </Dialog>
   );
 }
-export default EditMedicalInfoModal;
+export default Patien;

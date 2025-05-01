@@ -11,7 +11,8 @@ import {
   Select,
   MenuItem,
   Box,
-  Divider
+  Divider,
+  TextField
 } from '@mui/material';
 import DateRangePickerTextField from 'src/components/date-range-picker-textfield';
 import { Filter } from 'src/types/filter';
@@ -38,7 +39,7 @@ const AdvancedFilterDialog: React.FC<AdvancedFilterDialogProps> = ({ open, onClo
   const handleResetFilters = () => {
     const resetFilters = localFilters.map((filter) => ({
       ...filter,
-      value: filter.type === 'select' ? '' : { startDate: null, endDate: null }
+      value: filter.type === 'dateRange' ? { startDate: null, endDate: null } : null
     }));
     setLocalFilters(resetFilters);
   };
@@ -77,6 +78,14 @@ const AdvancedFilterDialog: React.FC<AdvancedFilterDialogProps> = ({ open, onClo
                   initialDateRange={filter.value}
                   onChange={(range) => handleFilterChange(index, range)}
                   labelHolder={filter.title}
+                />
+              )}
+              {filter.type === 'number' && (
+                <TextField
+                  type='number'
+                  placeholder='Enter your number value'
+                  onChange={(e) => handleFilterChange(index, e.target.value)}
+                  fullWidth
                 />
               )}
               {index < localFilters.length - 1 && <Divider />}

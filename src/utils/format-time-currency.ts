@@ -24,6 +24,17 @@ export function formatDate(date: Date): string {
   return `${day}/${month}/${year} ${hour}:${minute}`;
 }
 
+export const formatDatev2 = (dateString: string) => {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
+};
+
 export function unixTimestampToDate(unixTimestamp: string): Date {
   return new Date(Number(unixTimestamp) * 1000);
 }
@@ -83,10 +94,17 @@ export const getWeekAndDay = (dateString: string) => {
 };
 
 export const extractDate = (date: string) => {
-  // I want to conver to "yyyy:mm:dd" form
   const dateObj = new Date(date);
   const year = dateObj.getFullYear();
   const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
   const day = dateObj.getDate().toString().padStart(2, '0');
   return `${year}-${month}-${day}`;
+};
+
+export const getCurrentWeekOfYear = () => {
+  const currentDate = new Date();
+  const startOfYear = new Date(currentDate.getFullYear(), 0, 1);
+  const dayOfYear =
+    Math.floor((currentDate.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+  return Math.ceil(dayOfYear / 7);
 };

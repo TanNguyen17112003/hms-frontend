@@ -4,9 +4,12 @@ import { Card, CardContent, Typography, Box, Divider } from '@mui/material';
 import { ChevronUp, HeartPulse, Pencil, TrendingDown, TrendingUp } from 'lucide-react';
 import { useDialog } from '@hooks';
 import EditMedicalInfoModal from './edit-medical-info';
+import { MedicalInformation } from 'src/types/medical-information';
+import { MedicalInformationRequest } from 'src/api/medical-record';
 
 interface MedicalInfoCardProps {
-  medicalInfo: any;
+  medicalInfo: MedicalInformation;
+  updateMedicalInfo?: (values: MedicalInformationRequest) => Promise<void>;
 }
 
 const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
@@ -16,7 +19,11 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
   return (
     <Card className='w-full lg:p-5 '>
       <CardContent className='p-4' style={{ justifyContent: 'normal', padding: 0, margin: 0 }}>
-        <EditMedicalInfoModal open={dialog.open} onClose={dialog.handleClose} />
+        <EditMedicalInfoModal
+          open={dialog.open}
+          onClose={dialog.handleClose}
+          onConfirm={props.updateMedicalInfo!}
+        />
         <Box>
           <Box className='w-full flex justify-between mb-4 text-[#0E1680]'>
             <Box className='flex gap-3 items-center'>
@@ -43,26 +50,7 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
                   >
                     BMI
                   </Typography>
-                  {/* <div className='flex gap-2 text-[#09A909]'>
-                    <TrendingUp />
-                    <div>10</div>
-                  </div> */}
                 </Box>
-
-                {/* <Box className='flex items-center justify-between mb-1'>
-                <Typography
-                  variant='body2'
-                  sx={{
-                    color: '#101828',
-                    fontWeight: 'bold'
-                  }}
-                >
-                  30%
-                </Typography>
-                <Box className='w-full bg-blue-100 rounded-full h-2 ml-2'>
-                  <Box className='bg-blue-500 h-2 rounded-full' style={{ width: '30%' }}></Box>
-                </Box>
-              </Box> */}
                 <Box>
                   <Typography
                     variant='h5'
@@ -72,7 +60,7 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
                     }}
                   >
                     {(
-                      (medicalInfo.weight / (medicalInfo.height * medicalInfo.height)) *
+                      (medicalInfo?.weight / (medicalInfo?.height * medicalInfo?.height)) *
                       10000
                     ).toFixed(2)}
                   </Typography>
@@ -89,10 +77,6 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
                   >
                     Height
                   </Typography>
-                  {/* <div className='flex gap-2 text-[#09A909]'>
-                    <TrendingUp />
-                    <div>5</div>
-                  </div> */}
                 </Box>
                 <Box className='flex gap-2 items-end'>
                   <Typography
@@ -102,7 +86,7 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
                       fontWeight: 'bold'
                     }}
                   >
-                    {medicalInfo.height}
+                    {medicalInfo?.height}
                   </Typography>
                   <Typography
                     sx={{
@@ -123,10 +107,6 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
                   >
                     Weight
                   </Typography>
-                  {/* <div className='flex gap-2 text-red-500'>
-                    <TrendingDown />
-                    <div>10</div>
-                  </div> */}
                 </Box>
                 <Box className='flex gap-2 items-end'>
                   <Typography
@@ -136,7 +116,7 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
                       fontWeight: 'bold'
                     }}
                   >
-                    {medicalInfo.weight}
+                    {medicalInfo?.weight}
                   </Typography>
                   <Typography
                     sx={{
@@ -157,10 +137,6 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
                   >
                     Blood Pressure
                   </Typography>
-                  {/* <div className='flex gap-2 text-red-500'>
-                    <TrendingDown />
-                    <div>10</div>
-                  </div> */}
                 </Box>
                 <Box className='flex gap-2 items-end'>
                   <Typography
@@ -170,7 +146,7 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
                       fontWeight: 'bold'
                     }}
                   >
-                    {medicalInfo.bloodPressure}
+                    {medicalInfo?.bloodPressure}
                   </Typography>
                 </Box>
               </Box>
@@ -193,90 +169,11 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
                       fontWeight: 'bold'
                     }}
                   >
-                    {medicalInfo.bloodType}
+                    {medicalInfo?.bloodType}
                   </Typography>
                 </Box>
               </Box>
-              {/* <Box className='bg-blue-50 p-3 rounded-lg'>
-                <Typography
-                  variant='body2'
-                  sx={{
-                    color: '#475467',
-                    mb: 1
-                  }}
-                >
-                  Blood Type
-                </Typography>
-                <Box className='flex gap-2 items-end'>
-                  <Typography
-                    variant='h5'
-                    sx={{
-                      color: '#101828',
-                      fontWeight: 'bold'
-                    }}
-                  >
-                    {medicalInfo.bloodType}
-                  </Typography>
-                </Box>
-              </Box> */}
             </Box>
-            {/* <Box className='col-span-2 grid grid-cols-2 gap-5'>
-              <Box>
-                <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
-                  Blood Type
-                </Typography>
-                <Typography variant='body1' sx={{ color: '#101828' }}>
-                  {medicalInfo.bloodType}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
-                  Insurance Type
-                </Typography>
-                <Typography variant='body1' sx={{ color: '#101828' }}>
-                  {medicalInfo.insuranceType}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
-                  Insurance Card Number
-                </Typography>
-                <Typography variant='body1' sx={{ color: '#101828' }}>
-                  {medicalInfo.insuranceCardNumber}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
-                  Insurance Period
-                </Typography>
-                <Typography variant='body1' sx={{ color: '#101828' }}>
-                  {medicalInfo.insurancePeriod}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
-                  Allergies
-                </Typography>
-                <Typography variant='body1' sx={{ color: '#101828' }}>
-                  {medicalInfo.allergies}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
-                  Vaccinations
-                </Typography>
-                {medicalInfo.vaccination?.map((item: any) => (
-                  <Box className='flex items-center justify-between' key={item.name}>
-                    <Typography variant='body1' sx={{ color: '#101828', mb: 1 }}>
-                      - {item.name}
-                    </Typography>
-                    <Typography variant='body1' sx={{ color: '#475467', mb: 1 }}>
-                      {item.date}
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
-            </Box> */}
           </Box>
         </Box>
       </CardContent>

@@ -11,7 +11,7 @@ import { Vaccination } from 'src/types/vaccination';
 import { apiDelete, apiGet, apiPatch, apiPost, apiPut, getFormData } from 'src/utils/api-request';
 
 // Interfaces related to medical information management
-export interface MedicalInfomationRequest
+export interface MedicalInformationRequest
   extends Pick<MedicalInformation, 'height' | 'weight' | 'bloodType' | 'bloodPressure'> {}
 
 // Interface related to allergy management
@@ -128,7 +128,7 @@ export interface UpdatePatientRequest
 
 export interface CreatePatientRequest {
   patientInfo: UpdatePatientRequest;
-  medicalInfo: MedicalInfomationRequest;
+  medicalInfo: MedicalInformationRequest;
 }
 
 export interface PatientItemResponse {
@@ -338,14 +338,14 @@ export class MedicalRecordsApi {
   // Api related to medical information management
 
   static async getMedicalInformation(patientId: string): Promise<MedicalInformation> {
-    return await apiGet(`/api/v1/patients/${patientId}/medical-infor`);
+    return await apiGet(`/api/v1/patients/${patientId}/medical-info`);
   }
 
   static async updateMedicalInformation(
     patientId: string,
-    request: MedicalInfomationRequest
+    request: MedicalInformationRequest
   ): Promise<MedicalInformation> {
-    return await apiPut(`/api/v1/patients/${patientId}/medical-infor`, request);
+    return await apiPut(`/api/v1/patients/${patientId}/medical-info`, request);
   }
 
   // Api related to allergy management
@@ -465,25 +465,25 @@ export class MedicalRecordsApi {
 
   // Api related to medical history management
 
-  static async getMedicalHistories(
+  static async getMedicationHistories(
     patientId: string,
     params: FormData
   ): Promise<MedicalHistoryResponse> {
-    return await apiGet(`/api/v1/patients/${patientId}/medical-histories`, params);
+    return await apiGet(`/api/v1/patients/${patientId}/medication-histories`, params);
   }
 
-  static async getMedicalHistory(
+  static async getMedicationHistory(
     patientId: string,
     medicalHistoryId: string
   ): Promise<MedicalHistory> {
-    return await apiGet(`/api/v1/patients/${patientId}/medical-histories/${medicalHistoryId}`);
+    return await apiGet(`/api/v1/patients/${patientId}/medication-histories/${medicalHistoryId}`);
   }
 
   static async createMedicalHistory(
     patientId: string,
     request: MedicalHistoryRequest
   ): Promise<MedicalHistory> {
-    return await apiPost(`/api/v1/patients/${patientId}/medical-histories`, request);
+    return await apiPost(`/api/v1/patients/${patientId}/medication-histories`, request);
   }
 
   static async updateMedicalHistory(
@@ -492,14 +492,14 @@ export class MedicalRecordsApi {
     request: MedicalHistoryRequest
   ): Promise<MedicalHistory> {
     return await apiPut(
-      `/api/v1/patients/${patientId}/medical-histories/${medicalHistoryId}`,
+      `/api/v1/patients/${patientId}/medication-histories/${medicalHistoryId}`,
       request
     );
   }
 
   static async deleteMedicalHistory(patientId: string, medicalHistoryId: string): Promise<void> {
     return await apiDelete(
-      `/api/v1/patients/${patientId}/medical-histories/${medicalHistoryId}`,
+      `/api/v1/patients/${patientId}/medication-histories/${medicalHistoryId}`,
       {}
     );
   }

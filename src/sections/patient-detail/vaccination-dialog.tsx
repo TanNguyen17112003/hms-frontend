@@ -13,86 +13,79 @@ import { AddPatientTextField } from '../staff/patient-management/add-patient-tex
 import { useFormik } from 'formik';
 import useFunction from 'src/hooks/use-function';
 import { useCallback } from 'react';
-import { MedicalInformationRequest } from 'src/api/medical-record';
+import { VaccinationRequest } from 'src/api/medical-record';
 
-interface EditMedicalInfoModalProps extends DialogProps {
-  onConfirm: (values: MedicalInformationRequest) => Promise<void>;
+interface VaccinationDialogProps extends DialogProps {
+  onConfirm: (values: VaccinationRequest) => Promise<void>;
 }
 
-function EditMedicalInfoModal({ onConfirm, ...DialogProps }: EditMedicalInfoModalProps) {
-  const formik = useFormik<MedicalInformationRequest>({
+function VaccinationDialog({ onConfirm, ...DialogProps }: VaccinationDialogProps) {
+  const formik = useFormik<VaccinationRequest>({
     initialValues: {
-      height: 0,
-      weight: 0,
-      bloodPressure: '',
-      bloodType: ''
+      name: '',
+      date: new Date().toISOString(),
+      notes: ''
     },
     onSubmit: async (values) => {
       await handleSubmitOrderHelper.call(values);
     }
   });
-  const handleSubmitOrder = useCallback(async (values: MedicalInformationRequest) => {
-    await onConfirm(values);
-  }, []);
+
+  const handleSubmitOrder = useCallback(
+    async (values: VaccinationRequest) => {
+      await onConfirm(values);
+    },
+    [onConfirm]
+  );
 
   const handleSubmitOrderHelper = useFunction(handleSubmitOrder, {
-    successMessage: 'Add patient successfully!'
+    successMessage: 'Vaccination added successfully!'
   });
 
   return (
     <Dialog fullWidth maxWidth='md' {...DialogProps}>
       <DialogTitle>
-        <Typography variant='h6'>Edit Patient Medical Info</Typography>
+        <Typography variant='h6'>Add Vaccination</Typography>
         <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
       </DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
           <AddPatientTextField
-            type='number'
-            title='height'
+            type='text'
+            title='Name'
             lg={6}
             xs={12}
             onChange={formik.handleChange}
-            value={formik.values.height}
-            name='height'
-            placeholder='Enter height'
+            value={formik.values.name}
+            name='name'
+            placeholder='Enter vaccination name'
           />
           <AddPatientTextField
-            type='number'
-            title='weight'
+            type='dateTime'
+            title='Date'
             lg={6}
             xs={12}
             onChange={formik.handleChange}
-            value={formik.values.weight}
-            name='weight'
-            placeholder='Enter weight'
+            value={formik.values.date}
+            name='date'
+            placeholder='Enter vaccination date'
           />
           <AddPatientTextField
             type='text'
-            title='Blood Pressure'
-            lg={6}
+            title='Notes'
+            lg={12}
             xs={12}
             onChange={formik.handleChange}
-            value={formik.values.bloodPressure}
-            name='bloodPressure'
-            placeholder='Enter blood pressure'
-          />
-          <AddPatientTextField
-            type='text'
-            title='Blood Type'
-            lg={6}
-            xs={12}
-            onChange={formik.handleChange}
-            value={formik.values.bloodType}
-            name='bloodType'
-            placeholder='Enter blood type'
+            value={formik.values.notes}
+            name='notes'
+            placeholder='Enter notes'
           />
         </Grid>
       </DialogContent>
       <DialogActions className='flex justify-center'>
         <Button
           variant='contained'
-          color={'inherit'}
+          color='inherit'
           onClick={(e) => {
             DialogProps.onClose?.(e, 'escapeKeyDown');
           }}
@@ -113,4 +106,5 @@ function EditMedicalInfoModal({ onConfirm, ...DialogProps }: EditMedicalInfoModa
     </Dialog>
   );
 }
-export default EditMedicalInfoModal;
+
+export default VaccinationDialog;

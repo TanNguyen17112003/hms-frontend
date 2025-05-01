@@ -58,14 +58,19 @@ export interface TimeSlotResponse {
   unavailableTimeSlots: TimeSlot[];
 }
 
+export interface TimeSlotRequest {
+  week: number;
+  date: string;
+}
+
 export class TimeSlotApi {
   // api related to timeslot
-  static async getTimeSlots(week: number, date: string): Promise<TimeSlotResponse> {
-    return await apiGet(`/api/v1/timeslots?week=${week}&date=${date}`);
+  static async getTimeSlots(request: TimeSlotRequest): Promise<TimeSlotResponse> {
+    return await apiGet(`/api/v1/timeslots?week=${request.week}&date=${request.date}`);
   }
 
   static async createTimeSlot(request: CreateTimeSlotRequest): Promise<TimeSlot> {
-    return await apiPost('/ap1/v1/timeslots', request);
+    return await apiPost('/api/v1/timeslots', request);
   }
 
   static async createBulkTimeslot(request: CreateBulkTimeSlotRequest): Promise<TimeSlot[]> {

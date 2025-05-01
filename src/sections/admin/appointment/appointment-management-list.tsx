@@ -1,5 +1,5 @@
 import { Box, Chip, Typography } from '@mui/material';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import usePagination, { UsePaginationResult } from 'src/hooks/use-pagination';
 import { useDialog, useDrawer, useSelection } from '@hooks';
 import { CustomTable } from '@components';
@@ -11,11 +11,13 @@ import ApproveAppointmentDialog from './appointment-approve-dialog';
 import DeclineAppointmentDialog from './appointment-decline-dialog';
 import { useRouter } from 'next/router';
 import { useAuth } from '@hooks';
-import { UserDetail } from 'src/types/user';
+import { PatientDetail, UserDetail } from 'src/types/user';
 import { useUserContext } from 'src/contexts/user/user-context';
 import Pagination from 'src/components/ui/Pagination';
 import { useAppointmentContext } from 'src/contexts/appointment/appointment-context';
 import AppointmentAssignDialog from './appointment-assign-dialog';
+import { MedicalRecordsApi } from 'src/api/medical-record';
+import useFunction from 'src/hooks/use-function';
 
 interface AppointmentManagementListProps {
   appointments: AppointmentDetail[];
@@ -27,7 +29,10 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
   searchInput,
   pagination
 }) => {
+  // const getPatientApi = useFunction(MedicalRecordsApi.getPatient);
   const { user } = useAuth();
+  const [patients, setPatients] = useState<PatientDetail[]>([]);
+
   const { getListUsersApi } = useUserContext();
   const { approveAppointment, rejectAppointment } = useAppointmentContext();
   const assignDialog = useDialog<AppointmentDetailConfig>();
@@ -37,7 +42,7 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
   const editDrawer = useDrawer<AppointmentDetailConfig>();
   const router = useRouter();
 
-  const filteredAppointments = appointments.filter((appointment) => {
+  const filteredAppointments = appointments.map((appointment) => {
     return appointment;
   });
   const results = filteredAppointments.map((appointment, index) => ({
@@ -60,6 +65,30 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
     });
   }, []);
 
+  useEffect(() => {
+    const fetchPatients = async () => {
+      const fetchedPatients: PatientDetail[] = [];
+
+      for (const appointment of appointments) {
+        if (appointment.patientAccountId) {
+          try {
+            const patient = await MedicalRecordsApi.getPatient(appointment.patientAccountId);
+            fetchedPatients.push(patient);
+          } catch (error) {
+            console.error(
+              `Failed to fetch patient with ID ${appointment.patientAccountId}:`,
+              error
+            );
+          }
+        }
+      }
+
+      setPatients(fetchedPatients);
+    };
+
+    fetchPatients();
+  }, [appointments]);
+
   return (
     <Box
       className='px-6 mt-8 py-4 border-2 rounded-xl bg-white'
@@ -68,6 +97,7 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
       <Stack direction='row' justifyContent='space-between' alignItems='center'>
         <Stack direction='row' spacing={2} alignItems='center'>
           <Typography variant='h6'>Appointment List</Typography>
+          <>{JSON.stringify(patients[9])}</>
           <Chip
             label={`${results.length} appointments`}
             sx={{ backgroundColor: 'rgba(229, 231, 251, 1)', color: 'rgba(7, 11, 92, 1)' }}

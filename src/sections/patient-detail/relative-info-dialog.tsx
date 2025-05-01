@@ -13,86 +13,79 @@ import { AddPatientTextField } from '../staff/patient-management/add-patient-tex
 import { useFormik } from 'formik';
 import useFunction from 'src/hooks/use-function';
 import { useCallback } from 'react';
-import { MedicalInformationRequest } from 'src/api/medical-record';
+import { PatientRelativeRequest } from 'src/api/medical-record';
 
-interface EditMedicalInfoModalProps extends DialogProps {
-  onConfirm: (values: MedicalInformationRequest) => Promise<void>;
+interface RelativeInfoDialogProps extends DialogProps {
+  onConfirm: (values: PatientRelativeRequest) => Promise<void>;
 }
 
-function EditMedicalInfoModal({ onConfirm, ...DialogProps }: EditMedicalInfoModalProps) {
-  const formik = useFormik<MedicalInformationRequest>({
+function RelativeInfoDialog({ onConfirm, ...DialogProps }: RelativeInfoDialogProps) {
+  const formik = useFormik<PatientRelativeRequest>({
     initialValues: {
-      height: 0,
-      weight: 0,
-      bloodPressure: '',
-      bloodType: ''
+      fullName: '',
+      relationship: '',
+      phoneNumber: ''
     },
     onSubmit: async (values) => {
       await handleSubmitOrderHelper.call(values);
     }
   });
-  const handleSubmitOrder = useCallback(async (values: MedicalInformationRequest) => {
-    await onConfirm(values);
-  }, []);
+
+  const handleSubmitOrder = useCallback(
+    async (values: PatientRelativeRequest) => {
+      await onConfirm(values);
+    },
+    [onConfirm]
+  );
 
   const handleSubmitOrderHelper = useFunction(handleSubmitOrder, {
-    successMessage: 'Add patient successfully!'
+    successMessage: 'Relative information added successfully!'
   });
 
   return (
     <Dialog fullWidth maxWidth='md' {...DialogProps}>
       <DialogTitle>
-        <Typography variant='h6'>Edit Patient Medical Info</Typography>
+        <Typography variant='h6'>Add Relative Information</Typography>
         <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
       </DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
           <AddPatientTextField
-            type='number'
-            title='height'
+            type='text'
+            title='Full Name'
             lg={6}
             xs={12}
             onChange={formik.handleChange}
-            value={formik.values.height}
-            name='height'
-            placeholder='Enter height'
-          />
-          <AddPatientTextField
-            type='number'
-            title='weight'
-            lg={6}
-            xs={12}
-            onChange={formik.handleChange}
-            value={formik.values.weight}
-            name='weight'
-            placeholder='Enter weight'
+            value={formik.values.fullName}
+            name='fullName'
+            placeholder="Enter relative's full name"
           />
           <AddPatientTextField
             type='text'
-            title='Blood Pressure'
+            title='Relationship'
             lg={6}
             xs={12}
             onChange={formik.handleChange}
-            value={formik.values.bloodPressure}
-            name='bloodPressure'
-            placeholder='Enter blood pressure'
+            value={formik.values.relationship}
+            name='relationship'
+            placeholder='Enter relationship'
           />
           <AddPatientTextField
             type='text'
-            title='Blood Type'
-            lg={6}
+            title='Phone Number'
+            lg={12}
             xs={12}
             onChange={formik.handleChange}
-            value={formik.values.bloodType}
-            name='bloodType'
-            placeholder='Enter blood type'
+            value={formik.values.phoneNumber}
+            name='phoneNumber'
+            placeholder='Enter phone number'
           />
         </Grid>
       </DialogContent>
       <DialogActions className='flex justify-center'>
         <Button
           variant='contained'
-          color={'inherit'}
+          color='inherit'
           onClick={(e) => {
             DialogProps.onClose?.(e, 'escapeKeyDown');
           }}
@@ -113,4 +106,5 @@ function EditMedicalInfoModal({ onConfirm, ...DialogProps }: EditMedicalInfoModa
     </Dialog>
   );
 }
-export default EditMedicalInfoModal;
+
+export default RelativeInfoDialog;

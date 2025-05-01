@@ -25,6 +25,9 @@ export const paths = {
       index: '/appointment/appointment-add'
     }
   },
+  timeSlot: {
+    index: '/timeSlot'
+  },
   staff: {
     index: '/staff'
   },

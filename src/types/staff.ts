@@ -21,6 +21,29 @@ export interface Staff {
   services: string[];
 }
 
+export const initialStaff: Staff = {
+  id: '',
+  fullName: '',
+  email: '',
+  ssn: '',
+  dateOfBirth: '',
+  sex: '',
+  phoneNumber: '',
+  nationality: '',
+  address: '',
+  biography: '',
+  role: 'STAFF',
+  startWorkingDate: '',
+  status: 'ACTIVE',
+  createdAt: null,
+  lastLoginAt: null,
+  licenseNumber: '',
+  qualification: '',
+  department: '',
+  specializations: [],
+  services: []
+};
+
 export interface StaffListResponse {
   content: Staff[];
   last: boolean;

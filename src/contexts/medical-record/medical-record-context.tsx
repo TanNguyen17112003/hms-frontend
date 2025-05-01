@@ -46,7 +46,7 @@ interface ContextValue {
   getFamilyHistoriesApi: UseFunctionReturnType<FormData, FamilyHistoryResponse>;
   getPatientRelativesApi: UseFunctionReturnType<FormData, PatientRelativeResponse>;
   getPatientsApi: UseFunctionReturnType<FormData, PatientResponse>;
-  getMedicalHistoiesApi: UseFunctionReturnType<FormData, MedicalHistoryResponse>;
+  getMedicationHistoiesApi: UseFunctionReturnType<FormData, MedicalHistoryResponse>;
   getMedicalRecordsApi: UseFunctionReturnType<FormData, MedicalRecordResponse>;
   getVaccinationsApi: UseFunctionReturnType<FormData, VaccinationResponse>;
   getPastDiseasesApi: UseFunctionReturnType<FormData, PastDiseaseResponse>;
@@ -80,12 +80,12 @@ interface ContextValue {
   setSurgicalHistoryFilter: (filter: ItemFilter) => void;
 }
 
-export const UserContext = createContext<ContextValue>({
+export const MedicalContext = createContext<ContextValue>({
   getAllergiesApi: DEFAULT_FUNCTION_RETURN,
   getFamilyHistoriesApi: DEFAULT_FUNCTION_RETURN,
   getPatientRelativesApi: DEFAULT_FUNCTION_RETURN,
   getPatientsApi: DEFAULT_FUNCTION_RETURN,
-  getMedicalHistoiesApi: DEFAULT_FUNCTION_RETURN,
+  getMedicationHistoiesApi: DEFAULT_FUNCTION_RETURN,
   getMedicalRecordsApi: DEFAULT_FUNCTION_RETURN,
   getVaccinationsApi: DEFAULT_FUNCTION_RETURN,
   getPastDiseasesApi: DEFAULT_FUNCTION_RETURN,
@@ -236,7 +236,7 @@ export const UserContext = createContext<ContextValue>({
   setSurgicalHistoryFilter: () => {}
 });
 
-const UserProvider = ({ children }: { children: ReactNode }) => {
+const MedicalProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const getAllergiesApi = useFunction((params: FormData) =>
     MedicalRecordsApi.getAllergies(router.query.patientId as string, params)
@@ -248,8 +248,8 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     MedicalRecordsApi.getPatientRelatives(router.query.patientId as string, params)
   );
   const getPatientsApi = useFunction(MedicalRecordsApi.getPatients);
-  const getMedicalHistoiesApi = useFunction((params: FormData) =>
-    MedicalRecordsApi.getMedicalHistories(router.query.patientId as string, params)
+  const getMedicationHistoiesApi = useFunction((params: FormData) =>
+    MedicalRecordsApi.getMedicationHistories(router.query.patientId as string, params)
   );
   const getMedicalRecordsApi = useFunction((params: FormData) =>
     MedicalRecordsApi.getMedicalRecords(router.query.patientId as string, params)
@@ -276,7 +276,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     count: getPatientsApi.data?.totalElements || 0
   });
   const medicalHistoryPagination = usePagination({
-    count: getMedicalHistoiesApi.data?.totalElements || 0
+    count: getMedicationHistoiesApi.data?.totalElements || 0
   });
   const medicalRecordPagination = usePagination({
     count: getMedicalRecordsApi.data?.totalElements || 0
@@ -338,7 +338,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     Object.entries(medicalHistoryFilter).forEach(([key, value]) => {
       formData.append(key, value.toString());
     });
-    getMedicalHistoiesApi.call(formData);
+    getMedicationHistoiesApi.call(formData);
   }, [medicalHistoryFilter]);
 
   useEffect(() => {
@@ -374,13 +374,13 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
   }, [surgicalHistoryFilter]);
 
   return (
-    <UserContext.Provider
+    <MedicalContext.Provider
       value={{
         getAllergiesApi,
         getFamilyHistoriesApi,
         getPatientRelativesApi,
         getPatientsApi,
-        getMedicalHistoiesApi,
+        getMedicationHistoiesApi,
         getMedicalRecordsApi,
         getVaccinationsApi,
         getPastDiseasesApi,
@@ -415,10 +415,10 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
       }}
     >
       {children}
-    </UserContext.Provider>
+    </MedicalContext.Provider>
   );
 };
 
-export const useUserContext = () => useContext(UserContext);
+export const useMedicalContext = () => useContext(MedicalContext);
 
-export default UserProvider;
+export default MedicalProvider;

@@ -13,79 +13,68 @@ import { AddPatientTextField } from '../staff/patient-management/add-patient-tex
 import { useFormik } from 'formik';
 import useFunction from 'src/hooks/use-function';
 import { useCallback } from 'react';
-import { MedicalInformationRequest } from 'src/api/medical-record';
+import { SurgicalHistoryRequest } from 'src/api/medical-record';
 
-interface EditMedicalInfoModalProps extends DialogProps {
-  onConfirm: (values: MedicalInformationRequest) => Promise<void>;
+interface SurgicalHistoryDialogProps extends DialogProps {
+  onConfirm: (values: SurgicalHistoryRequest) => Promise<void>;
 }
 
-function EditMedicalInfoModal({ onConfirm, ...DialogProps }: EditMedicalInfoModalProps) {
-  const formik = useFormik<MedicalInformationRequest>({
+function SurgicalHistoryDialog({ onConfirm, ...DialogProps }: SurgicalHistoryDialogProps) {
+  const formik = useFormik<SurgicalHistoryRequest>({
     initialValues: {
-      height: 0,
-      weight: 0,
-      bloodPressure: '',
-      bloodType: ''
+      name: '',
+      notes: '',
+      year: new Date().getFullYear()
     },
     onSubmit: async (values) => {
       await handleSubmitOrderHelper.call(values);
     }
   });
-  const handleSubmitOrder = useCallback(async (values: MedicalInformationRequest) => {
+  const handleSubmitOrder = useCallback(async (values: SurgicalHistoryRequest) => {
     await onConfirm(values);
   }, []);
 
   const handleSubmitOrderHelper = useFunction(handleSubmitOrder, {
-    successMessage: 'Add patient successfully!'
+    successMessage: 'Add surgical history successfully!'
   });
 
   return (
     <Dialog fullWidth maxWidth='md' {...DialogProps}>
       <DialogTitle>
-        <Typography variant='h6'>Edit Patient Medical Info</Typography>
+        <Typography variant='h6'>Add Surgical History</Typography>
         <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
       </DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
           <AddPatientTextField
-            type='number'
-            title='height'
+            type='text'
+            title='name'
             lg={6}
             xs={12}
             onChange={formik.handleChange}
-            value={formik.values.height}
-            name='height'
-            placeholder='Enter height'
-          />
-          <AddPatientTextField
-            type='number'
-            title='weight'
-            lg={6}
-            xs={12}
-            onChange={formik.handleChange}
-            value={formik.values.weight}
-            name='weight'
-            placeholder='Enter weight'
+            value={formik.values.name}
+            name='name'
+            placeholder='Enter name'
           />
           <AddPatientTextField
             type='text'
-            title='Blood Pressure'
+            title='notes'
             lg={6}
             xs={12}
             onChange={formik.handleChange}
-            value={formik.values.bloodPressure}
-            name='bloodPressure'
-            placeholder='Enter blood pressure'
+            value={formik.values.notes}
+            name='notes'
+            placeholder='Enter notes'
           />
           <AddPatientTextField
-            type='text'
-            title='Blood Type'
-            lg={6}
+            type='number'
+            title='Year'
+            lg={12}
             xs={12}
             onChange={formik.handleChange}
-            value={formik.values.bloodType}
-            name='bloodType'
-            placeholder='Enter blood type'
+            value={formik.values.year}
+            name='year'
+            placeholder='Enter year'
           />
         </Grid>
       </DialogContent>
@@ -113,4 +102,4 @@ function EditMedicalInfoModal({ onConfirm, ...DialogProps }: EditMedicalInfoModa
     </Dialog>
   );
 }
-export default EditMedicalInfoModal;
+export default SurgicalHistoryDialog;

@@ -1,3 +1,4 @@
+import { Staff } from './staff';
 import { StaffDetail } from './user';
 
 export type AppointmentStatus = 'DECLINED' | 'PENDING' | 'COMPLETED';
@@ -6,7 +7,7 @@ export type AppointmentType = 'FIRST_VISIT' | 'FOLLOW_UP';
 
 export interface Appointment {
   id: string;
-  doctor: StaffDetail;
+  doctor: Staff;
   date: string;
   patientAccountId: string;
   timeSlot: TimeSlot;

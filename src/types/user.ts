@@ -1,4 +1,4 @@
-type UserRole = 'ADMIN' | 'STAFF' | 'PATIENT';
+type UserRole = 'ADMIN' | 'STAFF' | 'PATIENT' | 'DOCTOR';
 type UserGender = 'MALE' | 'FEMALE';
 type StaffStatus = 'ACTIVE' | 'INACTIVE';
 
@@ -35,9 +35,7 @@ export const initialUser: UserDetail = {
   sex: 'MALE'
 };
 
-export interface PatientDetail extends UserDetail {
-  job: string;
-}
+export interface PatientDetail extends UserDetail {}
 export interface StaffDetail extends UserDetail {
   status: StaffStatus;
   startWorkingDate: string;

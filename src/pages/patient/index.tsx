@@ -4,8 +4,7 @@ import AppointmentProvider from 'src/contexts/appointment/appointment-context';
 import UserProvider from 'src/contexts/user/user-context';
 import { useAuth, useDialog } from '@hooks';
 import ContentHeader from 'src/components/content-header';
-import { useState } from 'react';
-import { patients } from 'src/utils/generate-mock';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Button, InputAdornment, Stack, TextField } from '@mui/material';
 import { PlusIcon, SearchIcon } from 'lucide-react';
@@ -13,15 +12,35 @@ import PatientDetail from 'src/sections/patient-detail/patient-detail';
 import PatientManagementList from 'src/sections/admin/patient-management/patient-management-list';
 import AddPatientDialog from 'src/sections/staff/patient-management/add-patient-dialog';
 import AdvancedFilter from 'src/components/advanced-filter/advanced-filter';
+import { MedicalRecordsApi } from 'src/api/medical-record';
+import useFunction from 'src/hooks/use-function';
+import { LoadingProcess } from '@components';
 
 const Page: PageType = () => {
   const { user } = useAuth();
   const router = useRouter();
   const addDialog = useDialog();
+  const getPatientsApi = useFunction(MedicalRecordsApi.getPatients);
   const [searchInput, setSearchInput] = useState<string>('');
   const handleSearch = () => {
     console.log(searchInput);
   };
+
+  const response = useMemo(() => {
+    return getPatientsApi.data?.content || [];
+  }, [getPatientsApi.data]);
+
+  const patients = useMemo(() => {
+    return response.map((patient) => {
+      return patient.patient;
+    });
+  }, [response]);
+
+  useEffect(() => {
+    getPatientsApi.call(new FormData());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Box
       sx={{
@@ -65,7 +84,7 @@ const Page: PageType = () => {
                 />
                 <Stack className='max-sm:ml-auto' direction={'row'} gap={1} alignItems={'center'}>
                   <AdvancedFilter filters={[]} />
-                  {user?.role === 'STAFF' && (
+                  {(user?.role === 'STAFF' || user?.role === 'DOCTOR') && (
                     <Button
                       variant='contained'
                       className='w-40'
@@ -86,6 +105,7 @@ const Page: PageType = () => {
           </Box>
         </>
       )}
+      {getPatientsApi.loading && <LoadingProcess />}
     </Box>
   );
 };

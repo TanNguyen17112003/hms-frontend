@@ -1,13 +1,13 @@
-import { UserDetail, PatientDetail, StaffDetail, initialUser } from '../types/user';
+import { UserDetail, PatientDetail, initialUser } from '../types/user';
 import {
   Appointment,
   TimeSlot,
-  Schedule,
   AppointmentStatus,
   TimeSlotStatus,
   AppointmentType
 } from '../types/appointment';
 import { v4 as uuidv4 } from 'uuid';
+import { initialStaff, Staff } from 'src/types/staff';
 
 const appointmentStatusList: AppointmentStatus[] = ['DECLINED', 'PENDING', 'COMPLETED'];
 const timeSlotStatusList: TimeSlotStatus[] = ['AVAILABLE', 'BOOKED'];
@@ -22,10 +22,11 @@ const generateRandomTimeSlot = (): TimeSlot => {
   const endTime = new Date(startTime.getTime() + 30 * 60 * 1000); // 30 minutes slot
   return {
     id: uuidv4(),
+    week: 14,
     startTime: startTime.toISOString(),
     endTime: endTime.toISOString(),
-    status: timeSlotStatusList[Math.floor(Math.random() * timeSlotStatusList.length)],
-    date: startTime.toISOString().split('T')[0]
+    date: startTime.toISOString().split('T')[0],
+    totalMaxAppointment: 3
   };
 };
 
@@ -44,76 +45,23 @@ const generatePatients = (): PatientDetail[] => {
       email: `patient${i + 1}@gmail.com`,
       role: 'PATIENT',
       ssn: `SSN${i + 1}`,
-      sex: i % 2 === 0 ? 'MALE' : 'FEMALE',
-      job: `Job ${i + 1}`
+      sex: i % 2 === 0 ? 'MALE' : 'FEMALE'
     });
   }
   return patients;
 };
 
-const generateDoctors = (patients: PatientDetail[]): StaffDetail[] => {
-  const doctors: StaffDetail[] = [];
+const generateDoctors = (patients: PatientDetail[]): Staff[] => {
+  const doctors: Staff[] = [];
   for (let i = 0; i < 10; i++) {
-    const schedule: Schedule[] = [];
-    for (let j = 0; j < 7; j++) {
-      schedule.push({
-        id: uuidv4(),
-        staffId: uuidv4(),
-        timeSlots: Array.from({ length: 8 }, generateRandomTimeSlot)
-      });
-    }
-    doctors.push({
-      ...initialUser,
-      id: uuidv4(),
-      fullName: `Doctor ${i + 1}`,
-      phoneNumber: `987654321${i}`,
-      photoUrl:
-        'https://static.vecteezy.com/system/resources/previews/027/245/520/original/male-3d-avatar-free-png.png',
-      dateOfBirth: generateRandomDate(new Date(1960, 0, 1), new Date(1990, 0, 1)).toISOString(),
-      address: `Address ${i + 1}`,
-      role: 'STAFF',
-      email: `doctor${i + 1}@gmail.com`,
-      ssn: `SSN${i + 1}`,
-      sex: i % 2 === 0 ? 'MALE' : 'FEMALE',
-      speciality: `Speciality ${i + 1}`,
-      status: i % 2 === 0 ? 'FULL_TIME' : 'PART_TIME',
-      qualification: `Qualification ${i + 1}`,
-      licenseNumber: `License${i + 1}`,
-      patients: patients.slice(0, Math.floor(Math.random() * patients.length)),
-      schedule
-    });
+    doctors.push(initialStaff);
   }
   return doctors;
 };
 
-const generateAppointments = (patients: PatientDetail[], doctors: StaffDetail[]): Appointment[] => {
+const generateAppointments = (patients: PatientDetail[], doctors: Staff[]): Appointment[] => {
   const appointments: Appointment[] = [];
-  doctors.forEach((doctor) => {
-    doctor.schedule.forEach((schedule) => {
-      schedule.timeSlots.forEach((timeSlot) => {
-        if (timeSlot.status === 'AVAILABLE') {
-          const patient = patients[Math.floor(Math.random() * patients.length)];
-          const randomDate = generateRandomDate(
-            new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-            new Date()
-          );
-          appointments.push({
-            id: uuidv4(),
-            staffId: doctor.id,
-            userId: patient.id,
-            timeSlot,
-            date: randomDate.toISOString(),
-            notes: `Appointment notes for ${patient.fullName} with ${doctor.fullName}`,
-            status: appointmentStatusList[Math.floor(Math.random() * appointmentStatusList.length)],
-            type: appointmentTypeList[Math.floor(Math.random() * appointmentTypeList.length)],
-            createdAt: generateRandomDate(new Date(2015, 0, 1), new Date(2025, 0, 1)).toISOString(),
-            reason: `Reason for appointment ${Math.floor(Math.random() * 100)}`
-          });
-          timeSlot.status = 'BOOKED';
-        }
-      });
-    });
-  });
+  doctors.forEach((doctor) => {});
   return appointments;
 };
 

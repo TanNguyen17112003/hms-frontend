@@ -1,4 +1,4 @@
-export type FilterType = 'select' | 'dateRange';
+export type FilterType = 'select' | 'dateRange' | 'text' | 'number';
 
 export interface SelectFilterOption {
   label: string;
@@ -10,5 +10,5 @@ export interface Filter {
   title: string;
   value: any;
   onChange: (value: any) => void;
-  options?: SelectFilterOption[]; // Only for select filters
+  options?: SelectFilterOption[];
 }

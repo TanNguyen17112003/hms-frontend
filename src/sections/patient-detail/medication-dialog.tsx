@@ -13,25 +13,27 @@ import { AddPatientTextField } from '../staff/patient-management/add-patient-tex
 import { useFormik } from 'formik';
 import useFunction from 'src/hooks/use-function';
 import { useCallback } from 'react';
-import { MedicalInformationRequest } from 'src/api/medical-record';
+import { MedicalHistoryRequest } from 'src/api/medical-record';
 
-interface EditMedicalInfoModalProps extends DialogProps {
-  onConfirm: (values: MedicalInformationRequest) => Promise<void>;
+interface MedicationDialogProps extends DialogProps {
+  onConfirm: (values: MedicalHistoryRequest) => Promise<void>;
 }
 
-function EditMedicalInfoModal({ onConfirm, ...DialogProps }: EditMedicalInfoModalProps) {
-  const formik = useFormik<MedicalInformationRequest>({
+function MedicationDialog({ onConfirm, ...DialogProps }: MedicationDialogProps) {
+  const formik = useFormik<MedicalHistoryRequest>({
     initialValues: {
-      height: 0,
-      weight: 0,
-      bloodPressure: '',
-      bloodType: ''
+      name: '',
+      dosage: '',
+      frequency: '',
+      startDate: new Date().toISOString(),
+      endDate: new Date().toISOString(),
+      notes: ''
     },
     onSubmit: async (values) => {
       await handleSubmitOrderHelper.call(values);
     }
   });
-  const handleSubmitOrder = useCallback(async (values: MedicalInformationRequest) => {
+  const handleSubmitOrder = useCallback(async (values: MedicalHistoryRequest) => {
     await onConfirm(values);
   }, []);
 
@@ -42,50 +44,70 @@ function EditMedicalInfoModal({ onConfirm, ...DialogProps }: EditMedicalInfoModa
   return (
     <Dialog fullWidth maxWidth='md' {...DialogProps}>
       <DialogTitle>
-        <Typography variant='h6'>Edit Patient Medical Info</Typography>
+        <Typography variant='h6'>Add Medication</Typography>
         <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
       </DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
           <AddPatientTextField
-            type='number'
-            title='height'
+            type='text'
+            title='name'
             lg={6}
             xs={12}
             onChange={formik.handleChange}
-            value={formik.values.height}
-            name='height'
-            placeholder='Enter height'
-          />
-          <AddPatientTextField
-            type='number'
-            title='weight'
-            lg={6}
-            xs={12}
-            onChange={formik.handleChange}
-            value={formik.values.weight}
-            name='weight'
-            placeholder='Enter weight'
+            value={formik.values.name}
+            name='name'
+            placeholder='Enter name'
           />
           <AddPatientTextField
             type='text'
-            title='Blood Pressure'
+            title='dosage'
             lg={6}
             xs={12}
             onChange={formik.handleChange}
-            value={formik.values.bloodPressure}
-            name='bloodPressure'
-            placeholder='Enter blood pressure'
+            value={formik.values.dosage}
+            name='dosage'
+            placeholder='Enter dosage'
           />
           <AddPatientTextField
             type='text'
-            title='Blood Type'
+            title='Frequency'
             lg={6}
             xs={12}
             onChange={formik.handleChange}
-            value={formik.values.bloodType}
-            name='bloodType'
-            placeholder='Enter blood type'
+            value={formik.values.frequency}
+            name='frequency'
+            placeholder='Enter frequency'
+          />
+          <AddPatientTextField
+            type='text'
+            title='Notes'
+            lg={6}
+            xs={12}
+            onChange={formik.handleChange}
+            value={formik.values.notes}
+            name='notes'
+            placeholder='Enter notes'
+          />
+          <AddPatientTextField
+            type='dateTime'
+            title='Start Date'
+            lg={6}
+            xs={12}
+            onChange={formik.handleChange}
+            value={formik.values.startDate}
+            name='startDate'
+            placeholder='Enter start date'
+          />
+          <AddPatientTextField
+            type='dateTime'
+            title='End Date'
+            lg={6}
+            xs={12}
+            onChange={formik.handleChange}
+            value={formik.values.endDate}
+            name='endDate'
+            placeholder='Enter end date'
           />
         </Grid>
       </DialogContent>
@@ -113,4 +135,4 @@ function EditMedicalInfoModal({ onConfirm, ...DialogProps }: EditMedicalInfoModa
     </Dialog>
   );
 }
-export default EditMedicalInfoModal;
+export default MedicationDialog;

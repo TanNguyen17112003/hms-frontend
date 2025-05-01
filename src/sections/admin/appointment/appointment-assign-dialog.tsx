@@ -55,7 +55,9 @@ function AppointmentAssignDialog({
   }, []);
 
   useEffect(() => {
-    getListStaffs.call(appointment?.timeSlot?.id);
+    if (appointment?.timeSlot?.id !== null) {
+      getListStaffs.call(appointment?.timeSlot?.id);
+    }
   }, [appointment?.timeSlot?.id]);
 
   return (

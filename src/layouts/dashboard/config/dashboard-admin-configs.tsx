@@ -12,7 +12,8 @@ import {
   User,
   Settings,
   LogOut,
-  Bed
+  Bed,
+  Timer
 } from 'lucide-react';
 export const getDashboardAdminConfigs = () => {
   return [
@@ -25,9 +26,14 @@ export const getDashboardAdminConfigs = () => {
           icon: <BarChart2 className='h-6 w-6' />
         },
         {
-          title: 'Appointment',
+          title: 'Appointment management',
           path: paths.appointment.index,
           icon: <CalendarPlus2 className='h-6 w-6' />
+        },
+        {
+          title: 'Timeslot management',
+          path: paths.timeSlot.index,
+          icon: <Timer className='h-6 w-6' />
         },
         {
           title: 'Staff Management',

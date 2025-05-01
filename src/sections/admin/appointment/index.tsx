@@ -15,9 +15,11 @@ export const AppointmentManagement: React.FC = () => {
     useAppointmentContext();
   const [selectedStatus, setSelectedStatus] = useState<string>('');
   const [selectedType, setSelectedType] = useState<string>('');
+
   const appointments = useMemo(() => {
     return getAppointmentListApi.data?.content || [];
   }, [getAppointmentListApi.data]);
+
   const handleSearch = () => {
     console.log(searchInput);
   };

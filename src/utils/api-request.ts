@@ -46,11 +46,17 @@ export const getRequestUrl = (query: string, body?: any) => {
 export const apiFetch = async (input: RequestInfo | URL, init?: RequestInit | undefined) => {
   try {
     const response = await fetch(input, init);
+
+    if (response.status === 204 || response.headers.get('Content-Length') === '0') {
+      return null;
+    }
+
     const result = await response.json();
-    if (!response.ok || (response.status != 200 && response.status != 201)) {
+    if (!response.ok || (response.status !== 200 && response.status !== 201)) {
       const message = `Error: ${result.message || response.status}`;
       throw new Error(message);
     }
+
     const data = JSON.stringify(result);
     return JSON.parse(data, reviver);
   } catch (error) {
@@ -96,11 +102,17 @@ export const apiPost = async (query: string, body: any) => {
 export const apiDelete = async (query: string, body: any) => {
   const isFormData = body instanceof FormData;
   const headers = await getRequestHeaders('DELETE', isFormData);
-  return await apiFetchWithRetry(getRequestUrl(query), {
+  const response = await apiFetchWithRetry(getRequestUrl(query), {
     method: 'DELETE',
     headers,
     body: isFormData ? body : JSON.stringify(body)
   });
+
+  if (response && response.status === 204) {
+    return null;
+  }
+
+  return response;
 };
 
 export const apiPut = async (query: string, body: any) => {

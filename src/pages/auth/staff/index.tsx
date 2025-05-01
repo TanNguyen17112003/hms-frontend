@@ -19,6 +19,7 @@ import logo from 'public/logo-black.png';
 import useFunction from 'src/hooks/use-function';
 import { SignInRequest } from 'src/api/user';
 import { useAuth } from '@hooks';
+import { LoadingProcess } from '@components';
 
 export const loginSchema = Yup.object({
   email: Yup.string().required('Email không được để trống'),
@@ -220,6 +221,7 @@ const Page: PageType = () => {
           />
         </Box>
       </Box>
+      {formik.isSubmitting && <LoadingProcess />}
     </Box>
   );
 };
