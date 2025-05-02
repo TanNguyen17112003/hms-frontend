@@ -23,11 +23,13 @@ interface AppointmentManagementListProps {
   appointments: AppointmentDetail[];
   searchInput: string;
   pagination?: UsePaginationResult;
+  count: number;
 }
 const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
   appointments,
   searchInput,
-  pagination
+  pagination,
+  count
 }) => {
   // const getPatientApi = useFunction(MedicalRecordsApi.getPatient);
   const { user } = useAuth();
@@ -70,15 +72,12 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
       const fetchedPatients: PatientDetail[] = [];
 
       for (const appointment of appointments) {
-        if (appointment.patientAccountId) {
+        if (appointment.patientSsn) {
           try {
-            const patient = await MedicalRecordsApi.getPatient(appointment.patientAccountId);
+            const patient = await MedicalRecordsApi.getPatient(appointment.patientSsn);
             fetchedPatients.push(patient);
           } catch (error) {
-            console.error(
-              `Failed to fetch patient with ID ${appointment.patientAccountId}:`,
-              error
-            );
+            console.error(`Failed to fetch patient with ID ${appointment.patientSsn}:`, error);
           }
         }
       }
@@ -99,7 +98,7 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
           <Typography variant='h6'>Appointment List</Typography>
           <>{JSON.stringify(patients[9])}</>
           <Chip
-            label={`${results.length} appointments`}
+            label={`${count} appointments`}
             sx={{ backgroundColor: 'rgba(229, 231, 251, 1)', color: 'rgba(7, 11, 92, 1)' }}
           />
         </Stack>

@@ -32,10 +32,10 @@ function TimeSlotAssignDialog({
   onConfirm?: () => Promise<void>;
 }) {
   const { user } = useAuth();
-
   const handleAssign = useCallback(
     async (values: Pick<CreateDoctorTimeSlotRequest, 'doctorIds' | 'maxAppointments'>) => {
       try {
+        await console.log(timeSlot?.id);
         await TimeSlotApi.createDoctorTimeSlot({
           ...values,
           timeSlotIds: [timeSlot?.id],
@@ -47,7 +47,7 @@ function TimeSlotAssignDialog({
         throw error;
       }
     },
-    [timeSlot, user]
+    [timeSlot?.id, user]
   );
 
   const handleAssignHelper = useFunction(handleAssign, {
@@ -86,6 +86,7 @@ function TimeSlotAssignDialog({
   return (
     <Dialog fullWidth maxWidth='sm' {...dialogProps}>
       <DialogTitle>
+        <>{timeSlot?.id}</>
         <Typography variant='h6'>Assign time slot to doctors</Typography>
         <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
       </DialogTitle>
@@ -138,7 +139,7 @@ function TimeSlotAssignDialog({
           color='primary'
           onClick={(e) => {
             dialogProps.onClose?.(e, 'escapeKeyDown');
-            formik.handleSubmit();
+            handleAssignHelper.call(formik.values);
           }}
         >
           Confirm

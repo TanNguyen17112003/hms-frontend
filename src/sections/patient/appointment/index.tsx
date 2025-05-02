@@ -25,9 +25,9 @@ export const AppointmentManagement: React.FC = () => {
     useAppointmentContext();
   const appointments = useMemo(() => {
     return (getAppointmentListApi.data?.content || []).filter(
-      (appointment) => appointment.patientAccountId === user?.id
+      (appointment) => appointment.patientSsn === user?.ssn
     );
-  }, [getAppointmentListApi]);
+  }, [getAppointmentListApi, user?.ssn]);
 
   const filters: Filter[] = [
     {

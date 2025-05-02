@@ -448,6 +448,10 @@ export class MedicalRecordsApi {
     return await apiGet(`/api/v1/patients/${patientId}`);
   }
 
+  static async getPatientBySSN(ssn: string): Promise<UserDetail> {
+    return await apiGet(`/api/v1/patients/ssn/${ssn}`);
+  }
+
   static async updatePatient(
     patientId: string,
     request: UpdatePatientRequest

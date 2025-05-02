@@ -22,6 +22,14 @@ export interface CreateBulkTimeSlotRequest {
 
 // interface related to doctor time slot
 
+export interface DoctorTimeslotResponseItem {
+  id: string;
+  maxAppointment: number;
+  timeSlot: TimeSlot;
+  doctor: StaffDetail;
+  assignedBy: any;
+  appointmentInfoDTOs: any[];
+}
 export interface DistributeTimeSlotForDoctorRequest {
   maxAppointmentsPerTimeSlot: number;
   timeSlotIds: string[];
@@ -67,6 +75,10 @@ export class TimeSlotApi {
   // api related to timeslot
   static async getTimeSlots(request: TimeSlotRequest): Promise<TimeSlotResponse> {
     return await apiGet(`/api/v1/timeslots?week=${request.week}&date=${request.date}`);
+  }
+
+  static async getDoctorTimeSlots(id: string): Promise<DoctorTimeslotResponseItem[]> {
+    return await apiGet(`/api/v1/doctor-timeslots/${id}/timeslots`);
   }
 
   static async createTimeSlot(request: CreateTimeSlotRequest): Promise<TimeSlot> {

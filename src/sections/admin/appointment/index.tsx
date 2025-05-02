@@ -20,6 +20,10 @@ export const AppointmentManagement: React.FC = () => {
     return getAppointmentListApi.data?.content || [];
   }, [getAppointmentListApi.data]);
 
+  const count = useMemo(() => {
+    return getAppointmentListApi.data?.totalElements || 0;
+  }, [getAppointmentListApi.data]);
+
   const handleSearch = () => {
     console.log(searchInput);
   };
@@ -114,6 +118,7 @@ export const AppointmentManagement: React.FC = () => {
           appointments={appointments}
           searchInput={searchInput}
           pagination={appointmentPagination}
+          count={count}
         />
       </Box>
       {getAppointmentListApi.loading && <LoadingProcess />}

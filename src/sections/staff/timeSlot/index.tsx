@@ -14,6 +14,8 @@ import { UserDetail } from 'src/types/user';
 import { useDialog } from '@hooks';
 import { TimeSlotApi } from 'src/api/timeSlot';
 import TimeSlotRegisterDialog from './timeSlot-register-dialog';
+import useFunction from 'src/hooks/use-function';
+import getDoctorTimeslotResponseItemOwnedManagementTableConfig from './timeSlotOwned-management-table-config';
 
 function StaffTimeSlotManagement() {
   const { user } = useAuth();
@@ -66,13 +68,26 @@ function StaffTimeSlotManagement() {
   ];
 
   const [tab, setTab] = React.useState(tabs[0].key);
+
   const timeSlotManagementTableConfig = getTimeSlotManagementTableConfig({
     onClickRemove: (data) => console.log('Remove', data),
     onClickAssign: (data) => timeSlotRegisterDialog.handleOpen(data),
     user: user as UserDetail,
     isDoctorOwned: tab === 'all'
   });
+
+  const ownedTimeSlotManagementTableConfig =
+    getDoctorTimeslotResponseItemOwnedManagementTableConfig({
+      onClickRemove: (data) => console.log('Remove', data),
+      onClickAssign: (data) => console.log('Assign', data)
+    });
   const { getTimeSlotListApi, timeSlotFilter, setTimeSlotFilter } = useTimeSlotContext();
+  const getOwnedTimeSlotListApi = useFunction(TimeSlotApi.getDoctorTimeSlots);
+
+  const ownedTimeSlots = useMemo(() => {
+    return getOwnedTimeSlotListApi.data || null;
+  }, [getOwnedTimeSlotListApi.data]);
+
   const timeSlots = useMemo(() => {
     return getTimeSlotListApi.data || null;
   }, [getTimeSlotListApi.data]);
@@ -98,6 +113,10 @@ function StaffTimeSlotManagement() {
     count: results?.length || 0
   });
 
+  const ownedTimeSlotPagination = usePagination({
+    count: ownedTimeSlots?.length || 0
+  });
+
   useEffect(() => {
     setTimeSlotFilter({
       ...timeSlotFilter,
@@ -105,10 +124,15 @@ function StaffTimeSlotManagement() {
       date: dateValue
     });
   }, [weekValue, dateValue]);
+
+  useEffect(() => {
+    getOwnedTimeSlotListApi.call(user?.id as string);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
   return (
     <Stack spacing={2}>
-      <ContentHeader title={'TimeSlot Managemment'} isInComponent />
-      <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
+      <ContentHeader title={'TimeSlot Managemment'} />
+      <Box paddingX={4} display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
         <Tabs
           value={tab}
           onChange={(_, value) => setTab(value)}
@@ -130,11 +154,22 @@ function StaffTimeSlotManagement() {
         </Tabs>
         <AdvancedFilter filters={filters} />
       </Box>
-      <CustomTable
-        rows={results || []}
-        configs={timeSlotManagementTableConfig}
-        pagination={timeSlotPagination}
-      />
+      <Box className='px-4'>
+        {tab === 'owned' && (
+          <CustomTable
+            rows={ownedTimeSlots || []}
+            configs={ownedTimeSlotManagementTableConfig}
+            pagination={ownedTimeSlotPagination}
+          />
+        )}
+        {tab === 'all' && (
+          <CustomTable
+            rows={results || []}
+            configs={timeSlotManagementTableConfig}
+            pagination={timeSlotPagination}
+          />
+        )}
+      </Box>
       <TimeSlotRegisterDialog
         open={timeSlotRegisterDialog.open}
         timeSlot={timeSlotRegisterDialog.data as TimeSlot}

@@ -11,6 +11,8 @@ import { useAuth } from '@hooks';
 import { extractDate, getWeekAndDay } from 'src/utils/format-time-currency';
 import { LoadingProcess } from '@components';
 import useAppSnackbar from 'src/hooks/use-app-snackbar';
+import ContentHeader from 'src/components/content-header';
+import { Add } from 'iconsax-react';
 
 interface AppointmentFormAttributes {
   formik: FormikProps<AppointmentFormProps>;
@@ -61,7 +63,7 @@ export const AppointmentForm: React.FC<AppointmentFormAttributes> = ({ formik, t
           type: formik.values.type,
           notes: responseUrls.urls,
           timeSlotId: formik.values.timeSlotId,
-          patientAccountId: user?.id as string,
+          patientSsn: user?.ssn as string,
           reason: formik.values.reason as string
         });
         if (response) {
@@ -117,95 +119,102 @@ export const AppointmentForm: React.FC<AppointmentFormAttributes> = ({ formik, t
   }, [formik.values.date]);
 
   return (
-    <Stack spacing={2}>
-      {title && (
-        <Typography variant='subtitle1' sx={{ fontWeight: 700 }}>
-          {title}
-        </Typography>
-      )}
-      <Box>
-        <Grid container spacing={2}>
-          <AppointmentFormTextField
-            type='date'
-            title={'Date'}
-            lg={6}
-            xs={12}
-            name={'date'}
-            placeholder='Select date'
-            onChange={formik.handleChange}
-            value={formik.values.date as string}
-          />
-          <AppointmentFormTextField
-            type='text'
-            title={'Timeslot'}
-            lg={6}
-            select
-            xs={12}
-            onChange={formik.handleChange}
-            placeholder='Select timeslot'
-            value={formik.values.timeSlotId as unknown as string}
-            name={'timeSlotId'}
+    <Stack spacing={3}>
+      <ContentHeader
+        title='Add appointment'
+        description='Create your owin appointment and manage it easily'
+        rightSection={
+          <Button
+            startIcon={<Add />}
+            variant='contained'
+            color='primary'
+            onClick={handleCreateAppointment}
           >
-            {timeSlots.map((option, index) => (
-              <MenuItem key={index} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </AppointmentFormTextField>
-          <AppointmentFormTextField
-            type='text'
-            title={'Type'}
-            lg={12}
-            select
-            xs={12}
-            onChange={formik.handleChange}
-            placeholder='Select type'
-            value={formik.values.type as string}
-            name={'type'}
-          >
-            {['FIRST_VISIT', 'FOLLOW_UP'].map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </AppointmentFormTextField>
-          <AppointmentFormTextField
-            type='text'
-            title={'Reason'}
-            xs={12}
-            lg={12}
-            onChange={formik.handleChange}
-            placeholder='Enter reason'
-            value={formik.values.reason as string}
-            name={'reason'}
-            isMultiple
-          />
-          <Grid item xs={12}>
-            <Stack spacing={1}>
-              <Typography variant='body2'>UPLOAD FILE FOR NOTE</Typography>
-              <FileDropzone
-                title='Click to upload or drag and drop'
-                accept={{ '*/*': [] }}
-                caption={'SVG, PNG, JPG or GIF (max. 800x400px)'}
-                files={uploadedFiles}
-                onDrop={handleDrop}
-                onRemove={handleRemove}
-                onRemoveAll={handleRemoveAll}
-                type='multiple'
-              />
-            </Stack>
+            Add
+          </Button>
+        }
+      />
+      <Stack spacing={2}>
+        {title && (
+          <Typography variant='subtitle1' sx={{ fontWeight: 700 }}>
+            {title}
+          </Typography>
+        )}
+        <Box px={2}>
+          <Grid container spacing={2}>
+            <AppointmentFormTextField
+              type='date'
+              title={'Date'}
+              lg={6}
+              xs={12}
+              name={'date'}
+              placeholder='Select date'
+              onChange={formik.handleChange}
+              value={formik.values.date as string}
+            />
+            <AppointmentFormTextField
+              type='text'
+              title={'Timeslot'}
+              lg={6}
+              select
+              xs={12}
+              onChange={formik.handleChange}
+              placeholder='Select timeslot'
+              value={formik.values.timeSlotId as unknown as string}
+              name={'timeSlotId'}
+            >
+              {timeSlots.map((option, index) => (
+                <MenuItem key={index} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </AppointmentFormTextField>
+            <AppointmentFormTextField
+              type='text'
+              title={'Type'}
+              lg={12}
+              select
+              xs={12}
+              onChange={formik.handleChange}
+              placeholder='Select type'
+              value={formik.values.type as string}
+              name={'type'}
+            >
+              {['FIRST_VISIT', 'FOLLOW_UP'].map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </AppointmentFormTextField>
+            <AppointmentFormTextField
+              type='text'
+              title={'Reason'}
+              xs={12}
+              lg={12}
+              onChange={formik.handleChange}
+              placeholder='Enter reason'
+              value={formik.values.reason as string}
+              name={'reason'}
+              isMultiple
+            />
+            <Grid item xs={12}>
+              <Stack spacing={1}>
+                <Typography variant='body2'>UPLOAD FILE FOR NOTE</Typography>
+                <FileDropzone
+                  title='Click to upload or drag and drop'
+                  accept={{ '*/*': [] }}
+                  caption={'SVG, PNG, JPG or GIF (max. 800x400px)'}
+                  files={uploadedFiles}
+                  onDrop={handleDrop}
+                  onRemove={handleRemove}
+                  onRemoveAll={handleRemoveAll}
+                  type='multiple'
+                />
+              </Stack>
+            </Grid>
           </Grid>
-        </Grid>
-        <Button
-          variant='contained'
-          size='large'
-          sx={{ mt: 2 }}
-          fullWidth
-          onClick={handleCreateAppointment}
-        >
-          Test upload
-        </Button>
-      </Box>
+        </Box>
+      </Stack>
     </Stack>
   );
 };

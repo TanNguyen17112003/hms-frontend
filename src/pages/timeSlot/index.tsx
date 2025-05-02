@@ -12,8 +12,8 @@ const Page: PageType = () => {
   const router = useRouter();
 
   return (
-    <Box py={2}>
-      <Box mt={2} px={4}>
+    <Box>
+      <Box>
         {user?.role === 'ADMIN' ? <AdminTimeSlotManagement /> : <StaffTimeSlotManagement />}
       </Box>
     </Box>

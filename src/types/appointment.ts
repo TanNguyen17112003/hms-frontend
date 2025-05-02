@@ -9,7 +9,7 @@ export interface Appointment {
   id: string;
   doctor: Staff;
   date: string;
-  patientAccountId: string;
+  patientSsn: string;
   timeSlot: TimeSlot;
   notes?: string;
   status: AppointmentStatus;
