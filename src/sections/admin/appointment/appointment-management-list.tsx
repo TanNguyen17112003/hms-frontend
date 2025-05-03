@@ -17,38 +17,45 @@ import Pagination from 'src/components/ui/Pagination';
 import { useAppointmentContext } from 'src/contexts/appointment/appointment-context';
 import AppointmentAssignDialog from './appointment-assign-dialog';
 import { MedicalRecordsApi } from 'src/api/medical-record';
-import useFunction from 'src/hooks/use-function';
 
 interface AppointmentManagementListProps {
   appointments: AppointmentDetail[];
   searchInput: string;
   pagination?: UsePaginationResult;
+  count: number;
 }
 const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
   appointments,
   searchInput,
-  pagination
+  pagination,
+  count
 }) => {
-  // const getPatientApi = useFunction(MedicalRecordsApi.getPatient);
   const { user } = useAuth();
   const [patients, setPatients] = useState<PatientDetail[]>([]);
 
-  const { getListUsersApi } = useUserContext();
-  const { approveAppointment, rejectAppointment } = useAppointmentContext();
+  const { rejectAppointment } = useAppointmentContext();
   const assignDialog = useDialog<AppointmentDetailConfig>();
   const select = useSelection<AppointmentDetailConfig>(appointments);
   const rejectDialog = useDialog<AppointmentDetailConfig>();
   const approveDialog = useDialog<AppointmentDetailConfig>();
-  const editDrawer = useDrawer<AppointmentDetailConfig>();
   const router = useRouter();
 
-  const filteredAppointments = appointments.map((appointment) => {
-    return appointment;
-  });
-  const results = filteredAppointments.map((appointment, index) => ({
-    ...appointment,
-    index: index + 1
-  }));
+  const filteredAppointments = useMemo(() => {
+    return appointments.map((appointment) => {
+      const patient = patients.find((patient) => patient.ssn === appointment.patientSsn);
+      return {
+        ...appointment,
+        patient
+      };
+    });
+  }, [appointments, patients]);
+
+  const results = useMemo(() => {
+    return filteredAppointments.map((appointment, index) => ({
+      ...appointment,
+      index: index + 1
+    }));
+  }, [filteredAppointments]);
 
   const AppointmentManagementListConfig = useMemo(() => {
     return getAppointmentManangementTableConfig({
@@ -70,15 +77,12 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
       const fetchedPatients: PatientDetail[] = [];
 
       for (const appointment of appointments) {
-        if (appointment.patientAccountId) {
+        if (appointment.patientSsn) {
           try {
-            const patient = await MedicalRecordsApi.getPatient(appointment.patientAccountId);
+            const patient = await MedicalRecordsApi.getPatientBySSN(appointment.patientSsn);
             fetchedPatients.push(patient);
           } catch (error) {
-            console.error(
-              `Failed to fetch patient with ID ${appointment.patientAccountId}:`,
-              error
-            );
+            console.error(`Failed to fetch patient with ID ${appointment.patientSsn}:`, error);
           }
         }
       }
@@ -99,7 +103,7 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
           <Typography variant='h6'>Appointment List</Typography>
           <>{JSON.stringify(patients[9])}</>
           <Chip
-            label={`${results.length} appointments`}
+            label={`${count} appointments`}
             sx={{ backgroundColor: 'rgba(229, 231, 251, 1)', color: 'rgba(7, 11, 92, 1)' }}
           />
         </Stack>

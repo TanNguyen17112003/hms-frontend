@@ -17,7 +17,7 @@ const MedicalInfoCard: React.FC<MedicalInfoCardProps> = (props) => {
   const dialog = useDialog();
 
   return (
-    <Card className='w-full lg:p-5 '>
+    <Card className='w-full p-5 '>
       <CardContent className='p-4' style={{ justifyContent: 'normal', padding: 0, margin: 0 }}>
         <EditMedicalInfoModal
           open={dialog.open}

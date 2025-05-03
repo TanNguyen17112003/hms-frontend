@@ -119,6 +119,7 @@ function AdminTimeSlotManagement() {
     <>
       <ContentHeader
         title={'TimeSlot Managemment'}
+        description='Manage timeslots for your doctors'
         rightSection={
           <Button
             variant='contained'
@@ -128,9 +129,8 @@ function AdminTimeSlotManagement() {
             Add TimeSlot
           </Button>
         }
-        isInComponent
       />
-      <Stack spacing={2} mt={2}>
+      <Stack spacing={2} mt={2} px={4}>
         <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
           <Tabs
             value={tab}

@@ -27,15 +27,6 @@ const Page: PageType = () => {
       }}
     >
       <>
-        <ContentHeader
-          title='Add appointment'
-          description='Create your owin appointment and manage it easily'
-          rightSection={
-            <Button startIcon={<Add />} variant='contained' color='primary'>
-              Add
-            </Button>
-          }
-        />
         <Box className='px-6 py-4'>
           <AppointmentAdd formik={formik} />
         </Box>

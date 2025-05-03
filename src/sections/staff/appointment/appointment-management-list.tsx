@@ -1,5 +1,5 @@
 import { Box, Chip, Typography } from '@mui/material';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import usePagination from 'src/hooks/use-pagination';
 import { useDialog, useDrawer, useSelection } from '@hooks';
 import { CustomTable } from '@components';
@@ -8,8 +8,8 @@ import getAppointmentManangementTableConfig from 'src/sections/admin/appointment
 import { AppointmentDetail } from 'src/types/appointment';
 import { useRouter } from 'next/router';
 import { useAuth } from '@hooks';
-import { UserDetail } from 'src/types/user';
-import { useUserContext } from 'src/contexts/user/user-context';
+import { PatientDetail, UserDetail } from 'src/types/user';
+import { MedicalRecordsApi } from 'src/api/medical-record';
 
 interface AppointmentManagementListProps {
   appointments: AppointmentDetail[];
@@ -19,19 +19,29 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
   appointments,
   searchInput
 }) => {
+  const [patients, setPatients] = useState<PatientDetail[]>([]);
   const { user } = useAuth();
   const pagination = usePagination({
     count: appointments.length
   });
   const router = useRouter();
 
-  const filteredAppointments = appointments.filter((appointment) => {
-    return appointment;
-  });
-  const results = filteredAppointments.map((appointment, index) => ({
-    ...appointment,
-    index: index + 1
-  }));
+  const filteredAppointments = useMemo(() => {
+    return appointments.map((appointment) => {
+      const patient = patients.find((patient) => patient.ssn === appointment.patientSsn);
+      return {
+        ...appointment,
+        patient
+      };
+    });
+  }, [appointments, patients]);
+
+  const results = useMemo(() => {
+    return filteredAppointments.map((appointment, index) => ({
+      ...appointment,
+      index: index + 1
+    }));
+  }, [filteredAppointments]);
 
   const AppointmentManagementListConfig = useMemo(() => {
     return getAppointmentManangementTableConfig({
@@ -45,6 +55,27 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
       query: { ...router.query, appointmentId: id }
     });
   }, []);
+
+  useEffect(() => {
+    const fetchPatients = async () => {
+      const fetchedPatients: PatientDetail[] = [];
+
+      for (const appointment of appointments) {
+        if (appointment.patientSsn) {
+          try {
+            const patient = await MedicalRecordsApi.getPatientBySSN(appointment.patientSsn);
+            fetchedPatients.push(patient);
+          } catch (error) {
+            console.error(`Failed to fetch patient with ID ${appointment.patientSsn}:`, error);
+          }
+        }
+      }
+
+      setPatients(fetchedPatients);
+    };
+
+    fetchPatients();
+  }, [appointments]);
 
   return (
     <Box

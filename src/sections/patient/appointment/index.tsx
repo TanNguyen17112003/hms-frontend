@@ -25,9 +25,9 @@ export const AppointmentManagement: React.FC = () => {
     useAppointmentContext();
   const appointments = useMemo(() => {
     return (getAppointmentListApi.data?.content || []).filter(
-      (appointment) => appointment.patientAccountId === user?.id
+      (appointment) => appointment.patientSsn === user?.ssn
     );
-  }, [getAppointmentListApi]);
+  }, [getAppointmentListApi, user?.ssn]);
 
   const filters: Filter[] = [
     {
@@ -110,11 +110,7 @@ export const AppointmentManagement: React.FC = () => {
         }
       />
       <Box className='px-6 py-4'>
-        <AppointmentManagementList
-          appointments={appointments}
-          searchInput={searchInput}
-          pagination={appointmentPagination}
-        />
+        <AppointmentManagementList appointments={appointments} searchInput={searchInput} />
       </Box>
       {getAppointmentListApi.loading && <LoadingProcess />}
     </>

@@ -52,6 +52,7 @@ import {
 import useAppSnackbar from 'src/hooks/use-app-snackbar';
 
 interface MedicalHistoryCardProps {
+  isPatient?: boolean;
   medicalInfo: {
     pastDiseases: PastDisease[];
     surgicalHistories: SurgicalHistory[];
@@ -59,24 +60,24 @@ interface MedicalHistoryCardProps {
     allergies: Allergy[];
     vaccinations: Vaccination[];
     familyHistories: FamilyHistory[];
-    createPastDisease: (values: PastDiseaseRequest) => Promise<void>;
-    updatePastDisease: (id: string, values: PastDiseaseRequest) => Promise<void>;
-    deletePastDisease: (id: string) => Promise<void>;
-    createSurgicalHistory: (values: SurgicalHistoryRequest) => Promise<void>;
-    updateSurgicalHistory: (id: string, values: SurgicalHistoryRequest) => Promise<void>;
-    deleteSurgicalHistory: (id: string) => Promise<void>;
-    createMedicationHistory: (values: MedicalHistoryRequest) => Promise<void>;
-    updateMedicationHistory: (id: string, values: MedicalHistoryRequest) => Promise<void>;
-    deleteMedicationHistory: (id: string) => Promise<void>;
-    createAllergy: (values: AllergyRequest) => Promise<void>;
-    updateAllergy: (id: string, values: AllergyRequest) => Promise<void>;
-    deleteAllergy: (id: string) => Promise<void>;
-    createVaccination: (values: VaccinationRequest) => Promise<void>;
-    updateVaccination: (id: string, values: VaccinationRequest) => Promise<void>;
-    deleteVaccination: (id: string) => Promise<void>;
-    createFamilyHistory: (values: FamilyHistoryRequest) => Promise<void>;
-    updateFamilyHistory: (id: string, values: FamilyHistoryRequest) => Promise<void>;
-    deleteFamilyHistory: (id: string) => Promise<void>;
+    createPastDisease?: (values: PastDiseaseRequest) => Promise<void>;
+    updatePastDisease?: (id: string, values: PastDiseaseRequest) => Promise<void>;
+    deletePastDisease?: (id: string) => Promise<void>;
+    createSurgicalHistory?: (values: SurgicalHistoryRequest) => Promise<void>;
+    updateSurgicalHistory?: (id: string, values: SurgicalHistoryRequest) => Promise<void>;
+    deleteSurgicalHistory?: (id: string) => Promise<void>;
+    createMedicationHistory?: (values: MedicalHistoryRequest) => Promise<void>;
+    updateMedicationHistory?: (id: string, values: MedicalHistoryRequest) => Promise<void>;
+    deleteMedicationHistory?: (id: string) => Promise<void>;
+    createAllergy?: (values: AllergyRequest) => Promise<void>;
+    updateAllergy?: (id: string, values: AllergyRequest) => Promise<void>;
+    deleteAllergy?: (id: string) => Promise<void>;
+    createVaccination?: (values: VaccinationRequest) => Promise<void>;
+    updateVaccination?: (id: string, values: VaccinationRequest) => Promise<void>;
+    deleteVaccination?: (id: string) => Promise<void>;
+    createFamilyHistory?: (values: FamilyHistoryRequest) => Promise<void>;
+    updateFamilyHistory?: (id: string, values: FamilyHistoryRequest) => Promise<void>;
+    deleteFamilyHistory?: (id: string) => Promise<void>;
   };
   pagination: {
     medications: {
@@ -126,7 +127,12 @@ interface MedicalHistoryCardProps {
   };
 }
 
-const MedicalHistoryCard = ({ medicalInfo, pagination, count }: MedicalHistoryCardProps) => {
+const MedicalHistoryCard = ({
+  isPatient,
+  medicalInfo,
+  pagination,
+  count
+}: MedicalHistoryCardProps) => {
   const pastDiseaseDialog = useDialog();
   const surgicalHistoryDialog = useDialog();
   const medicationHistoryDialog = useDialog();
@@ -279,14 +285,16 @@ const MedicalHistoryCard = ({ medicalInfo, pagination, count }: MedicalHistoryCa
                       <Pill className='w-5 h-5' />
                       <div className='font-semibold'>Medications</div>
                     </Box>
-                    <Button
-                      variant='outlined'
-                      size='small'
-                      startIcon={<Plus />}
-                      onClick={medicationHistoryDialog.handleOpen}
-                    >
-                      Add
-                    </Button>
+                    {!isPatient && (
+                      <Button
+                        variant='outlined'
+                        size='small'
+                        startIcon={<Plus />}
+                        onClick={medicationHistoryDialog.handleOpen}
+                      >
+                        Add
+                      </Button>
+                    )}
                   </div>
                   {medicalInfo.medications?.length > 0 ? (
                     renderEditableTable(
@@ -301,8 +309,8 @@ const MedicalHistoryCard = ({ medicalInfo, pagination, count }: MedicalHistoryCa
                         'Actions'
                       ],
                       ['name', 'dosage', 'frequency', 'startDate', 'endDate'],
-                      medicalInfo.updateMedicationHistory,
-                      medicalInfo.deleteMedicationHistory,
+                      medicalInfo.updateMedicationHistory as any,
+                      medicalInfo.deleteMedicationHistory as any,
                       [],
                       pagination.medications.page,
                       pagination.medications.rowsPerPage,
@@ -330,14 +338,16 @@ const MedicalHistoryCard = ({ medicalInfo, pagination, count }: MedicalHistoryCa
                       <Syringe className='w-5 h-5' />
                       <div className='font-semibold'>Vaccinations</div>
                     </Box>
-                    <Button
-                      variant='outlined'
-                      size='small'
-                      startIcon={<Plus />}
-                      onClick={vaccinationDialog.handleOpen}
-                    >
-                      Add
-                    </Button>
+                    {!isPatient && (
+                      <Button
+                        variant='outlined'
+                        size='small'
+                        startIcon={<Plus />}
+                        onClick={vaccinationDialog.handleOpen}
+                      >
+                        Add
+                      </Button>
+                    )}
                   </div>
                   {medicalInfo.vaccinations?.length > 0 ? (
                     renderEditableTable(
@@ -345,8 +355,8 @@ const MedicalHistoryCard = ({ medicalInfo, pagination, count }: MedicalHistoryCa
                       medicalInfo.vaccinations,
                       ['Vaccine Name', 'Date', 'Notes', 'Actions'],
                       ['name', 'date', 'notes'],
-                      medicalInfo.updateVaccination,
-                      medicalInfo.deleteVaccination,
+                      medicalInfo.updateVaccination as any,
+                      medicalInfo.deleteVaccination as any,
                       [],
                       pagination.vaccinations.page,
                       pagination.vaccinations.rowsPerPage,
@@ -374,14 +384,16 @@ const MedicalHistoryCard = ({ medicalInfo, pagination, count }: MedicalHistoryCa
                       <Dna className='w-5 h-5' />
                       <div className='font-semibold'>Past Diseases</div>
                     </Box>
-                    <Button
-                      variant='outlined'
-                      size='small'
-                      startIcon={<Plus />}
-                      onClick={pastDiseaseDialog.handleOpen}
-                    >
-                      Add
-                    </Button>
+                    {!isPatient && (
+                      <Button
+                        variant='outlined'
+                        size='small'
+                        startIcon={<Plus />}
+                        onClick={pastDiseaseDialog.handleOpen}
+                      >
+                        Add
+                      </Button>
+                    )}
                   </div>
                   {medicalInfo.pastDiseases?.length > 0 ? (
                     renderEditableTable(
@@ -389,8 +401,8 @@ const MedicalHistoryCard = ({ medicalInfo, pagination, count }: MedicalHistoryCa
                       medicalInfo.pastDiseases,
                       ['Disease Name', 'Notes', 'Actions'],
                       ['name', 'notes'],
-                      medicalInfo.updatePastDisease,
-                      medicalInfo.deletePastDisease,
+                      medicalInfo.updatePastDisease as any,
+                      medicalInfo.deletePastDisease as any,
                       [],
                       pagination.pastDiseases.page,
                       pagination.pastDiseases.rowsPerPage,
@@ -418,14 +430,16 @@ const MedicalHistoryCard = ({ medicalInfo, pagination, count }: MedicalHistoryCa
                       <Activity className='w-5 h-5' />
                       <div className='font-semibold'>Surgical History</div>
                     </Box>
-                    <Button
-                      variant='outlined'
-                      size='small'
-                      startIcon={<Plus />}
-                      onClick={surgicalHistoryDialog.handleOpen}
-                    >
-                      Add
-                    </Button>
+                    {!isPatient && (
+                      <Button
+                        variant='outlined'
+                        size='small'
+                        startIcon={<Plus />}
+                        onClick={surgicalHistoryDialog.handleOpen}
+                      >
+                        Add
+                      </Button>
+                    )}
                   </div>
                   {medicalInfo.surgicalHistories?.length > 0 ? (
                     renderEditableTable(
@@ -433,8 +447,8 @@ const MedicalHistoryCard = ({ medicalInfo, pagination, count }: MedicalHistoryCa
                       medicalInfo.surgicalHistories,
                       ['Surgery Name', 'Year', 'Notes', 'Actions'],
                       ['name', 'year', 'notes'],
-                      medicalInfo.updateSurgicalHistory,
-                      medicalInfo.deleteSurgicalHistory,
+                      medicalInfo.updateSurgicalHistory as any,
+                      medicalInfo.deleteSurgicalHistory as any,
                       [],
                       pagination.surgicalHistories.page,
                       pagination.surgicalHistories.rowsPerPage,
@@ -464,14 +478,16 @@ const MedicalHistoryCard = ({ medicalInfo, pagination, count }: MedicalHistoryCa
                       <ShieldPlus className='w-5 h-5' />
                       <div className='font-semibold'>Allergies</div>
                     </Box>
-                    <Button
-                      variant='outlined'
-                      size='small'
-                      startIcon={<Plus />}
-                      onClick={allergyDialog.handleOpen}
-                    >
-                      Add
-                    </Button>
+                    {!isPatient && (
+                      <Button
+                        variant='outlined'
+                        size='small'
+                        startIcon={<Plus />}
+                        onClick={allergyDialog.handleOpen}
+                      >
+                        Add
+                      </Button>
+                    )}
                   </div>
                   {medicalInfo.allergies?.length > 0 ? (
                     renderEditableTable(
@@ -479,8 +495,8 @@ const MedicalHistoryCard = ({ medicalInfo, pagination, count }: MedicalHistoryCa
                       medicalInfo.allergies,
                       ['Allergen', 'Severity', 'Notes', 'Actions'],
                       ['allergen', 'severity', 'notes'],
-                      medicalInfo.updateAllergy,
-                      medicalInfo.deleteAllergy,
+                      medicalInfo.updateAllergy as any,
+                      medicalInfo.deleteAllergy as any,
                       [],
                       pagination.allergies.page,
                       pagination.allergies.rowsPerPage,
@@ -508,14 +524,16 @@ const MedicalHistoryCard = ({ medicalInfo, pagination, count }: MedicalHistoryCa
                       <Users className='w-5 h-5' />
                       <div className='font-semibold'>Family History</div>
                     </Box>
-                    <Button
-                      variant='outlined'
-                      size='small'
-                      startIcon={<Plus />}
-                      onClick={familyHistoryDialog.handleOpen}
-                    >
-                      Add
-                    </Button>
+                    {!isPatient && (
+                      <Button
+                        variant='outlined'
+                        size='small'
+                        startIcon={<Plus />}
+                        onClick={familyHistoryDialog.handleOpen}
+                      >
+                        Add
+                      </Button>
+                    )}
                   </div>
                   {medicalInfo.familyHistories?.length > 0 ? (
                     renderEditableTable(
@@ -523,8 +541,8 @@ const MedicalHistoryCard = ({ medicalInfo, pagination, count }: MedicalHistoryCa
                       medicalInfo.familyHistories,
                       ['Relative', 'Condition', 'Notes', 'Actions'],
                       ['relative', 'condition', 'notes'],
-                      medicalInfo.updateFamilyHistory,
-                      medicalInfo.deleteFamilyHistory,
+                      medicalInfo.updateFamilyHistory as any,
+                      medicalInfo.deleteFamilyHistory as any,
                       [],
                       pagination.familyHistories.page,
                       pagination.familyHistories.rowsPerPage,
@@ -547,32 +565,32 @@ const MedicalHistoryCard = ({ medicalInfo, pagination, count }: MedicalHistoryCa
       <PastDiseaseDialog
         open={pastDiseaseDialog.open}
         onClose={pastDiseaseDialog.handleClose}
-        onConfirm={medicalInfo.createPastDisease}
+        onConfirm={medicalInfo.createPastDisease || (() => Promise.resolve())}
       />
       <SurgicalHistoryDialog
         open={surgicalHistoryDialog.open}
         onClose={surgicalHistoryDialog.handleClose}
-        onConfirm={medicalInfo.createSurgicalHistory}
+        onConfirm={medicalInfo.createSurgicalHistory || (() => Promise.resolve())}
       />
       <MedicationHistoryDialog
         open={medicationHistoryDialog.open}
         onClose={medicationHistoryDialog.handleClose}
-        onConfirm={medicalInfo.createMedicationHistory}
+        onConfirm={medicalInfo.createMedicationHistory || (() => Promise.resolve())}
       />
       <AllergyDialog
         open={allergyDialog.open}
         onClose={allergyDialog.handleClose}
-        onConfirm={medicalInfo.createAllergy}
+        onConfirm={medicalInfo.createAllergy || (() => Promise.resolve())}
       />
       <VaccinationDialog
         open={vaccinationDialog.open}
         onClose={vaccinationDialog.handleClose}
-        onConfirm={medicalInfo.createVaccination}
+        onConfirm={medicalInfo.createVaccination || (() => Promise.resolve())}
       />
       <FamilyHistoryDialog
         open={familyHistoryDialog.open}
         onClose={familyHistoryDialog.handleClose}
-        onConfirm={medicalInfo.createFamilyHistory}
+        onConfirm={medicalInfo.createFamilyHistory || (() => Promise.resolve())}
       />
     </Card>
   );

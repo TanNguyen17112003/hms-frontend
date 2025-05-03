@@ -10,7 +10,7 @@ function DashboardAppointment() {
   const { isDesktop } = useResponsive();
   const filteredAppointments = useMemo(() => {
     return appointments.slice(0, 6).map((appointment) => {
-      const patient = patients.find((patient) => patient.id === appointment.patientAccountId);
+      const patient = patients.find((patient) => patient.id === appointment.patientSsn);
       const doctor = doctors.find((doctor) => doctor.id === appointment.doctor.id);
       return {
         ...appointment,

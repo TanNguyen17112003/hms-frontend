@@ -5,7 +5,7 @@ import AdvancedFilter from 'src/components/advanced-filter/advanced-filter';
 import { SearchIcon } from 'lucide-react';
 // import { appointments } from 'src/utils/generate-mock';
 import { useAppointmentContext } from 'src/contexts/appointment/appointment-context';
-import AppointmentManagementList from 'src/sections/admin/appointment/appointment-management-list';
+import AppointmentManagementList from './appointment-management-list';
 import { LoadingProcess } from '@components';
 import { Filter } from 'src/types/filter';
 import { useAuth } from '@hooks';
@@ -28,7 +28,7 @@ export const AppointmentManagement: React.FC = () => {
     return (getAppointmentListApi.data?.content || []).filter(
       (appointment) => appointment?.doctor?.id === user?.id
     );
-  }, [getAppointmentListApi]);
+  }, [getAppointmentListApi.data?.content, user?.id]);
 
   const filters: Filter[] = [
     {
@@ -111,11 +111,7 @@ export const AppointmentManagement: React.FC = () => {
         }
       />
       <Box className='px-6 py-4'>
-        <AppointmentManagementList
-          appointments={appointments}
-          searchInput={searchInput}
-          pagination={appointmentPagination}
-        />
+        <AppointmentManagementList appointments={appointments} searchInput={searchInput} />
       </Box>
       {getAppointmentListApi.loading && <LoadingProcess />}
     </>

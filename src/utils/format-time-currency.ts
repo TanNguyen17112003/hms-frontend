@@ -93,6 +93,18 @@ export const getWeekAndDay = (dateString: string) => {
   };
 };
 
+export const getDateFromWeekandDate = (week: number, date: string) => {
+  const daysOfWeek = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+  const dayIndex = daysOfWeek.indexOf(date);
+  const startOfYear = new Date(new Date().getFullYear(), 0, 1);
+  const startOfWeek = new Date(startOfYear.getTime() + (week - 1) * 7 * 24 * 60 * 60 * 1000);
+  const targetDate = new Date(startOfWeek.getTime() + dayIndex * 24 * 60 * 60 * 1000);
+  const year = targetDate.getFullYear();
+  const month = (targetDate.getMonth() + 1).toString().padStart(2, '0');
+  const day = targetDate.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 export const extractDate = (date: string) => {
   const dateObj = new Date(date);
   const year = dateObj.getFullYear();

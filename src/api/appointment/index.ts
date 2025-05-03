@@ -9,7 +9,7 @@ export interface AppointmentRequest {
   reason: string;
   notes: string[];
   timeSlotId: string;
-  patientAccountId: string;
+  patientSsn: string;
 }
 
 export interface AppointmentResponse {
@@ -73,6 +73,10 @@ export class AppointmentApi {
   }
   static async getAppointments(params: Record<string, any>): Promise<AppointmentResponse> {
     return await apiGet('/api/v1/appointments', params);
+  }
+
+  static async getAppointment(id: string): Promise<Appointment> {
+    return await apiGet(`/api/v1/appointments/${id}/detail`);
   }
 
   static async createAppointment(request: AppointmentRequest): Promise<any> {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Box,
   Divider,
@@ -32,14 +32,7 @@ import {
   Pencil
 } from 'lucide-react';
 import Grid from '@mui/material/Grid2';
-import {
-  archivements,
-  doctorData,
-  educations,
-  timeSlots,
-  weekDays,
-  works
-} from 'src/utils/generate-mock';
+import { archivements, doctorData, educations, weekDays, works } from 'src/utils/generate-mock';
 import { useRouter } from 'next/router';
 import { useSearchParams } from 'next/navigation';
 import { useStaffContext } from 'src/contexts/staff/staff-context';
@@ -50,9 +43,16 @@ import { Staff } from 'src/types/staff';
 import { defaultStaff } from 'src/constants/staff';
 import { LoadingProcess } from '@components';
 import useAppSnackbar from 'src/hooks/use-app-snackbar';
+import { TimeSlotApi } from 'src/api/timeSlot';
+import useFunction from 'src/hooks/use-function';
+import { getDateFromWeekandDate } from 'src/utils/format-time-currency';
 
 const StaffDetail = () => {
   const [selectedDate, setSelectedDate] = useState<number>(4);
+  const getOwnedTimeSlots = useFunction(TimeSlotApi.getDoctorTimeSlots);
+  const timeSlots = useMemo(() => {
+    return getOwnedTimeSlots.data || [];
+  }, [getOwnedTimeSlots.data]);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -99,6 +99,10 @@ const StaffDetail = () => {
   useEffect(() => {
     handleGetStaffDetail();
   }, []);
+
+  useEffect(() => {
+    getOwnedTimeSlots.call(router.query.staffId as string);
+  }, [router.query.staffId]);
 
   function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
     event.preventDefault();
@@ -174,7 +178,6 @@ const StaffDetail = () => {
                 className={`absolute right-5 top-5 w-3 h-3 rounded-full ${staffDetail.status === 'ACTIVE' ? 'bg-green-500' : 'bg-red-500'}`}
               ></div>
               <Stack spacing={2} alignItems='center'>
-                {/* Avatar và Tên */}
                 <Stack spacing={2} alignItems='center'>
                   <Avatar
                     src=''
@@ -191,10 +194,7 @@ const StaffDetail = () => {
                   <Typography variant='h6' fontWeight='600'>
                     {staffDetail.fullName}
                   </Typography>
-                  {/* <Stack direction='row' alignItems='center' spacing={1}>
-                    <Star className='text-yellow-500' />
-                    <Typography variant='body2'>4.7</Typography>
-                  </Stack> */}
+
                   <Stack direction={'row'} spacing={1}>
                     <Typography variant='body2' fontWeight={'light'}>
                       {staffDetail.role}
@@ -206,47 +206,7 @@ const StaffDetail = () => {
                     )}
                   </Stack>
                 </Stack>
-
-                {/* Chuyên môn */}
-                {/* <Stack spacing={0.5} textAlign='center'> */}
-                {/*
-                  <Typography variant='body2' color='gray'>
-                  MDS - Periodontology and Oral Implantology, BDS
-                </Typography>
-                 <Typography variant='body2' color='gray'>
-                    Oral And MaxilloFacial Surgeon, Dentist
-                  </Typography>
-                  <Typography variant='body2' color='gray'>
-                    18 Years Experience Overall (18 years as specialist)
-                  </Typography> */}
-                {/* </Stack> */}
-                {/* <Stack direction={'row'} spacing={1}>
-                  <Hospital size={16} />
-                  <Typography variant='body2' fontWeight={'light'}>
-                    <strong>Department: </strong>{staffDetail.department}
-                  </Typography>
-                </Stack> */}
-
-                {/* Thông tin xác nhận */}
-                {/* <Stack spacing={2} alignItems='center' py={3}>
-                  <Stack direction='row' alignItems='center' spacing={1}>
-                    <ThumbsUp size={16} />
-                    <Typography variant='body2' fontWeight={500}>
-                      98% (250 votes)
-                    </Typography>
-                  </Stack>
-                  <Stack direction='row' alignItems='center' spacing={1}>
-                    <ShieldCheck size={16} />
-                    <Typography variant='body2' fontWeight={500}>
-                      Medical Registration Verified
-                    </Typography>
-                  </Stack>
-                </Stack> */}
               </Stack>
-
-              {/* <Link href='' fontSize={15}>
-                Share your Feedback.
-              </Link> */}
             </CardContent>
           </Card>
           <Card className='shadow-lg border rounded-lg p-5'>
@@ -254,130 +214,26 @@ const StaffDetail = () => {
               {/* Hospital Information Section */}
               <Box className='flex flex-col gap-y-5 w-full'>
                 <Typography variant='h6'>Available Time</Typography>
-                <Divider />
               </Box>
-
-              <Box className='flex flex-col gap-y-5 w-full'>
-                <Box className='flex flex-col gap-y-2 w-full'>
-                  <Typography variant='body2' fontWeight={500}>
-                    United Hospital Limited
-                  </Typography>
-
-                  <Box className='flex items-center w-full justify-between'>
-                    <Stack direction='row' alignItems='center' spacing={1}>
-                      <Box className='flex items-center justify-end'>
-                        <Award fontSize='small' className='text-yellow-500' />
-                        <Typography variant='body2'>5 Star</Typography>
-                      </Box>
-
-                      <Box className='flex items-center'>
-                        <Clock fontSize='small' className='text-blue-600' />
-                        <Typography variant='body2'>Max 15 mins wait</Typography>
-                      </Box>
-                    </Stack>
-
-                    <Typography variant='h6'>$220</Typography>
-                  </Box>
-
-                  <Box className='flex items-center gap-1'>
-                    <MapPin fontSize='small' className='text-gray-500' />
-                    <Typography variant='body2' className='text-gray-500'>
-                      Sylhet, Bangladesh
-                    </Typography>
-                  </Box>
-                </Box>
-                <Divider />
-              </Box>
-
-              {/* Date Selection Section */}
-              <Card
-                className='flex flex-row items-center w-full justify-between shadow-lg'
-                sx={{ borderRadius: '10px' }}
-              >
-                <Box
-                  sx={{
-                    py: 4,
-                    borderBottom: 1,
-                    borderColor: 'divider',
-                    display: 'flex',
-                    alignItems: 'center',
-                    overflowX: 'auto',
-                    boxShadow: 3,
-                    background: 'linear-gradient(to bottom, #E0E7FF, #FFFFFF)'
-                  }}
-                >
-                  <IconButton>
-                    <ChevronLeft />
-                  </IconButton>
-
-                  <Box sx={{ display: 'flex', gap: 1, width: '100%', overflowX: 'auto' }}>
-                    {weekDays.map((day, index) => (
-                      <Button
-                        key={day}
-                        variant={selectedDate === index + 1 ? 'contained' : 'outlined'}
-                        color='primary'
-                        sx={{
-                          minWidth: 0,
-                          px: 4,
-                          py: 1,
-                          backgroundColor:
-                            selectedDate === index + 1 ? 'primary.main' : 'transparent',
-                          color: selectedDate === index + 1 ? 'white' : 'primary.main',
-                          '&:hover': {
-                            backgroundColor:
-                              selectedDate === index + 1 ? 'primary.dark' : 'action.hover'
-                          }
-                        }}
-                        onClick={() => setSelectedDate(index + 1)}
-                      >
-                        {day}
-                        <br />
-                        {index + 1}
-                      </Button>
-                    ))}
-                  </Box>
-
-                  <IconButton>
-                    <ChevronRight />
-                  </IconButton>
-                </Box>
-              </Card>
-
               {/* Time Slots Grid */}
-              <Grid columns={12} container spacing={1} className='mb-2'>
+              <Stack spacing={1} className='mb-2' width={'100%'}>
                 {timeSlots.map((slot, index) => {
                   return (
-                    <Grid size={4} key={index}>
-                      <Button
-                        fullWidth
-                        variant={selectedTimeSlot === slot ? 'contained' : 'outlined'}
-                        className={`
-                      ${
-                        selectedTimeSlot === slot
-                          ? 'bg-blue-600 text-white hover:bg-blue-700'
-                          : 'text-blue-600'
-                      }`}
-                        onClick={() => setSelectedTimeSlot(slot)}
-                      >
-                        {slot}
-                      </Button>
-                    </Grid>
+                    <Card className='w-full p-5' key={index}>
+                      <Typography fontWeight={'bold'}>Date</Typography>
+                      <Typography>
+                        {getDateFromWeekandDate(slot.timeSlot.week, slot.timeSlot.date)}
+                      </Typography>
+                      <Divider sx={{ my: 1 }} />
+                      <Typography fontWeight={'bold'}>Time</Typography>
+                      <Typography>{`${slot.timeSlot.startTime} - ${slot.timeSlot.endTime}`}</Typography>
+                      <Divider sx={{ my: 1 }} />
+                      <Typography fontWeight={'bold'}>Current appointments</Typography>
+                      <Typography>{slot.appointmentInfoDTOs.length}</Typography>
+                    </Card>
                   );
                 })}
-              </Grid>
-
-              {/* Book Appointment Button */}
-              <Button
-                variant='contained'
-                fullWidth
-                disabled={!selectedTimeSlot}
-                className={`
-            ${
-              selectedTimeSlot ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'
-            }`}
-              >
-                Book Appointment
-              </Button>
+              </Stack>
             </Box>
           </Card>
         </Box>

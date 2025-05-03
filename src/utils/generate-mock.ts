@@ -9,7 +9,14 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { initialStaff, Staff } from 'src/types/staff';
 
-const appointmentStatusList: AppointmentStatus[] = ['DECLINED', 'PENDING', 'COMPLETED'];
+const appointmentStatusList: AppointmentStatus[] = [
+  'REJECTED',
+  'PENDING',
+  'COMPLETED',
+  'ACCEPTED',
+  'RESCHEDULED',
+  'CANCELLED'
+];
 const timeSlotStatusList: TimeSlotStatus[] = ['AVAILABLE', 'BOOKED'];
 const appointmentTypeList: AppointmentType[] = ['FIRST_VISIT', 'FOLLOW_UP'];
 
