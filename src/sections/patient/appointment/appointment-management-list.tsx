@@ -19,19 +19,24 @@ interface AppointmentManagementListProps {
 }
 const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
   appointments,
-  searchInput,
-  pagination
+  searchInput
 }) => {
   const { user } = useAuth();
   const router = useRouter();
-
-  const filteredAppointments = appointments.filter((appointment) => {
-    return appointment;
+  const pagination = usePagination({
+    count: appointments.length
   });
-  const results = filteredAppointments.map((appointment, index) => ({
-    ...appointment,
-    index: index + 1
-  }));
+
+  const filteredAppointments = useMemo(() => {
+    return appointments;
+  }, [appointments]);
+
+  const results = useMemo(() => {
+    return filteredAppointments.map((appointment, index) => ({
+      ...appointment,
+      index: index + 1
+    }));
+  }, [filteredAppointments]);
 
   const AppointmentManagementListConfig = useMemo(() => {
     return getAppointmentManangementTableConfig({

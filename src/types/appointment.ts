@@ -1,7 +1,13 @@
 import { Staff } from './staff';
 import { StaffDetail } from './user';
 
-export type AppointmentStatus = 'DECLINED' | 'PENDING' | 'COMPLETED';
+export type AppointmentStatus =
+  | 'REJECTED'
+  | 'PENDING'
+  | 'COMPLETED'
+  | 'ACCEPTED'
+  | 'RESCHEDULED'
+  | 'CANCELLED';
 export type TimeSlotStatus = 'AVAILABLE' | 'BOOKED';
 export type AppointmentType = 'FIRST_VISIT' | 'FOLLOW_UP';
 

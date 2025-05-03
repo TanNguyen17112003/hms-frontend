@@ -18,6 +18,7 @@ import useFunction from 'src/hooks/use-function';
 import { AppointmentDetailConfig } from './appointment-management-table-config';
 import { TimeSlotApi } from 'src/api/timeSlot';
 import { useAppointmentContext } from 'src/contexts/appointment/appointment-context';
+import { LoadingProcess } from '@components';
 
 function AppointmentAssignDialog({
   appointment,
@@ -27,10 +28,6 @@ function AppointmentAssignDialog({
   appointment: AppointmentDetailConfig;
   onConfirm?: () => Promise<void>;
 }) {
-  const onConfirmHelper = useFunction(onConfirm!, {
-    successMessage: `You have approved the appointment ${appointment?.patient?.fullName}!`
-  });
-
   const { assignAppointment, approveAppointment } = useAppointmentContext();
   const [selectedDoctor, setSelectedDoctor] = useState<string | null>(null);
   const getListStaffs = useFunction(TimeSlotApi.getDoctorBasedOnTimeSlot);
@@ -52,7 +49,11 @@ function AppointmentAssignDialog({
     } catch (error) {
       throw error;
     }
-  }, []);
+  }, [appointment?.id]);
+
+  const handleApproveHelper = useFunction(handleApprove, {
+    successMessage: `You have approved the appointment ${appointment?.patient?.fullName}!`
+  });
 
   useEffect(() => {
     if (appointment?.timeSlot?.id !== undefined && appointment?.timeSlot?.id !== null) {
@@ -118,12 +119,13 @@ function AppointmentAssignDialog({
           color='success'
           onClick={async (e) => {
             dialogProps.onClose?.(e, 'escapeKeyDown');
-            handleApprove();
+            handleApproveHelper.call({});
           }}
         >
           Accept
         </Button>
       </DialogActions>
+      {(getListStaffs.loading || handleApproveHelper.loading) && <LoadingProcess />}
     </Dialog>
   );
 }

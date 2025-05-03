@@ -940,6 +940,7 @@ const PatientDetail: PageType = () => {
           }}
         />
         <MedicalRecordCard
+          isPatient={false}
           medicalInfo={medicalRecords as MedicalRecord[]}
           createMedicalRecord={createMedicalRecord}
           updateMedicalRecord={updateMedicalRecord}

@@ -15,7 +15,7 @@ const getDoctorTimeslotResponseItemOwnedManagementTableConfig = ({
 }): CustomTableConfig<DoctorTimeslotResponseItem['id'], DoctorTimeslotResponseItem>[] => [
   {
     key: 'id',
-    headerLabel: 'DoctorTimeslotResponseItem ID',
+    headerLabel: 'ID',
     type: 'string',
     renderCell: (data) => <Typography variant='body1'>TSL{data.id.slice(0, 5)}</Typography>
   },
@@ -49,6 +49,12 @@ const getDoctorTimeslotResponseItemOwnedManagementTableConfig = ({
     headerLabel: 'Max Appointments',
     type: 'string',
     renderCell: (data) => <Typography>{data.maxAppointment}</Typography>
+  },
+  {
+    key: 'numberOfAppointments',
+    headerLabel: 'Number of Appointments',
+    type: 'string',
+    renderCell: (data) => <Typography>{data.appointmentInfoDTOs.length}</Typography>
   }
 ];
 

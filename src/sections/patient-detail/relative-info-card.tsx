@@ -20,9 +20,10 @@ import { useDialog } from '@hooks';
 import { PatientRelativeRequest } from 'src/api/medical-record';
 
 interface RelativeInfoCardProps {
+  isPatient?: boolean;
   relativeInfo: PatientRelative[];
-  createPatientRelative: (values: PatientRelativeRequest) => Promise<void>;
-  deletePatientRelative: (id: string) => Promise<void>;
+  createPatientRelative?: (values: PatientRelativeRequest) => Promise<void>;
+  deletePatientRelative?: (id: string) => Promise<void>;
   pagination: {
     page: number;
     rowsPerPage: number;
@@ -48,14 +49,16 @@ const RelativeInfoCard: React.FC<RelativeInfoCardProps> = (props) => {
   const handleDelete = async (id: string) => {
     try {
       event?.stopPropagation();
-      await deletePatientRelative(id);
+      if (deletePatientRelative) {
+        await deletePatientRelative(id);
+      }
     } catch (error) {
       console.error('Failed to delete relative:', error);
     }
   };
 
   return (
-    <Card className='w-full lg:p-5'>
+    <Card className='w-full p-5'>
       <CardContent className='p-4' style={{ justifyContent: 'normal', padding: 0, margin: 0 }}>
         <Box>
           <Box className='w-full flex justify-between mb-4 text-[#0E1680]'>
@@ -63,9 +66,11 @@ const RelativeInfoCard: React.FC<RelativeInfoCardProps> = (props) => {
               <Users />
               <div className='font-semibold text-lg'>Relative Info</div>
             </Box>
-            <button className='rounded-full bg-[#0E1680] text-white p-2 hover:opacity-90'>
-              <Plus className='size-5' onClick={patientRelativeDialog.handleOpen} />
-            </button>
+            {!props.isPatient && (
+              <button className='rounded-full bg-[#0E1680] text-white p-2 hover:opacity-90'>
+                <Plus className='size-5' onClick={patientRelativeDialog.handleOpen} />
+              </button>
+            )}
           </Box>
           <Divider style={{ marginBottom: 10 }} color='gray' />
           <Box className='flex flex-col gap-3'>
@@ -163,7 +168,7 @@ const RelativeInfoCard: React.FC<RelativeInfoCardProps> = (props) => {
       <RelativeInfoDialog
         open={patientRelativeDialog.open}
         onClose={patientRelativeDialog.handleClose}
-        onConfirm={props.createPatientRelative}
+        onConfirm={props.createPatientRelative || (() => Promise.resolve())}
       />
     </Card>
   );

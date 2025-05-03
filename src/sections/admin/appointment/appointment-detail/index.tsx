@@ -17,6 +17,8 @@ import DeclineAppointmentDialog from '../appointment-decline-dialog';
 import AppointmentAssignDialog from '../appointment-assign-dialog';
 import { useDialog } from '@hooks';
 import { useAppointmentContext } from 'src/contexts/appointment/appointment-context';
+import { Appointment, AppointmentDetail as Detail } from 'src/types/appointment';
+import { LoadingProcess } from '@components';
 
 function AppointmentDetail() {
   const router = useRouter();
@@ -24,8 +26,10 @@ function AppointmentDetail() {
   const getAppointmentApi = useFunction(AppointmentApi.getAppointment);
   const getPatientBySSNApi = useFunction(MedicalRecordsApi.getPatientBySSN);
   const rejectDialog = useDialog<AppointmentDetailConfig>();
-  const approveDialog = useDialog<AppointmentDetailConfig>();
+  const approveDialog = useDialog<Detail>();
   const assignDialog = useDialog<AppointmentDetailConfig>();
+
+  const rejectAppointmentHelper = useFunction(rejectAppointment);
 
   const filteredAppointment = useMemo(() => {
     return getAppointmentApi.data || null;
@@ -100,20 +104,25 @@ function AppointmentDetail() {
       <ApproveAppointmentDialog
         open={approveDialog.open}
         onClose={approveDialog.handleClose}
-        appointment={approveDialog.data as AppointmentDetailConfig}
+        appointment={filteredAppointment as Appointment}
         onConfirm={() => assignDialog.handleOpen(approveDialog?.data as AppointmentDetailConfig)}
       />
       <DeclineAppointmentDialog
         open={rejectDialog.open}
         onClose={rejectDialog.handleClose}
         appointment={rejectDialog.data as AppointmentDetailConfig}
-        onConfirm={() => rejectAppointment(rejectDialog?.data?.id as string)}
+        onConfirm={async () => {
+          await rejectAppointmentHelper.call(rejectDialog?.data?.id as string);
+        }}
       />
       <AppointmentAssignDialog
         open={assignDialog.open}
         onClose={assignDialog.handleClose}
         appointment={assignDialog.data as AppointmentDetailConfig}
       />
+      {(getAppointmentApi.loading ||
+        getPatientBySSNApi.loading ||
+        rejectAppointmentHelper.loading) && <LoadingProcess />}
     </Stack>
   );
 }

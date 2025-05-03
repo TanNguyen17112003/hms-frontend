@@ -23,10 +23,11 @@ import { useDialog } from '@hooks';
 import useAppSnackbar from 'src/hooks/use-app-snackbar';
 
 interface MedicalRecordCardProps {
+  isPatient: boolean;
   medicalInfo: MedicalRecord[];
-  createMedicalRecord: (values: MedicalRecordRequest) => Promise<void>;
-  updateMedicalRecord: (id: string, values: MedicalRecordRequest) => Promise<void>;
-  deleteMedicalRecord: (id: string) => Promise<void>;
+  createMedicalRecord?: (values: MedicalRecordRequest) => Promise<void>;
+  updateMedicalRecord?: (id: string, values: MedicalRecordRequest) => Promise<void>;
+  deleteMedicalRecord?: (id: string) => Promise<void>;
   pagination?: {
     page: number;
     rowsPerPage: number;
@@ -37,6 +38,7 @@ interface MedicalRecordCardProps {
 }
 
 const MedicalRecordCard: React.FC<MedicalRecordCardProps> = ({
+  isPatient,
   medicalInfo,
   createMedicalRecord,
   updateMedicalRecord,
@@ -55,14 +57,18 @@ const MedicalRecordCard: React.FC<MedicalRecordCardProps> = ({
 
   const handleSave = async () => {
     if (editingRowId) {
-      await updateMedicalRecord(editingRowId, editedRow as MedicalRecordRequest);
+      if (updateMedicalRecord) {
+        await updateMedicalRecord(editingRowId, editedRow as MedicalRecordRequest);
+      }
       showSnackbarSuccess('Medical record updated successfully!');
       setEditingRowId(null);
     }
   };
 
   const handleDelete = async (id: string) => {
-    await deleteMedicalRecord(id);
+    if (deleteMedicalRecord) {
+      await deleteMedicalRecord(id);
+    }
     showSnackbarSuccess('Medical record deleted successfully!');
   };
 
@@ -102,14 +108,16 @@ const MedicalRecordCard: React.FC<MedicalRecordCardProps> = ({
               <Stethoscope />
               <div className='font-semibold text-lg'>Medical Records</div>
             </Box>
-            <Button
-              variant='outlined'
-              size='small'
-              startIcon={<Plus />}
-              onClick={medicalRecordDialog.handleOpen}
-            >
-              Add
-            </Button>
+            {!isPatient && (
+              <Button
+                variant='outlined'
+                size='small'
+                startIcon={<Plus />}
+                onClick={medicalRecordDialog.handleOpen}
+              >
+                Add
+              </Button>
+            )}
           </Box>
           <Divider style={{ marginBottom: 10 }} color='gray' />
           {(!medicalInfo || medicalInfo.length === 0) && (
@@ -262,7 +270,7 @@ const MedicalRecordCard: React.FC<MedicalRecordCardProps> = ({
       <MedicalRecordDialog
         open={medicalRecordDialog.open}
         onClose={medicalRecordDialog.handleClose}
-        onConfirm={createMedicalRecord}
+        onConfirm={createMedicalRecord || (() => Promise.resolve())}
       />
     </Card>
   );

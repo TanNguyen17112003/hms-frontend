@@ -12,23 +12,14 @@ import {
   IconButton,
   Card
 } from '@mui/material';
-import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import BadgeIcon from '@mui/icons-material/Badge';
 import SchoolIcon from '@mui/icons-material/School';
-import { Edit, Save, X } from 'lucide-react';
 import React from 'react';
 import { StaffDetail } from 'src/types/user';
-import { UsersApi } from 'src/api/user';
-import useFunction from 'src/hooks/use-function';
 
 function AppointmentDetailDoctor({ doctor }: { doctor: StaffDetail }) {
-  const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [biography, setBiography] = useState(doctor?.biography || '');
-  const [services, setServices] = useState(doctor?.services || []);
   const [specializations, setSpecializations] = useState(doctor?.specializations || []);
-  const [newService, setNewService] = useState('');
-  const [newSpecialization, setNewSpecialization] = useState('');
 
   const initialValue = useMemo(
     () => [
@@ -47,77 +38,12 @@ function AppointmentDetailDoctor({ doctor }: { doctor: StaffDetail }) {
     ],
     [doctor]
   );
-  const [bioInfo, setBioInfo] = useState(initialValue);
 
   const yearExperience =
     new Date().getFullYear() - new Date(doctor?.startWorkingDate).getFullYear();
   const experience = useMemo(() => {
     return `${yearExperience} years`;
   }, [yearExperience]);
-
-  const handleAddService = () => {
-    if (newService.trim()) {
-      setServices((prev) => [...prev, newService.trim()]);
-      setNewService('');
-    }
-  };
-
-  const handleAddSpecialization = () => {
-    if (newSpecialization.trim()) {
-      setSpecializations((prev) => [...prev, newSpecialization.trim()]);
-      setNewSpecialization('');
-    }
-  };
-
-  const handleRemoveService = (index: number) => {
-    setServices((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const handleRemoveSpecialization = (index: number) => {
-    setSpecializations((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const handleChange = (field: string, newValue: string) => {
-    setBioInfo((prev) =>
-      prev.map((info) => (info.field === field ? { ...info, value: newValue } : info))
-    );
-  };
-
-  const handleUpdateBio = useCallback(async () => {
-    setLoading(true);
-    try {
-      await UsersApi.updateStaffInfo(doctor.id, {
-        biography,
-        services,
-        specializations,
-        licenseNumber: bioInfo[0].value,
-        qualification: bioInfo[1].value
-      });
-    } catch (error) {
-      console.error('Error updating bio:', error);
-    } finally {
-      setLoading(false);
-      setIsEditing(false);
-    }
-  }, [biography, services, specializations]);
-
-  const handleUpdateBioHelper = useFunction(handleUpdateBio, {
-    successMessage: 'Bio updated successfully'
-  });
-
-  const toggleEdit = () => {
-    if (isEditing) {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-        setIsEditing(false);
-        handleUpdateBioHelper.call({});
-        // Save changes logic here (e.g., API call)
-      }, 2000);
-    } else {
-      setIsEditing(true);
-    }
-  };
 
   return (
     <Card className='px-4 py-5 h-full flex flex-col justify-between relative'>
@@ -142,142 +68,129 @@ function AppointmentDetailDoctor({ doctor }: { doctor: StaffDetail }) {
       <Typography variant='h6' fontWeight={'bold'} className='text-bg-primary'>
         Doctor Information
       </Typography>
-      <Divider className='py-2' />
+      <Divider sx={{ my: 2 }} />
       {doctor && (
         <>
-          <Box gap={1} display={'flex'} flexDirection={'column'} pt={2}>
-            <Stack
-              direction={'row'}
-              alignItems={'center'}
-              justifyContent={'space-between'}
-              sx={{ mb: 2 }}
-            >
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
               <Typography variant='h6' fontWeight='bold'>
                 Bio Information
               </Typography>
-              <Button
-                startIcon={isEditing ? <Save size={16} /> : <Edit size={16} />}
-                variant='contained'
-                color='primary'
-                onClick={toggleEdit}
-                disabled={loading}
-              >
-                {isEditing ? 'Save Changes' : 'Edit Bio'}
-              </Button>
-            </Stack>
-
-            <Typography variant='body1' fontWeight='bold'>
-              Biography
-            </Typography>
-            {isEditing ? (
-              <TextField
-                variant='outlined'
-                fullWidth
-                multiline
-                rows={3}
-                value={biography}
-                onChange={(e) => setBiography(e.target.value)}
-              />
-            ) : (
-              <Typography>{biography}</Typography>
-            )}
-
-            <Divider sx={{ my: 2 }} />
-
-            <Typography variant='body1' fontWeight='bold'>
-              Services
-            </Typography>
-            <Stack direction='row' spacing={1} flexWrap='wrap'>
-              {services.map((service, index) => (
-                <Chip
-                  key={index}
-                  label={service}
-                  color='primary'
-                  variant='outlined'
-                  onDelete={isEditing ? () => handleRemoveService(index) : undefined}
-                  deleteIcon={isEditing ? <X size={16} /> : undefined}
-                />
-              ))}
-            </Stack>
-            {isEditing && (
-              <Stack direction='row' spacing={1} sx={{ mt: 1 }}>
-                <TextField
-                  variant='outlined'
-                  size='small'
-                  value={newService}
-                  onChange={(e) => setNewService(e.target.value)}
-                  placeholder='Add a service'
-                />
-                <Button variant='contained' onClick={handleAddService}>
-                  Add
-                </Button>
-              </Stack>
-            )}
-
-            <Divider sx={{ my: 2 }} />
-
-            <Typography variant='body1' fontWeight='bold'>
-              Specializations
-            </Typography>
-            <Stack direction='row' spacing={1} flexWrap='wrap'>
-              {specializations.map((specialization, index) => (
-                <Chip
-                  key={index}
-                  label={specialization}
-                  color='primary'
-                  variant='outlined'
-                  onDelete={isEditing ? () => handleRemoveSpecialization(index) : undefined}
-                  deleteIcon={isEditing ? <X size={16} /> : undefined}
-                />
-              ))}
-            </Stack>
-            {isEditing && (
-              <Stack direction='row' spacing={1} sx={{ mt: 1 }}>
-                <TextField
-                  variant='outlined'
-                  size='small'
-                  value={newSpecialization}
-                  onChange={(e) => setNewSpecialization(e.target.value)}
-                  placeholder='Add a specialization'
-                />
-                <Button variant='contained' onClick={handleAddSpecialization}>
-                  Add
-                </Button>
-              </Stack>
-            )}
-
-            <Divider sx={{ my: 2 }} />
-
-            {bioInfo.map((info, index) => (
-              <React.Fragment key={index}>
-                <Grid container alignItems='center' spacing={2} sx={{ mb: 1 }}>
-                  <Grid item>{info.icon}</Grid>
-                  <Grid item xs>
-                    <Typography variant='body1' fontWeight='bold'>
-                      {info.title}
-                    </Typography>
-                    {isEditing ? (
-                      <TextField
-                        variant='outlined'
-                        size='small'
-                        fullWidth
-                        value={info.value}
-                        onChange={(e) => handleChange(info.field, e.target.value)}
-                      />
-                    ) : (
-                      <Typography variant='body2' color='text.secondary'>
-                        {info.value}
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant='h6' fontWeight='bold'>
+                Basic Information
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Box display='flex' flexDirection='column' flex='1'>
+                <Typography variant='body1' fontWeight='bold'>
+                  Biography
+                </Typography>
+                <Typography>{doctor?.biography}</Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box display='flex' flexDirection='column' flex='1'>
+                <Typography variant='body1' fontWeight='bold'>
+                  Full Name
+                </Typography>
+                <Typography>{doctor?.fullName}</Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box display='flex' flexDirection='column' flex='1'>
+                <Typography variant='body1' fontWeight='bold'>
+                  Services
+                </Typography>
+                <Stack direction='row' spacing={1} flexWrap='wrap'>
+                  {doctor?.services.map((service, index) => (
+                    <Chip key={index} label={service} color='primary' variant='outlined' />
+                  ))}
+                </Stack>
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box display='flex' flexDirection='column' flex='1'>
+                <Typography variant='body1' fontWeight='bold'>
+                  Date of Birth
+                </Typography>
+                <Typography>{doctor?.dateOfBirth}</Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box display='flex' flexDirection='column' flex='1'>
+                <Typography variant='body1' fontWeight='bold'>
+                  Specializations
+                </Typography>
+                <Stack direction='row' spacing={1} flexWrap='wrap'>
+                  {doctor?.specializations.map((specialization, index) => (
+                    <Chip key={index} label={specialization} color='primary' variant='outlined' />
+                  ))}
+                </Stack>
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box display='flex' flexDirection='column' flex='1'>
+                <Typography variant='body1' fontWeight='bold'>
+                  Phone Number
+                </Typography>
+                <Typography>{doctor?.phoneNumber}</Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box gap={1} display='flex' flexDirection='column' pt={2} height='100%'>
+                <Box display='flex' flexDirection='column' flex='1'>
+                  <Grid container alignItems='center' spacing={2} sx={{ mb: 1 }}>
+                    <Grid item>{initialValue[0].icon}</Grid>
+                    <Grid item xs>
+                      <Typography variant='body1' fontWeight='bold'>
+                        {initialValue[0].title}
                       </Typography>
-                    )}
+                      <Typography variant='body2' color='text.secondary'>
+                        {initialValue[0].value}
+                      </Typography>
+                    </Grid>
                   </Grid>
-                </Grid>
-                {index < bioInfo.length - 1 && <Divider sx={{ my: 1 }} />}
-              </React.Fragment>
-            ))}
-          </Box>
+                </Box>
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box display='flex' flexDirection='column' flex='1'>
+                <Typography variant='body1' fontWeight='bold'>
+                  Email
+                </Typography>
+                <Typography>{doctor?.email}</Typography>
+              </Box>
+            </Grid>
 
+            <Grid item xs={6}>
+              <Box gap={1} display='flex' flexDirection='column' pt={2} height='100%'>
+                <Box display='flex' flexDirection='column' flex='1'>
+                  <Grid container alignItems='center' spacing={2} sx={{ mb: 1 }}>
+                    <Grid item>{initialValue[1].icon}</Grid>
+                    <Grid item xs>
+                      <Typography variant='body1' fontWeight='bold'>
+                        {initialValue[1].title}
+                      </Typography>
+                      <Typography variant='body2' color='text.secondary'>
+                        {initialValue[1].value}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box display='flex' flexDirection='column' flex='1'>
+                <Typography variant='body1' fontWeight='bold'>
+                  Address
+                </Typography>
+                <Typography>{doctor?.address}</Typography>
+              </Box>
+            </Grid>
+          </Grid>
           <Divider sx={{ my: 2 }} />
-
           <Grid container justifyContent='space-between' alignItems='center' sx={{ mt: 'auto' }}>
             <Grid item>
               <Typography variant='body1' fontWeight='bold'>

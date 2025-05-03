@@ -51,9 +51,9 @@ const getAppointmentManangementTableConfig = ({
         <Chip
           label={data.status}
           color={
-            data.status === 'PENDING'
+            data.status === 'PENDING' || data.status === 'RESCHEDULED'
               ? 'warning'
-              : data.status === 'COMPLETED'
+              : ['COMPLETED', 'ACCEPTED'].includes(data.status)
                 ? 'success'
                 : 'error'
           }
@@ -96,11 +96,10 @@ const getAppointmentManangementTableConfig = ({
       type: 'string',
       renderCell: (data) => (
         <Stack direction='row' alignItems={'center'} spacing={1}>
-          <Avatar src={data.patient?.photoUrl} />
           <Box>
             <Typography variant='body1'>{data.patient?.fullName}</Typography>
             <Typography variant='body2' color='textSecondary'>
-              {data.patient?.email as string}
+              {data.patient?.ssn as string}
             </Typography>
           </Box>
         </Stack>
@@ -112,7 +111,7 @@ const getAppointmentManangementTableConfig = ({
       headerLabel: 'Doctor',
       type: 'string',
       renderCell: (data) =>
-        data.status === 'COMPLETED' && (
+        data.doctor && (
           <Stack direction='row' alignItems={'center'} spacing={1}>
             <Box>
               <Typography variant='body1'>{data.doctor?.fullName}</Typography>
@@ -186,11 +185,10 @@ const getAppointmentManangementTableConfig = ({
       type: 'string',
       renderCell: (data) => (
         <Stack direction='row' alignItems={'center'} spacing={1}>
-          <Avatar src={data.patient?.photoUrl} />
           <Box>
             <Typography variant='body1'>{data.patient?.fullName}</Typography>
             <Typography variant='body2' color='textSecondary'>
-              {data.patient?.email as string}
+              {data.patient?.ssn as string}
             </Typography>
           </Box>
         </Stack>

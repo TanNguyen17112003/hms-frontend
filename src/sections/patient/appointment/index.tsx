@@ -110,11 +110,7 @@ export const AppointmentManagement: React.FC = () => {
         }
       />
       <Box className='px-6 py-4'>
-        <AppointmentManagementList
-          appointments={appointments}
-          searchInput={searchInput}
-          pagination={appointmentPagination}
-        />
+        <AppointmentManagementList appointments={appointments} searchInput={searchInput} />
       </Box>
       {getAppointmentListApi.loading && <LoadingProcess />}
     </>
