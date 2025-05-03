@@ -94,7 +94,11 @@ function AppointmentRescheduleDIalog({
               label='Select TimeSlot'
             >
               {timeSlots.map((timeSlot) => (
-                <MenuItem key={timeSlot.id} value={timeSlot.id} className='flex flex-col'>
+                <MenuItem
+                  key={timeSlot.timeSlot.id}
+                  value={timeSlot.timeSlot.id}
+                  className='flex flex-col'
+                >
                   <Typography>
                     {timeSlot.timeSlot.startTime} - {timeSlot.timeSlot.endTime}
                   </Typography>
