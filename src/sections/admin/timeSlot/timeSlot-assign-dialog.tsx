@@ -79,7 +79,7 @@ function TimeSlotAssignDialog({
   }, [staffs]);
 
   useEffect(() => {
-    getStaffsApi.call({});
+    getStaffsApi.call({ page: 1, size: 100, role: 'DOCTOR', status: 'ACTIVE' });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

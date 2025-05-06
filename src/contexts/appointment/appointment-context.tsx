@@ -216,7 +216,7 @@ const AppointmentProvider = ({ children }: { children: ReactNode }) => {
       }
     });
     getAppointmentListApi.call(formData);
-  }, []);
+  }, [appointmentFilter]);
 
   return (
     <AppointmentContext.Provider
