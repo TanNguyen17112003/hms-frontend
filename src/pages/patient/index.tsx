@@ -75,7 +75,7 @@ const Page: PageType = () => {
         <>
           <ContentHeader
             title='Patient Management'
-            description='Showing: All Consultations of All Healthcare Providers'
+            // description='Showing: All Consultations of All Healthcare Providers'
             rightSection={
               <Stack
                 direction={'row'}

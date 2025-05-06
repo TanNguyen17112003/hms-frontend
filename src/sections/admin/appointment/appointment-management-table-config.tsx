@@ -75,13 +75,24 @@ const getAppointmentManangementTableConfig = ({
           className='cursor-pointer'
           onClick={(e) => {
             e.stopPropagation();
-            const blob = new Blob([data.notes || ''], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `notes-${data.id}.pdf`;
-            a.click();
-            URL.revokeObjectURL(url);
+            data.note.forEach(async (item: string, index: number) => {
+              const response = await fetch(item);
+              const blob = await response.blob();
+              const link = document.createElement('a');
+              link.href = URL.createObjectURL(blob);
+              link.download = `note${index}`;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+              URL.revokeObjectURL(link.href);
+            });
+            // const blob = new Blob([data.note[0] || ''], { type: '*' });
+            // const url = URL.createObjectURL(blob);
+            // const a = document.createElement('a');
+            // a.href = url;
+            // a.download = `notes-${data.id}.pdf`;
+            // a.click();
+            // URL.revokeObjectURL(url);
           }}
         />
       )

@@ -26,28 +26,28 @@ export const getDashboardAdminConfigs = () => {
           icon: <BarChart2 className='h-6 w-6' />
         },
         {
-          title: 'Appointment management',
+          title: 'Appointments',
           path: paths.appointment.index,
           icon: <CalendarPlus2 className='h-6 w-6' />
         },
         {
-          title: 'Timeslot management',
+          title: 'Timeslots',
           path: paths.timeSlot.index,
           icon: <Timer className='h-6 w-6' />
         },
         {
-          title: 'Staff Management',
+          title: 'Staffs',
           path: paths.staff.index,
           icon: <Users className='h-6 w-6' />
         },
         {
-          title: 'Patient Management',
+          title: 'Patients',
           path: paths.patient.index,
           icon: <Bed className='h-6 w-6' />
         },
         {
           title: 'My Account',
-          path: paths.auth,
+          path: paths.account.index,
           icon: <User className='h-6 w-6' />
         }
       ]
@@ -55,11 +55,11 @@ export const getDashboardAdminConfigs = () => {
     {
       subheader: '2',
       items: [
-        {
-          title: 'Settings',
-          path: paths.auth.login,
-          icon: <Settings className='h-6 w-6' />
-        },
+        // {
+        //   title: 'Settings',
+        //   path: paths.auth.login,
+        //   icon: <Settings className='h-6 w-6' />
+        // },
         {
           title: 'Log Out',
           path: paths.auth.logout,

@@ -122,7 +122,7 @@ export const AppointmentForm: React.FC<AppointmentFormAttributes> = ({ formik, t
     <Stack spacing={3}>
       <ContentHeader
         title='Add appointment'
-        description='Create your owin appointment and manage it easily'
+        description='Create your own appointment and manage it easily'
         rightSection={
           <Button
             startIcon={<Add />}

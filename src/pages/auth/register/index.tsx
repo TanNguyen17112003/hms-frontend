@@ -18,6 +18,7 @@ import { SignUpRequest, UsersApi } from 'src/api/user';
 import useFunction from 'src/hooks/use-function';
 import { useMounted } from '@hooks';
 import useAppSnackbar from 'src/hooks/use-app-snackbar';
+import { LoadingProcess } from '@components';
 
 export const registerSchema = Yup.object({
   fullName: Yup.string().required('You must enter a name'),
@@ -37,57 +38,65 @@ export const registerSchema = Yup.object({
     .test('is-valid-phone', 'Phone number is not valid', (value) => {
       const phoneRegex = /^\d{10,15}$/;
       return phoneRegex.test(value || '');
-    }),
+    })
 });
 
 const Page: PageType = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const mounted = useMounted();
   const [showPassword, setShowPassword] = useState(false);
   const { showSnackbarSuccess } = useAppSnackbar();
   const router = useRouter();
-  const handleSignUp = useCallback(async (values: SignUpRequest) => {
-    try {
-      const response = await UsersApi.signUp(values);
-      if (response && mounted()) {
-        showSnackbarSuccess('Sign up successfully');
-        router.push(paths.auth.login);
+  const handleSignUp = useCallback(
+    async (values: SignUpRequest) => {
+      setIsLoading(true);
+      try {
+        const response = await UsersApi.signUp(values);
+        if (response && mounted()) {
+          showSnackbarSuccess('Sign up successfully');
+          router.push(paths.auth.login);
+        }
+      } catch (error) {
+        console.error('Sign up failed:', error);
+      } finally {
+        setIsLoading(false);
       }
-    }
-    catch (error) {
-      console.error('Sign up failed:', error);
-    }
-  }, [UsersApi.signUp])
+    },
+    [UsersApi.signUp]
+  );
 
-  const handleSignUpHelper = useFunction(handleSignUp, {
-
-  })
-  const formik = useFormik<SignUpRequest & {confirmPassword: string}>({
+  const handleSignUpHelper = useFunction(handleSignUp, {});
+  const formik = useFormik<SignUpRequest & { confirmPassword: string }>({
     initialValues: {
       fullName: '',
       email: '',
       password: '',
       confirmPassword: '',
       ssn: '',
-      phoneNumber: '',
+      phoneNumber: ''
     },
     validationSchema: registerSchema,
     onSubmit: async (values) => {
+      setIsLoading(true);
       try {
-       await handleSignUpHelper.call({
+        await handleSignUpHelper.call({
           fullName: values.fullName,
           email: values.email,
           password: values.password,
           ssn: values.ssn,
-          phoneNumber: values.phoneNumber,
-        }); 
+          phoneNumber: values.phoneNumber
+        });
       } catch (error) {
-        console.error('Sign up failed:', error); 
+        console.error('Sign up failed:', error);
+      } finally {
+        setIsLoading(false);
       }
-    },
+    }
   });
 
   return (
-    <Box className="flex bg-white relative">
+    <Box className='flex bg-white relative'>
+      {isLoading && <LoadingProcess />}
       <Stack
         direction={'row'}
         spacing={2}
@@ -95,106 +104,106 @@ const Page: PageType = () => {
         justifyContent={'start'}
         justifySelf={'center'}
         marginBottom={3}
-        className="absolute top-4 left-4"
+        className='absolute top-4 left-4'
       >
         <IconButton
           onClick={() => router.push(paths.auth.login)}
-          className="bg-white p-2 rounded-md"
+          className='bg-white p-2 rounded-md'
         >
-          <ArrowLeft className="w-6 h-6" />
+          <ArrowLeft className='w-6 h-6' />
         </IconButton>
       </Stack>
-      <Box className="w-full lg:w-1/2 flex items-center justify-center py-5 h-screen">
-        <Box className="w-full max-w-md px-6">
+      <Box className='w-full lg:w-1/2 flex items-center justify-center py-5 h-screen'>
+        <Box className='w-full max-w-md px-6'>
           <Stack
-            direction="row"
+            direction='row'
             spacing={2}
-            alignItems="center"
+            alignItems='center'
             justifyContent={'start'}
             justifySelf={'center'}
             marginBottom={3}
           >
-            <Box className="">
-              <Image src="/logo-black.png" alt="Health360 Logo" width={50} height={50} />
+            <Box className=''>
+              <Image src='/logo-black.png' alt='Health360 Logo' width={50} height={50} />
             </Box>
-            <Typography variant="h3">HealthPro</Typography>
+            <Typography variant='h3'>HealthPro</Typography>
           </Stack>
 
           <Stack spacing={2}>
             <Stack spacing={1} alignItems={'center'}>
-              <Typography variant="h4" fontWeight="bold">
+              <Typography variant='h4' fontWeight='bold'>
                 Create an account
               </Typography>
-              <Typography color="text.secondary">Start your 30-day free trial</Typography>
+              <Typography color='text.secondary'>Start your 30-day free trial</Typography>
             </Stack>
 
             <form onSubmit={formik.handleSubmit}>
               <Stack spacing={2}>
                 <Box display={'flex'} gap={2}>
                   <Stack spacing={1}>
-                    <Stack direction="row" alignItems="center">
-                      <Typography variant="subtitle2">Email</Typography>
-                      <Typography color="red"> *</Typography>
+                    <Stack direction='row' alignItems='center'>
+                      <Typography variant='subtitle2'>Email</Typography>
+                      <Typography color='red'> *</Typography>
                     </Stack>
                     <FormInput
-                      type="text"
-                      className="w-full px-3 rounded-lg bg-white"
+                      type='text'
+                      className='w-full px-3 rounded-lg bg-white'
                       {...formik.getFieldProps('email')}
                       error={formik.touched.email && !!formik.errors.email}
                       helperText={formik.touched.email && formik.errors.email}
-                      placeholder="Enter your email"
+                      placeholder='Enter your email'
                     />
                   </Stack>
                   <Stack spacing={1}>
-                    <Stack direction="row" alignItems="center">
-                      <Typography variant="subtitle2">Name </Typography>
-                      <Typography color="red"> *</Typography>
+                    <Stack direction='row' alignItems='center'>
+                      <Typography variant='subtitle2'>Name </Typography>
+                      <Typography color='red'> *</Typography>
                     </Stack>
                     <FormInput
-                      type="text"
-                      className="w-full px-3 rounded-lg bg-white"
+                      type='text'
+                      className='w-full px-3 rounded-lg bg-white'
                       {...formik.getFieldProps('fullName')}
                       error={formik.touched.fullName && !!formik.errors.fullName}
                       helperText={formik.touched.fullName && formik.errors.fullName}
-                      placeholder="Enter your name"
+                      placeholder='Enter your name'
                     />
                   </Stack>
                 </Box>
                 <Box display={'flex'} gap={2}>
                   <Stack spacing={1}>
-                    <Stack direction="row" alignItems="center">
-                      <Typography variant="subtitle2">SSN</Typography>
-                      <Typography color="red"> *</Typography>
+                    <Stack direction='row' alignItems='center'>
+                      <Typography variant='subtitle2'>SSN</Typography>
+                      <Typography color='red'> *</Typography>
                     </Stack>
                     <FormInput
-                      type="text"
-                      className="w-full px-3 rounded-lg bg-white"
+                      type='text'
+                      className='w-full px-3 rounded-lg bg-white'
                       {...formik.getFieldProps('ssn')}
                       error={formik.touched.ssn && !!formik.errors.ssn}
                       helperText={formik.touched.ssn && formik.errors.ssn}
-                      placeholder="Enter your SSN"
+                      placeholder='Enter your SSN'
                     />
                   </Stack>
                   <Stack spacing={1}>
-                    <Stack direction="row" alignItems="center">
-                      <Typography variant="subtitle2">Phone Number</Typography>
-                      <Typography color="red"> *</Typography>
+                    <Stack direction='row' alignItems='center'>
+                      <Typography variant='subtitle2'>Phone Number</Typography>
+                      <Typography color='red'> *</Typography>
                     </Stack>
                     <FormInput
-                      type="text"
-                      className="w-full px-3 rounded-lg bg-white"
+                      type='text'
+                      className='w-full px-3 rounded-lg bg-white'
                       {...formik.getFieldProps('phoneNumber')}
                       error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
                       helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-                      placeholder="Enter your phone number"
+                      placeholder='Enter your phone number'
                     />
                   </Stack>
                 </Box>
 
                 <Stack spacing={1}>
-                  <Stack direction="row" alignItems="center">
-                    <Typography variant="subtitle2">Password</Typography>
-                    <Typography color="red"> *</Typography>
+                  <Stack direction='row' alignItems='center'>
+                    <Typography variant='subtitle2'>Password</Typography>
+                    <Typography color='red'> *</Typography>
                   </Stack>
                   <PasswordInput
                     {...formik.getFieldProps('password')}
@@ -203,18 +212,19 @@ const Page: PageType = () => {
                     onChange={formik.handleChange}
                     error={formik.touched.password && !!formik.errors.password}
                     helperText={formik.touched.password && formik.errors.password}
-                    className="bg-white"
-                    placeholder="Enter your password"
+                    className='bg-white'
+                    placeholder='Enter your password'
+                    togglePasswordVisibility={() => setShowPassword(!showPassword)}
                   />
-                  <Typography variant="caption" color="text.secondary">
+                  <Typography variant='caption' color='text.secondary'>
                     Must be at least 8 characters.
                   </Typography>
                 </Stack>
 
                 <Stack spacing={1}>
-                  <Stack direction="row" alignItems="center">
-                    <Typography variant="subtitle2">Confirm Password </Typography>
-                    <Typography color="red"> *</Typography>
+                  <Stack direction='row' alignItems='center'>
+                    <Typography variant='subtitle2'>Confirm Password </Typography>
+                    <Typography color='red'> *</Typography>
                   </Stack>
                   <PasswordInput
                     {...formik.getFieldProps('confirmPassword')}
@@ -223,21 +233,22 @@ const Page: PageType = () => {
                     onChange={formik.handleChange}
                     error={formik.touched.confirmPassword && !!formik.errors.confirmPassword}
                     helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
-                    className="bg-white"
-                    placeholder="Confirm your password"
+                    className='bg-white'
+                    placeholder='Confirm your password'
+                    togglePasswordVisibility={() => setShowPassword(!showPassword)}
                   />
                 </Stack>
                 <Button
-                  type="submit"
+                  type='submit'
                   fullWidth
-                  className="rounded-xs"
+                  className='rounded-xs'
                   sx={{
                     backgroundColor: '#0E1680',
                     color: 'white',
                     padding: '10px 18px',
                     '&:hover': {
-                      backgroundColor: '#1e40af',
-                    },
+                      backgroundColor: '#1e40af'
+                    }
                   }}
                 >
                   Get Started
@@ -246,43 +257,43 @@ const Page: PageType = () => {
             </form>
 
             {/* Divider */}
-            <Divider className="my-6">
-              <Typography color="text.secondary">OR</Typography>
+            <Divider className='my-6'>
+              <Typography color='text.secondary'>OR</Typography>
             </Divider>
 
-            <Stack direction="row" spacing={1.5} justifyContent="center">
+            <Stack direction='row' spacing={1.5} justifyContent='center'>
               {['Facebook', 'Google', 'Apple'].map((provider) => (
                 <IconButton
                   key={provider}
-                  className="w-[112px] h-[44px] p-[10px] hover:bg-[#F9FAFB] hover:border-[#D0D5DD]"
+                  className='w-[112px] h-[44px] p-[10px] hover:bg-[#F9FAFB] hover:border-[#D0D5DD]'
                   sx={{
                     borderRadius: '8px',
-                    border: '1px solid #D0D5DD',
+                    border: '1px solid #D0D5DD'
                   }}
                 >
                   {provider === 'Facebook' && (
-                    <FacebookIcon className="w-[24px] h-[24px]" sx={{ color: '#1877F2' }} />
+                    <FacebookIcon className='w-[24px] h-[24px]' sx={{ color: '#1877F2' }} />
                   )}
                   {provider === 'Google' && (
-                    <GoogleIcon className="w-[24px] h-[24px]" sx={{ color: '#DB4437' }} />
+                    <GoogleIcon className='w-[24px] h-[24px]' sx={{ color: '#DB4437' }} />
                   )}
                   {provider === 'Apple' && (
-                    <AppleIcon className="w-[24px] h-[24px]" sx={{ color: '#000000' }} />
+                    <AppleIcon className='w-[24px] h-[24px]' sx={{ color: '#000000' }} />
                   )}
                 </IconButton>
               ))}
             </Stack>
 
             <Stack
-              direction="row"
+              direction='row'
               spacing={1}
-              justifyContent="center"
-              alignItems="center"
-              className="mt-6"
+              justifyContent='center'
+              alignItems='center'
+              className='mt-6'
             >
-              <Typography color="text.secondary">Already have an account?</Typography>
-              <Link href={paths.auth.login} className="text.tetiary font-medium">
-                <Typography color="primary" fontWeight={'bold'}>
+              <Typography color='text.secondary'>Already have an account?</Typography>
+              <Link href={paths.auth.login} className='text.tetiary font-medium'>
+                <Typography color='primary' fontWeight={'bold'}>
                   Log in
                 </Typography>
               </Link>
@@ -291,12 +302,12 @@ const Page: PageType = () => {
         </Box>
       </Box>
 
-      <Box className="hidden lg:block w-1/2 ">
-        <Box className="w-full">
+      <Box className='hidden lg:block w-1/2 '>
+        <Box className='w-full'>
           <Image
             src={backgroundAuth}
-            alt="Background Image"
-            className="w-[100%] h-screen object-contain"
+            alt='Background Image'
+            className='w-[100%] h-screen object-contain'
           />
         </Box>
       </Box>

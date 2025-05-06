@@ -82,7 +82,7 @@ export const AppointmentManagement: React.FC = () => {
     setAppointmentFilter({
       ...appointmentFilter,
       page: appointmentPagination.page,
-      size: 5,
+      size: 10,
       filters: filterList
     });
   }, [appointmentPagination.page, selectedStatus, selectedType]);
@@ -90,7 +90,7 @@ export const AppointmentManagement: React.FC = () => {
     <>
       <ContentHeader
         title='Manage Appointments'
-        description='Showing: All Consultations of All Healthcare Providers'
+        // description='Showing: All Consultations of All Healthcare Providers'
         rightSection={
           <Stack direction={'row'} alignItems={'center'} gap={3} className='mt-4' flexWrap={'wrap'}>
             <TextField

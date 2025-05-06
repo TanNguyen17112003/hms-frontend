@@ -22,6 +22,7 @@ export interface Appointment {
   type: AppointmentType;
   createdAt: string;
   reason?: string;
+  note: string[];
 }
 
 export interface AppointmentFormProps {

@@ -18,17 +18,20 @@ import logo from 'public/logo-black.png';
 import { SignInRequest, UsersApi } from 'src/api/user';
 import useFunction from 'src/hooks/use-function';
 import { useAuth } from '@hooks';
+import { LoadingProcess } from '@components';
 
 export const loginSchema = Yup.object({
-  email: Yup.string().required('Email không được để trống'),
-  password: Yup.string().required('Mật khẩu không được để trống')
+  email: Yup.string().required('You must enter an email'),
+  password: Yup.string().required('You must enter a password')
 });
 
 const Page: PageType = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const { signIn } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const handleLogin = useCallback(async (values: SignInRequest) => {
+    setIsLoading(true);
     try {
       const response = await signIn(values.email, values.password);
       if (response) {
@@ -40,6 +43,8 @@ const Page: PageType = () => {
       } else {
         formik.setFieldError('general', 'Something went wrong. Please try again');
       }
+    } finally {
+      setIsLoading(false);
     }
   }, []);
   const handleLoginHelper = useFunction(handleLogin);
@@ -68,6 +73,7 @@ const Page: PageType = () => {
 
   return (
     <Box className='min-h-screen flex bg-white relative'>
+      {isLoading && <LoadingProcess />}
       <Stack
         direction={'row'}
         spacing={2}
