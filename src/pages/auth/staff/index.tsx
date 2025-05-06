@@ -27,11 +27,13 @@ export const loginSchema = Yup.object({
 });
 
 const Page: PageType = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { signInAsStaff } = useAuth();
   const { isTablet, isMobile } = useResponsive();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const handleLogin = useCallback(async (values: SignInRequest) => {
+    setIsLoading(true);
     try {
       const response = await signInAsStaff(values.email, values.password);
       if (response) {
@@ -43,6 +45,8 @@ const Page: PageType = () => {
       } else {
         formik.setFieldError('general', 'Something went wrong. Please try again later.');
       }
+    } finally {
+      setIsLoading(false);
     }
   }, []);
   const handleLoginHelper = useFunction(handleLogin);
@@ -71,6 +75,7 @@ const Page: PageType = () => {
 
   return (
     <Box className='min-h-screen flex bg-white relative'>
+      {isLoading && <LoadingProcess />}
       <Stack
         direction={'row'}
         spacing={2}

@@ -1,14 +1,23 @@
-import { Button, CircularProgress, Grid, Stack, TextField, Typography } from '@mui/material';
 import React, { useCallback } from 'react';
-import { UserDetail } from 'src/types/user';
-import { formatStandardDate } from 'src/utils/format-time-currency';
-import { useAuth } from '@hooks';
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  TextField,
+  Button,
+  CircularProgress,
+  Divider
+} from '@mui/material';
+import { StaffDetail } from 'src/types/user';
 import { useFormik } from 'formik';
 import { UpdateProfileRequest } from 'src/api/user';
 import useFunction from 'src/hooks/use-function';
 import useAppSnackbar from 'src/hooks/use-app-snackbar';
+import { useAuth } from '@hooks';
+import { formatStandardDate } from 'src/utils/format-time-currency';
 
-function AccountBasicInfo({ user }: { user: UserDetail }) {
+function AccountBasicInfo({ staff }: { staff: StaffDetail }) {
   const { updateProfile } = useAuth();
   const { showSnackbarSuccess } = useAppSnackbar();
 
@@ -29,10 +38,10 @@ function AccountBasicInfo({ user }: { user: UserDetail }) {
 
   const formik = useFormik<Partial<UpdateProfileRequest>>({
     initialValues: {
-      fullName: user.fullName,
-      email: user.email,
-      phoneNumber: user.phoneNumber,
-      ssn: user.ssn
+      fullName: staff?.fullName,
+      email: staff?.email,
+      phoneNumber: staff?.phoneNumber,
+      ssn: staff?.ssn
     },
     onSubmit: async (values) => {
       const { error } = await handleSubmitHelper.call({
@@ -42,12 +51,6 @@ function AccountBasicInfo({ user }: { user: UserDetail }) {
         ssn: values.ssn
       });
       if (!error) {
-        formik.setValues({
-          fullName: values.fullName,
-          email: values.email,
-          phoneNumber: values.phoneNumber,
-          ssn: values.ssn
-        });
         formik.setTouched({});
         formik.setSubmitting(false);
       }
@@ -55,125 +58,137 @@ function AccountBasicInfo({ user }: { user: UserDetail }) {
   });
 
   return (
-    <Stack spacing={2}>
-      <form onSubmit={formik.handleSubmit}>
-        <Grid container spacing={1.5} alignItems={'center'} justifyContent={'center'}>
-          <Grid item xs={12} md={6}>
-            <Stack spacing={1}>
-              <Typography variant='body2'>Full name</Typography>
-              <TextField
-                variant='outlined'
-                fullWidth
-                value={formik.values.fullName || user.fullName}
-                onChange={formik.handleChange} // Bind formik's onChange
-                name='fullName' // Add the name attribute
-              />
-            </Stack>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Stack spacing={1}>
-              <Typography variant='body2'>Email</Typography>
-              <TextField
-                variant='outlined'
-                fullWidth
-                value={formik.values.email || user.email}
-                onChange={formik.handleChange}
-                name='email'
-                disabled
-              />
-            </Stack>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Stack spacing={1}>
-              <Typography variant='body2'>Phone number</Typography>
-              <TextField
-                variant='outlined'
-                fullWidth
-                value={formik.values.phoneNumber || user.phoneNumber}
-                onChange={formik.handleChange} // Bind formik's onChange
-                name='phoneNumber' // Add the name attribute
-              />
-            </Stack>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Stack spacing={1}>
-              <Typography variant='body2'>SSN</Typography>
-              <TextField
-                variant='outlined'
-                fullWidth
-                value={formik.values.ssn || user.ssn}
-                onChange={formik.handleChange}
-                name='ssn' // Add the name attribute
-              />
-            </Stack>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Stack spacing={1}>
-              <Typography variant='body2'>Occupation</Typography>
-              <TextField variant='outlined' fullWidth value={user?.occupation} />
-            </Stack>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Stack spacing={1}>
-              <Typography variant='body2'>Marital status</Typography>
-              <TextField variant='outlined' fullWidth value={user?.maritalStatus} />
-            </Stack>
-          </Grid>
-          <Grid item xs={12}>
-            <Stack spacing={1}>
-              <Typography variant='body2'>Address</Typography>
-              <TextField variant='outlined' fullWidth value={user?.address} />
-            </Stack>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Stack spacing={1}>
-              <Typography variant='body2'>Date of birth</Typography>
-              <TextField
-                variant='outlined'
-                fullWidth
-                value={formatStandardDate(user?.dateOfBirth as string)}
-                disabled
-              />
-            </Stack>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Stack spacing={1}>
-              <Typography variant='body2'>Sex</Typography>
-              <TextField variant='outlined' fullWidth value={user?.sex} disabled />
-            </Stack>
-          </Grid>
-          <Grid item xs={12}>
-            <Stack spacing={1}>
-              <Typography variant='body2'>Nationality</Typography>
-              <TextField variant='outlined' fullWidth value={user?.nationality} disabled />
-            </Stack>
-          </Grid>
+    <Card className='w-full p-5'>
+      <Typography variant='h6' fontWeight='bold' className='text-bg-primary'>
+        Basic Information
+      </Typography>
+      <Divider sx={{ my: 2 }} />
+      <CardContent className='p-4'>
+        <Box className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
+          {/* Full Name */}
+          <Box>
+            <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
+              Full Name
+            </Typography>
+            <TextField
+              variant='outlined'
+              fullWidth
+              value={formik.values.fullName || ''}
+              onChange={formik.handleChange}
+              name='fullName'
+            />
+          </Box>
 
-          <Grid item xs={12} md={12}>
-            <Stack spacing={1}>
-              <Typography variant='body2'>Join date</Typography>
-              <TextField
-                variant='outlined'
-                fullWidth
-                value={formatStandardDate(user?.createdAt as string)}
-                disabled
-              />
-            </Stack>
-          </Grid>
-        </Grid>
-        <Button
-          type='submit'
-          sx={{
-            width: 'fit-content'
-          }}
-          variant='contained'
-          disabled={formik.isSubmitting}
-          startIcon={formik.isSubmitting && <CircularProgress size={20} />}
-        >
-          {formik.isSubmitting ? 'Saving...' : 'Save Changes'}
-        </Button>
-      </form>
-    </Stack>
+          {/* Email */}
+          <Box>
+            <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
+              Email
+            </Typography>
+            <TextField
+              variant='outlined'
+              fullWidth
+              value={formik.values.email || ''}
+              name='email'
+              disabled
+            />
+          </Box>
+
+          {/* Phone Number */}
+          <Box>
+            <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
+              Phone Number
+            </Typography>
+            <TextField
+              variant='outlined'
+              fullWidth
+              value={formik.values.phoneNumber || ''}
+              onChange={formik.handleChange}
+              name='phoneNumber'
+            />
+          </Box>
+
+          {/* SSN */}
+          <Box>
+            <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
+              SSN
+            </Typography>
+            <TextField
+              variant='outlined'
+              fullWidth
+              value={formik.values.ssn || ''}
+              onChange={formik.handleChange}
+              name='ssn'
+            />
+          </Box>
+
+          {/* Address */}
+          <Box>
+            <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
+              Address
+            </Typography>
+            <Typography variant='body1' sx={{ color: '#101828' }}>
+              {staff?.address || 'Not provided'}
+            </Typography>
+          </Box>
+
+          {/* Date of Birth */}
+          <Box>
+            <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
+              Date of Birth
+            </Typography>
+            <Typography variant='body1' sx={{ color: '#101828' }}>
+              {formatStandardDate(staff?.dateOfBirth as string)}
+            </Typography>
+          </Box>
+
+          {/* Sex */}
+          <Box>
+            <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
+              Sex
+            </Typography>
+            <Typography variant='body1' sx={{ color: '#101828' }}>
+              {staff?.sex}
+            </Typography>
+          </Box>
+
+          {/* Nationality */}
+          <Box>
+            <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
+              Nationality
+            </Typography>
+            <Typography variant='body1' sx={{ color: '#101828' }}>
+              {staff?.nationality}
+            </Typography>
+          </Box>
+
+          {/* Join Date */}
+          <Box>
+            <Typography variant='body2' sx={{ color: '#475467', mb: 1 }}>
+              Join Date
+            </Typography>
+            <Typography variant='body1' sx={{ color: '#101828' }}>
+              {formatStandardDate(staff?.createdAt as string)}
+            </Typography>
+          </Box>
+        </Box>
+
+        {/* Save Button */}
+        <Box className='w-full flex justify-end mt-4'>
+          <Button
+            type='submit'
+            variant='contained'
+            disabled={formik.isSubmitting}
+            startIcon={formik.isSubmitting && <CircularProgress size={20} />}
+            onClick={(e) => {
+              e.preventDefault();
+              formik.handleSubmit();
+            }}
+          >
+            {formik.isSubmitting ? 'Saving...' : 'Save Changes'}
+          </Button>
+        </Box>
+      </CardContent>
+    </Card>
   );
 }
 

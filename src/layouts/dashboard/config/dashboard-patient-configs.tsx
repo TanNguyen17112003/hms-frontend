@@ -1,11 +1,5 @@
 import { paths } from 'src/paths';
-import {
-  BarChart2,
-  CalendarPlus2,
-  User,
-  Settings,
-  LogOut,
-} from 'lucide-react';
+import { BarChart2, CalendarPlus2, User, Settings, LogOut } from 'lucide-react';
 export const getDashboardPatientConfigs = () => {
   return [
     {
@@ -31,11 +25,11 @@ export const getDashboardPatientConfigs = () => {
     {
       subheader: '2',
       items: [
-        {
-          title: 'Settings',
-          path: paths.auth.login,
-          icon: <Settings className='h-6 w-6' />
-        },
+        // {
+        //   title: 'Settings',
+        //   path: paths.auth.login,
+        //   icon: <Settings className='h-6 w-6' />
+        // },
         {
           title: 'Log Out',
           path: paths.auth.logout,

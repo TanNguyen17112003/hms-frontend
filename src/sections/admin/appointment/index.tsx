@@ -15,6 +15,12 @@ export const AppointmentManagement: React.FC = () => {
     useAppointmentContext();
   const [selectedStatus, setSelectedStatus] = useState<string>('');
   const [selectedType, setSelectedType] = useState<string>('');
+  const [page, setPage] = useState<number>(0);
+  const rowsPerPage = 10;
+
+  const handlePageChange = (event: any, newPage: number) => {
+    setPage(newPage);
+  };
 
   const appointments = useMemo(() => {
     return getAppointmentListApi.data?.content || [];
@@ -81,16 +87,15 @@ export const AppointmentManagement: React.FC = () => {
     }
     setAppointmentFilter({
       ...appointmentFilter,
-      page: appointmentPagination.page,
-      size: 5,
+      page: page,
       filters: filterList
     });
-  }, [appointmentPagination.page, selectedStatus, selectedType]);
+  }, [page, selectedStatus, selectedType]);
   return (
     <>
       <ContentHeader
         title='Manage Appointments'
-        description='Showing: All Consultations of All Healthcare Providers'
+        // description='Showing: All Consultations of All Healthcare Providers'
         rightSection={
           <Stack direction={'row'} alignItems={'center'} gap={3} className='mt-4' flexWrap={'wrap'}>
             <TextField
@@ -117,7 +122,14 @@ export const AppointmentManagement: React.FC = () => {
         <AppointmentManagementList
           appointments={appointments}
           searchInput={searchInput}
-          pagination={appointmentPagination}
+          pagination={{
+            count: getAppointmentListApi.data?.totalElements
+              ? getAppointmentListApi.data?.totalElements
+              : 0,
+            page: page,
+            rowsPerPage: rowsPerPage,
+            onPageChange: handlePageChange
+          }}
           count={count}
         />
       </Box>

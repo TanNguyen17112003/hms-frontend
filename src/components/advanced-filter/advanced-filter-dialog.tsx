@@ -86,6 +86,7 @@ const AdvancedFilterDialog: React.FC<AdvancedFilterDialogProps> = ({ open, onClo
                   placeholder='Enter your number value'
                   onChange={(e) => handleFilterChange(index, e.target.value)}
                   fullWidth
+                  value={filter.value}
                 />
               )}
               {index < localFilters.length - 1 && <Divider />}

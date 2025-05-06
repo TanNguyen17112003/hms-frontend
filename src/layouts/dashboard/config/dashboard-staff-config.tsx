@@ -45,11 +45,11 @@ export const getDashboardStaffConfigs = () => {
     {
       subheader: '2',
       items: [
-        {
-          title: 'Settings',
-          path: paths.auth.login,
-          icon: <Settings className='h-6 w-6' />
-        },
+        // {
+        //   title: 'Settings',
+        //   path: paths.auth.login,
+        //   icon: <Settings className='h-6 w-6' />
+        // },
         {
           title: 'Log Out',
           path: paths.auth.logout,

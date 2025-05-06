@@ -13,7 +13,7 @@ const Page: PageType = () => {
     <>
       <ContentHeader
         title='My Profile'
-        description='This Information will be displayed publicly so be careful what you share.'
+        // description='This Information will be displayed publicly so be careful what you share.'
       />
       {user?.role === 'ADMIN' ? (
         <Box className='px-6 py-4'>

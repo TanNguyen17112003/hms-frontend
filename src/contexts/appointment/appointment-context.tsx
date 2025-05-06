@@ -16,7 +16,7 @@ import { UsePaginationResult } from '@hooks';
 import usePagination from 'src/hooks/use-pagination';
 
 interface ContextValue {
-  getAppointmentListApi: UseFunctionReturnType<FormData, AppointmentResponse>;
+  getAppointmentListApi: UseFunctionReturnType<Record<string, any>, AppointmentResponse>;
   appointmentPagination: UsePaginationResult;
   appointmentFilter: AppointmentFilter;
   setAppointmentFilter: (filter: AppointmentFilter) => void;
@@ -56,7 +56,10 @@ export const AppointmentContext = createContext<ContextValue>({
 
 const AppointmentProvider = ({ children }: { children: ReactNode }) => {
   const getAppointmentListApi = useFunction(AppointmentApi.getAppointments);
-  const [appointmentFilter, setAppointmentFilter] = useState<AppointmentFilter>({});
+  const [appointmentFilter, setAppointmentFilter] = useState<AppointmentFilter>({
+    page: 0,
+    size: 10
+  });
   const appointmentPagination = usePagination({
     count: getAppointmentListApi.data?.totalElements || 0
   });
@@ -198,25 +201,32 @@ const AppointmentProvider = ({ children }: { children: ReactNode }) => {
   );
 
   useEffect(() => {
-    const formData = new FormData();
-    Object.entries(appointmentFilter).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        if (key === 'size' || key === 'page') {
-          formData.append(key, value.toString());
-        } else {
-          if (key === 'filters') {
-            value.forEach((filter: any) => {
-              const value = `${filter.property}:${filter.rule}:${filter.value}`;
-              formData.append('filter', value);
-            });
-          } else {
-            formData.append(key, value.toString());
-          }
-        }
-      }
+    // const formData = new FormData();
+    // Object.entries(appointmentFilter).forEach(([key, value]) => {
+    //   if (value !== undefined && value !== null) {
+    //     if (key === 'size' || key === 'page') {
+    //       formData.append(key, value.toString());
+    //     } else {
+    //       if (key === 'filters') {
+    //         value.forEach((filter: any) => {
+    //           const value = `${filter.property}:${filter.rule}:${filter.value}`;
+    //           formData.append('filter', value);
+    //         });
+    //       } else {
+    //         formData.append(key, value.toString());
+    //       }
+    //     }
+    //   }
+    // });
+    console.log(58, appointmentFilter);
+    getAppointmentListApi.call({
+      page: appointmentFilter.page,
+      size: appointmentFilter.size,
+      ...(appointmentFilter?.filters?.length
+        ? { filters: JSON.stringify(appointmentFilter.filters) }
+        : {})
     });
-    getAppointmentListApi.call(formData);
-  }, []);
+  }, [appointmentFilter]);
 
   return (
     <AppointmentContext.Provider

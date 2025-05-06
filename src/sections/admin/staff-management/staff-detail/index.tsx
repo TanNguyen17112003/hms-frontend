@@ -101,8 +101,10 @@ const StaffDetail = () => {
   }, []);
 
   useEffect(() => {
-    getOwnedTimeSlots.call(router.query.staffId as string);
-  }, [router.query.staffId]);
+    if (staffDetail?.role === 'DOCTOR') {
+      getOwnedTimeSlots.call(router.query.staffId as string);
+    }
+  }, [router.query.staffId, staffDetail]);
 
   function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
     event.preventDefault();
@@ -209,33 +211,35 @@ const StaffDetail = () => {
               </Stack>
             </CardContent>
           </Card>
-          <Card className='shadow-lg border rounded-lg p-5'>
-            <Box className='flex items-start justify-between flex-col gap-y-5'>
-              {/* Hospital Information Section */}
-              <Box className='flex flex-col gap-y-5 w-full'>
-                <Typography variant='h6'>Available Time</Typography>
+          {staffDetail.role === 'DOCTOR' && (
+            <Card className='shadow-lg border rounded-lg p-5'>
+              <Box className='flex items-start justify-between flex-col gap-y-5'>
+                {/* Hospital Information Section */}
+                <Box className='flex flex-col gap-y-5 w-full'>
+                  <Typography variant='h6'>Available Time</Typography>
+                </Box>
+                {/* Time Slots Grid */}
+                <Stack spacing={1} className='mb-2' width={'100%'}>
+                  {timeSlots.map((slot, index) => {
+                    return (
+                      <Card className='w-full p-5' key={index}>
+                        <Typography fontWeight={'bold'}>Date</Typography>
+                        <Typography>
+                          {getDateFromWeekandDate(slot.timeSlot.week, slot.timeSlot.date)}
+                        </Typography>
+                        <Divider sx={{ my: 1 }} />
+                        <Typography fontWeight={'bold'}>Time</Typography>
+                        <Typography>{`${slot.timeSlot.startTime} - ${slot.timeSlot.endTime}`}</Typography>
+                        <Divider sx={{ my: 1 }} />
+                        <Typography fontWeight={'bold'}>Current appointments</Typography>
+                        <Typography>{slot.appointmentInfoDTOs.length}</Typography>
+                      </Card>
+                    );
+                  })}
+                </Stack>
               </Box>
-              {/* Time Slots Grid */}
-              <Stack spacing={1} className='mb-2' width={'100%'}>
-                {timeSlots.map((slot, index) => {
-                  return (
-                    <Card className='w-full p-5' key={index}>
-                      <Typography fontWeight={'bold'}>Date</Typography>
-                      <Typography>
-                        {getDateFromWeekandDate(slot.timeSlot.week, slot.timeSlot.date)}
-                      </Typography>
-                      <Divider sx={{ my: 1 }} />
-                      <Typography fontWeight={'bold'}>Time</Typography>
-                      <Typography>{`${slot.timeSlot.startTime} - ${slot.timeSlot.endTime}`}</Typography>
-                      <Divider sx={{ my: 1 }} />
-                      <Typography fontWeight={'bold'}>Current appointments</Typography>
-                      <Typography>{slot.appointmentInfoDTOs.length}</Typography>
-                    </Card>
-                  );
-                })}
-              </Stack>
-            </Box>
-          </Card>
+            </Card>
+          )}
         </Box>
         <Box className='w-full md:w-3/5 lg:w-2/3 flex flex-col gap-y-8 p-2'>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>

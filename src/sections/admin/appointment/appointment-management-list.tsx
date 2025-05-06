@@ -21,7 +21,7 @@ import { MedicalRecordsApi } from 'src/api/medical-record';
 interface AppointmentManagementListProps {
   appointments: AppointmentDetail[];
   searchInput: string;
-  pagination?: UsePaginationResult;
+  pagination?: any;
   count: number;
 }
 const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({

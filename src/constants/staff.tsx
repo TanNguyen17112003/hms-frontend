@@ -46,7 +46,7 @@ export const defaultStaff: Staff = {
   nationality: '',
   address: '',
   biography: '',
-  role: 'DOCTOR',
+  role: '',
   startWorkingDate: '',
   status: 'ACTIVE',
   licenseNumber: '',
