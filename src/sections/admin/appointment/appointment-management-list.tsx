@@ -120,7 +120,7 @@ const AppointmentManagementList: React.FC<AppointmentManagementListProps> = ({
         page={pagination?.page as number}
         count={pagination?.count as number}
         onChange={pagination?.onPageChange || (() => {})}
-        rowsPerPage={pagination?.rowsPerPage as number}
+        rowsPerPage={10}
       />
       <ApproveAppointmentDialog
         open={approveDialog.open}

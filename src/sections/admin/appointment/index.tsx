@@ -15,12 +15,6 @@ export const AppointmentManagement: React.FC = () => {
     useAppointmentContext();
   const [selectedStatus, setSelectedStatus] = useState<string>('');
   const [selectedType, setSelectedType] = useState<string>('');
-  const [page, setPage] = useState<number>(0);
-  const rowsPerPage = 10;
-
-  const handlePageChange = (event: any, newPage: number) => {
-    setPage(newPage);
-  };
 
   const appointments = useMemo(() => {
     return getAppointmentListApi.data?.content || [];
@@ -87,10 +81,11 @@ export const AppointmentManagement: React.FC = () => {
     }
     setAppointmentFilter({
       ...appointmentFilter,
-      page: page,
+      page: appointmentPagination.page,
+      size: 10,
       filters: filterList
     });
-  }, [page, selectedStatus, selectedType]);
+  }, [appointmentPagination.page, selectedStatus, selectedType]);
   return (
     <>
       <ContentHeader
@@ -122,14 +117,7 @@ export const AppointmentManagement: React.FC = () => {
         <AppointmentManagementList
           appointments={appointments}
           searchInput={searchInput}
-          pagination={{
-            count: getAppointmentListApi.data?.totalElements
-              ? getAppointmentListApi.data?.totalElements
-              : 0,
-            page: page,
-            rowsPerPage: rowsPerPage,
-            onPageChange: handlePageChange
-          }}
+          pagination={appointmentPagination}
           count={count}
         />
       </Box>
